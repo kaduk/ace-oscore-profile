@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY I-D.ietf-core-object-security SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-object-security.xml">
+<!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
+<!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
+<!ENTITY I-D.ietf-ace-cbor-web-token SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-cbor-web-token.xml">
+<!ENTITY I-D.ietf-ace-actors SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-actors.xml">
+<!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">
+<!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
+<!ENTITY RFC8152 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8152.xml">
+<!ENTITY RFC4949 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4949.xml">
+<!ENTITY RFC6749 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
+<!ENTITY RFC7049 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7049.xml">
+<!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
+]>
+
+<?rfc toc="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc symrefs="yes"?>
+
+<rfc ipr="trust200902" docName="draft-ietf-ace-oscore-profile-latest" category="std">
+
+<front>
+
+  <title abbrev="OSCORE Profile of ACE">OSCORE profile of the Authentication and Authorization for Constrained Environments Framework</title>
+
+
+  <author fullname="Ludwig Seitz" initials="L." surname="Seitz">
+      <organization>RISE SICS AB</organization>
+      <address>
+        <postal>
+          <street>Scheelevagen 17</street>
+          <!-- Reorder these if your country does things differently -->
+          <city>Lund</city>
+          <code>22370</code>
+          <country>SWEDEN</country>
+        </postal>
+        <email>ludwig.seitz@ri.se</email>
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+        <author initials="F." surname="Palombini" fullname="Francesca Palombini">
+      <organization>Ericsson AB</organization>
+      <address>
+        <postal>
+          <street>Farogatan 6</street>
+          <city>Kista</city>
+          <code>SE-16480 Stockholm</code>
+          <country>Sweden</country>
+        </postal>
+        <email>francesca.palombini@ericsson.com</email>
+      </address>
+    </author>
+  <author fullname="Martin Gunnarsson" initials="M." surname="Gunnarsson">
+      <organization>RISE SICS AB</organization>
+      <address>
+        <postal>
+          <street>Scheelevagen 17</street>
+          <!-- Reorder these if your country does things differently -->
+          <city>Lund</city>
+          <code>22370</code>
+          <country>SWEDEN</country>
+        </postal>
+        <email>martin.gunnarsson@ri.se</email>
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <date/>
+
+    <area>Security</area>
+    <workgroup>ACE Working Group</workgroup>
+    <abstract>
+      <t>
+        This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.
+      </t>
+      <!-- 
+        Jim: Lookup on the RFC Editor page if you need to expand OAuth
+
+        From editor's list of well known:
+        OAuth     *- [seems to be more of a name rather than an abbreviation] 
+      -->
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <section anchor="introduction" title=" Introduction"> 
+      
+      <t>
+        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  In order to provide communication security, proof of possession, and server authentication they use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.  Optionally the client and the resource server may also use CoAP and OSCORE to communicate with the authorization server.
+      </t>
+
+      <t>
+        OSCORE specifies how to use CBOR Object Signing and Encryption (COSE) <xref target="RFC8152"/> to secure CoAP messages.  In order to provide replay and reordering protection OSCORE also introduces sequence numbers that are used together with COSE.
+      </t>
+
+      <t>
+        Note that OSCORE can be used to secure CoAP messages, as well as HTTP and combinations of HTTP and CoAP; a profile of ACE similar to the one described in this document, with the difference of using HTTP instead of CoAP as communication protocol, could be specified analogously to this one.
+      </t>
+
+      <section anchor="terminology" title=" Terminology">
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.  These words may also appear in this document in lowercase, absent their normative meanings.
+        </t>
+
+        <t>
+          Certain security-related terms such as "authentication", "authorization", "confidentiality", "(data) integrity", "message  authentication code", and "verify" are taken from <xref target="RFC4949"/>.
+        </t>
+
+        <t>
+          Since we describe exchanges as RESTful protocol interactions HTTP <xref target="RFC7231"/> offers useful terminology.
+        </t>
+
+        <t>
+          Terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749"/> and <xref target="I-D.ietf-ace-actors"/>, such as client (C), resource server (RS), and authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated to a unique AS.
+        </t>
+
+        <!-- <t>
+          Note that the term "endpoint" is used here following its OAuth definition, which is to denote resources such as /token and /introspect at the AS and /authz-info at the RS.  The CoAP <xref target="RFC7252"/> definition, which is "An entity participating in the CoAP protocol" is not used in this memo.
+        </t> DONE: changed the above to "resource" in the whole doc-->
+
+      </section> <!-- ends from line 91-->
+    </section> <!-- ends from line 101-->
+
+    <section title="Client to Resource Server"> 
+    
+      <t>
+        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.5 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+      </t>
+
+      <section title="Signaling the use of OSCORE"> 
+        
+        <t>
+          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.5.1 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+        </t>
+
+        <t>
+          The AS responding to a successful access token request as defined in section 5.5.2 of the ACE framework can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+        </t>
+
+        <t>
+          The error response procedures defined in section 5.5.3 of the ACE framework are unchanged by this profile.
+        </t>
+
+        <t>
+          Note the the client and the authorization server MAY OPTIONALLY use OSCORE to protect the interaction via the /token resource. See <xref target="c-as"/> for details.
+        </t>
+      
+      </section> <!-- ends from line 133-->
+
+      <section anchor="oscore-only" title="Key establishment for OSCORE"> 
+
+        <t>
+          Section 3.2 of OSCORE <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MAY, in case of pre-shared keys, be used directly as master secret in OSCORE.
+        </t>
+
+        <t>
+          If OSCORE is used directly with the symmetric pop-key as master secret, then the AS MUST provision the following data, in response to the access token request:
+          <!-- 
+            Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
+          
+          in the list below? (now fixed) or in the paragraph above?
+          -->
+        </t>
+
+        <t>
+          <list style="symbols">
+            <t>a master secret</t>
+            <t>the sender identifier</t>
+            <t>the recipient identifier</t>
+          </list>
+        </t>
+
+        <t>
+          Additionally, the AS MAY provision the following data, in the same response.  In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+        </t>
+
+        <t>
+          <list style="symbols">
+            <t>an AEAD algorithm</t>
+            <t>a KDF algorithm</t>
+            <t>a salt</t>
+            <t>a replay window type and size</t>
+          </list>
+        </t>
+
+        <t>
+          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in section 5.5.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the COSE_Key as defined in table 1.  The same parameters MUST be included as metadata of the access token; if the token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the same COSE_Key structure MUST be placed in the 'cnf' claim of this token.  The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in table 1.
+        </t>
+
+        <t>
+          We assume in this document that a resource is associated to one single AS, which makes it possible to assume unique identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may appear in the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate their effect.
+          <!-- TODO: Add error response definition in the document for the RS to indicate "Id collision"-->
+        </t>
+
+        <t>
+          Note that C should set the Sender ID of its security context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
+        </t>
+
+<figure><artwork><![CDATA[
++----------+-------+--------------+------------+-------------------+
+| name     | label | CBOR type    | registry   | description       |
++----------+-------+--------------+------------+-------------------+
+| clientId | TBD   | bstr         |            | Identifies the    |
+|          |       |              |            | client in an      |
+|          |       |              |            | OSCORE context    |
+|          |       |              |            | using this key    |
+|          |       |              |            |                   |
+| serverId | TBD   | bstr         |            | Identifies the    |
+|          |       |              |            | server in an      |
+|          |       |              |            | OSCORE context    |
+|          |       |              |            | using this key    |
+|          |       |              |            |                   |
+| kdf      | TBD   | bstr         |            | Identifies the    |
+|          |       |              |            | KDF algorithm in  |
+|          |       |              |            | an OSCORE context |
+|          |       |              |            | using this key    |
+|          |       |              |            |                   |
+| slt      | TBD   | bstr         |            | Identifies the    |
+|          |       |              |            | master salt in    |
+|          |       |              |            | an OSCORE context |
+|          |       |              |            | using this key    |
++----------+-------+--------------+------------+-------------------+
+    Table 1: Additional common header parameters for COSE_Key
+
+]]></artwork></figure>
+
+        <t>
+          Figure 1 shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+    Header: Created (Code=2.01)
+    Content-Type: "application/cose+cbor"
+    Payload:
+    {
+      "access_token" : b64'SlAV32hkKG ...
+       (remainder of access token omitted for brevity)',
+      "profile" : "coap_oscore",
+      "expires_in" : "3600",
+      "cnf" : {
+        "COSE_Key" : {
+          "kty" : "Symmetric",
+          "alg" : "AES-CCM-16-64-128",
+          "clientId" : b64'qA',
+          "serverId" : b64'Qg',
+          "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+        }
+      }
+    }
+
+    Figure 1: Example AS response with OSCORE parameters.
+]]></artwork></figure>
+
+        <t>
+          Figure 2 shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+  {
+    "aud" : "tempSensorInLivingRoom",
+    "iat" : "1360189224",
+    "exp" : "1360289224",
+    "scope" :  "temperature_g firmware_p",
+    "cnf" : {
+      "COSE_Key" : {
+        "kty" : "Symmetric",
+        "alg" : "AES-CCM-16-64-128",
+        "clientId" : b64'Qg',
+        "serverId" : b64'qA',
+        "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
+    }
+  }
+
+     Figure 2: Example CWT with OSCORE parameters.
+]]></artwork></figure>
+
+      </section> <!-- ends for line 153-->
+
+    </section> <!-- ends from line 127-->
+
+
+    <section anchor="c-as" title="Client to Authorization Server"> 
+
+      <t>
+        As specified in the ACE framework section 5.5 <xref target="I-D.ietf-ace-oauth-authz"/>, the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+      </t>
+
+      <t>
+        The client and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+      </t>
+
+    </section> <!--ends from line 516 -->
+
+    <section title="Resource Server to Authorization Server">
+
+      <t>
+        As specified in the ACE framework section 5.6 <xref target="I-D.ietf-ace-oauth-authz"/>, the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+      </t>
+
+      <t>
+        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+      </t>
+
+    </section> <!-- ends from line 530-->
+
+    <section title="Security Considerations">
+
+      <t>
+        TBD.
+      </t>
+
+    </section> <!-- ends from line 542-->
+
+    <section title="Privacy Considerations">
+
+      <t>
+        TBD.
+      </t>
+
+    </section> <!-- ends from line 550-->
+
+    <section title=" IANA Considerations ">
+
+      <t>
+        TBD. 'coap_oscore' as profile id. Header parameters 'sid', 'rid', 'kdf' and 'slt' for COSE_Key.
+      </t>
+
+    </section> <!-- ends from line 558-->
+
+  </middle>
+
+  <back>
+
+    <references title="Normative References">
+
+      &I-D.ietf-core-object-security;
+      &I-D.ietf-ace-oauth-authz;
+      &I-D.ietf-ace-cbor-web-token;
+      &RFC2119;
+      &RFC7252;
+      &RFC8152;
+
+    </references>
+
+    <references title='Informative References'>
+      
+      &I-D.ietf-ace-actors;
+      &I-D.gerdes-ace-dcaf-authorize;
+      &I-D.selander-ace-cose-ecdhe;
+      &RFC4949;
+      &RFC6749;
+      &RFC7049;
+      &RFC7231;
+
+    </references>
+
+    <section title="Profile Requirements">
+
+      <t>
+        This section lists the specifications on this profile based on the requirements on the framework, as requested in Appendix C. of <xref target="I-D.ietf-ace-oauth-authz"/>.
+      </t>
+
+      <t>
+        <list style="symbols">
+          <t>(Optional) discovery process of how the client finds the right AS for an RS it wants to send a request to: Not specified
+          </t>
+          <t>communication protocol the client and the RS must use: CoAP
+          </t>
+          <t>security protocol the client and RS must use: OSCORE
+          </t>
+          <t>how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context
+          </t>
+          <t>Content-format of the protocol messages: "application/cose+cbor"
+          </t>
+          <t>proof-of-possession protocol(s) and how to select one; which key types (e.g. symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
+          </t>
+          <t>profile identifier: coap_oscore
+          </t>
+          <t>(Optional) how the RS talks to the AS for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+          </t>
+          <t>how the client talks to the AS for requesting a token: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+          </t>
+          <t>how/if the /authz-info endpoint is protected: Security protocol above
+          </t>
+          <t>(Optional)other methods of token transport than the /authz-info endpoint: no
+          </t>
+        </list>
+      </t>
+
+    </section>
+
+    <section anchor= "oscore-edhoc" title="Using the pop-key with EDHOC (EDHOC+OSCORE)" >
+
+      <t>
+        EDHOC specifies an authenticated Diffie-Hellman protocol that allows two parties to use CBOR <xref target="RFC7049"/> and COSE in order to establish a shared secret key with perfect forward secrecy.  The use of Ephemeral Diffie-Hellman Over COSE (EDHOC) <xref target="I-D.selander-ace-cose-ecdhe"/> in this profile in addition to OSCORE, provides perfect forward secrecy (PFS) and the initial proof-of-possession, which ties the proof-of-possession key to an OSCORE security context.
+      </t>
+
+      <t>
+        If EDHOC is used together with OSCORE, and the pop-key (symmetric or asymmetric) is used to authenticate the messages in EDHOC, then the AS MUST provision the following data, in response to the access token request:
+      <!-- Jim: Again the symmetric key is not a POP key. -->
+      </t>
+
+      <t>
+        <list style="symbols">
+          <t>a symmetric or public key (associated to the RS)</t>
+          <t>a key identifier;</t>
+        </list>
+      </t>
+
+      <t>
+        How these parameters are communicated depends on the type of key (asymmetric or symmetric).  Moreover, the AS MUST signal the use of OSCORE + EDHOC with the 'profile' parameter set to "coap_oscore_edhoc" and follow  <xref target="oscore-edhoc"/> to derive the security context to run OSCORE.
+      </t>
+
+      <t>
+        Note that in the case described in this section, the 'expires_in' parameter, defined in section 4.2.2. of <xref target="RFC6749"/> defines the lifetime in seconds of both the access token and the shared secret. After expiration, C MUST acquire a new access token from the AS, and run EDHOC again, as specified in this section
+      </t>
+
+      <section anchor="edhoc-asym" title="Using Asymmetric Keys">
+        
+        <t>
+          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
+        <!-- TODO: check that the rs_cnf is used correctly -->
+        </t>
+
+        <t>
+          Figure 3 shows an example of such a request in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+Header: POST (Code=0.02)
+Uri-Host: "server.example.com"
+Uri-Path: "token"
+Content-Type: "application/cose+cbor"
+Payload:
+{
+ "grant_type" : "client_credentials",
+ "cnf" : {
+   "COSE_Key" : {
+     "kid" : "client_key"
+     "kty" : "EC",
+     "crv" : "P-256",
+     "x" : b64'usWxHK2PmfnHKwXPS54m0kTcGJ90UiglWiGahtagnv8',
+     "y" : b64'IBOL+C3BttVivg+lSreASjpkttcsz+1rb7btKLv8EX4'
+   }
+ }
+}
+
+Figure 3: Example access token request (OSCORE+EDHOC, asymmetric).
+]]></artwork></figure>
+
+        <t>
+          Figure 4 shows an example of a corresponding response in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+  Header: Created (Code=2.01)
+  Content-Type: "application/cose+cbor"
+  Payload:
+  {
+    "access_token" : b64'SlAV32hkKG ...
+     (contains "kid" : "client_key")',
+    "profile" : "coap_oscore_edhoc",
+    "expires_in" : "3600",
+    "cnf" : {
+      "COSE_Key" : {
+        "kid" : "server_key"
+        "kty" : "EC",
+        "crv" : "P-256",
+        "x" : b64'cGJ90UiglWiGahtagnv8usWxHK2PmfnHKwXPS54m0kT',
+        "y" : b64'reASjpkttcsz+1rb7btKLv8EX4IBOL+C3BttVivg+lS'
+     }
+    }
+  }
+
+Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
+]]></artwork></figure>
+
+      </section> <!-- ends for line 299-->
+
+      <section anchor="edhoc-sym" title="Using Symmetric Keys">
+        
+        <t>
+          In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in section 5.5.2. of <xref target="I-D.ietf-ace-oauth-authz"/>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <xref target="I-D.ietf-ace-oauth-authz"/>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        </t>
+
+        <t>
+          Figure 5 shows an example of the necessary parameters in the AS response to the access token request when EDHOC is used.  The example uses CBOR  diagnostic notation without tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+  Header: Created (Code=2.01)
+  Content-Type: "application/cose+cbor"
+  Payload:
+  {
+    "access_token" : b64'SlAV32hkKG ...
+     (remainder of access token omitted for brevity)',
+    "profile" : "coap_oscore_edhoc",
+    "expires_in" : "3600",
+    "cnf" : {
+      "COSE_Key" : {
+        "kty" : "Symmetric",
+        "kid" : b64'5tOS+h42dkw',
+        "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+      }
+    }
+  }
+
+Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
+]]></artwork></figure>
+
+        <t>
+          In both cases, the AS MUST also include the same key identifier as 'kid' parameter in the access token metadata. If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed inside the 'cnf' claim as 'kid' parameter of the COSE_Key or directly in the 'cnf' structure (if the key is only referenced).
+        </t>
+        <t>
+          Figure 6 shows an example CWT containing the necessary EDHOC+OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
+
+<figure><artwork><![CDATA[
+{
+  "aud" : "tempSensorInLivingRoom",
+  "iat" : "1360189224",
+  "exp" : "1360289224",
+  "scope" :  "temperature_g firmware_p",
+  "cnf" : {
+    "COSE_Key" : {
+      "kty" : "Symmetric",
+      "kid" : b64'5tOS+h42dkw',
+      "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
+  }
+}
+
+  Figure 6: Example CWT with EDHOC+OSCORE, symmetric case.
+]]></artwork></figure>
+
+        <t>
+          All other parameters defining OSCORE security context are derived from EDHOC message exchange, including the master secret (see Appendix C.2 of <xref target="I-D.selander-ace-cose-ecdhe"/>).
+        </t>
+
+      </section> <!-- ends for line 361-->
+
+      <section anchor="edhoc-proc" title="Processing">
+        
+        <t>
+          To provide forward secrecy and mutual authentication in the case of pre-shared keys, pre-established raw public keys or with X.509 certificates it is RECOMMENDED to use EDHOC <xref target="I-D.selander-ace-cose-ecdhe"/> to generate the keying material.  EDHOC MUST be used as defined in Appendix C of <xref target="I-D.selander-ace-cose-ecdhe"/>, with the following additions and modifications.
+        </t>
+        
+        <t>
+          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in section 5.7.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
+        </t>
+        
+        <t>
+          Before the RS continues with the EDHOC protocol and responds to this token submission request, additional verifications on the access token are done: the RS SHALL process the access token according to <xref target="I-D.ietf-ace-oauth-authz"/>.  If the token is valid then the RS continues processing EDHOC following Appendix C of <xref target="I-D.selander-ace-cose-ecdhe"/>, otherwise it discontinues EDHOC and responds with the error code as specified in <xref target="I-D.ietf-ace-oauth-authz"/>.
+        </t>
+
+        <t>
+          <list style="symbols">
+            <t>In case the EDHOC verification fails, the RS MUST return an error response to the client with code 4.01 (Unauthorized).
+            </t>
+            <t>If RS has an access token for C but not for the resource that C has requested, RS MUST reject the request with a 4.03 (Forbidden).
+            </t>
+            <t>If RS has an access token for C but it does not cover the action C requested on the resource, RS MUST reject the request with a 4.05 (Method Not Allowed).
+            </t>
+            <t>If all verifications above succeeds, further communication between client and RS is protected with OSCORE, including the RS response to the OSCORE request.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          In the case of EDHOC being used with symmetric keys, the protocol in section 5 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.  If the key is asymmetric, the RS MUST also use an asymmetric key for authentication.  This key is known to the client through the access token response (see section 5.5.2 of the ACE framework).  In this case the protocol in section 4 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.
+        </t>
+
+        <t>
+          Figure 7 illustrates the message exchanges for using OSCORE+EDHOC  (step C in figure 1 of <xref target="I-D.ietf-ace-oauth-authz"/>).
+        </t>
+
+<figure><artwork><![CDATA[
+                 Resource
+        Client    Server
+        |          |
+        |          |
+        +--------->| Header: POST (Code=0.02)
+        | POST     | Uri-Path:"authz-info"
+        |          | Content-Type: application/cbor
+        |          | Payload: access token
+        |          |
+        |          |
+        +--------->| Header: POST (Code=0.02)
+        |   POST   | Uri-Path: "/.well-known/edhoc"
+        |          | Content-Type: application/edhoc
+        |          | Payload: EDHOC message_1
+        |          |
+        |<---------+ Header: 2.04 Changed
+        |   2.04   | Content-Type: application/edhoc
+        |          | Payload: EDHOC message_2
+        |          |
+        +--------->| Header: POST (Code=0.02)
+        |   POST   | Uri-Path: "/.well-known/edhoc"
+        |          | Content-Type: application/edhoc
+        |          | Payload: EDHOC message_3
+        |          |
+        |<---------+ Header: 2.04 Changed
+        |   2.04   |
+        |          |
+ start of protected communication
+        |          |
+        +--------->| CoAP request +
+        |  OSCORE  | Object-Security option
+        | request  | 
+        |          |
+        |<---------+ CoAP response +
+        |  OSCORE  | Object-Security option
+        | response | 
+        |          |  
+
+Figure 7: Access token and key establishment with EDHOC
+]]></artwork></figure>
+
+<!--
+Jim: in the section above: Is there a reason for not supporting multiple edhoc negotiations w/ the same secret - it seemed to be an original mode that was supported.
+
+where does it say that? -->
+
+      </section> <!-- ends for line 422-->
+
+    </section>
+
+    <section title="Acknowledgments" numbered='no'> 
+
+      <t>
+        The authors wish to thank Jim Schaad, Goeran Selander and Marco Tiloca for the input on this memo.  The error responses specified in <xref target="edhoc-proc"/> were originally specified by Gerdes et al. in <xref target="I-D.gerdes-ace-dcaf-authorize"/>.
+      </t>
+
+    </section>
+
+  </back>
+
+</rfc>
