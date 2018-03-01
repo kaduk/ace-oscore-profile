@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY SELF "[[this specification]]">
 <!ENTITY I-D.ietf-core-object-security SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-object-security.xml">
 <!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
@@ -20,7 +21,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc symrefs="yes"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-ace-oscore-profile-latest" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-ace-oscore-profile-01" category="std">
 
 <front>
 
@@ -190,7 +191,25 @@
         </t>
 
         <t>
-          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in section 5.5.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the COSE_Key as defined in table 1.  The same parameters MUST be included as metadata of the access token; if the token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the same COSE_Key structure MUST be placed in the 'cnf' claim of this token.  The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in table 1.
+          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
+	  response as defined in section 5.5.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
+	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
+	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
+	  COSE_Key as defined in table 1.
+	</t>
+	<t>
+	  The same parameters MUST be included as metadata of the access token; if the token is a CWT <xref
+	  target="I-D.ietf-ace-cbor-web-token"/>, the same COSE_Key structure MUST be placed in the 'cnf'
+	  claim of this token.  If a CWT is used, it MUST be encrypted in order to protect the key from
+	  eavesdroppers, when the token is initially transferred from the client to the RS, as this
+	  communication happens over an unprotected channel.</t>
+
+	<t>
+          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and
+	  Recipient ID in the OSCORE context as described in section 3.1 of <xref
+	  target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all
+	  clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as
+	  header parameters, as defined in table 1.
         </t>
 
         <t>
@@ -206,22 +225,22 @@
 +----------+-------+--------------+------------+-------------------+
 | name     | label | CBOR type    | registry   | description       |
 +----------+-------+--------------+------------+-------------------+
-| clientId | TBD   | bstr         |            | Identifies the    |
+| clientId | 10    | bstr         |            | Identifies the    |
 |          |       |              |            | client in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| serverId | TBD   | bstr         |            | Identifies the    |
+| serverId | 11    | bstr         |            | Identifies the    |
 |          |       |              |            | server in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| kdf      | TBD   | bstr         |            | Identifies the    |
+| kdf      | 12    | bstr         |            | Identifies the    |
 |          |       |              |            | KDF algorithm in  |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| slt      | TBD   | bstr         |            | Identifies the    |
+| slt      | 13    | bstr         |            | Identifies the    |
 |          |       |              |            | master salt in    |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
@@ -280,6 +299,13 @@
      Figure 2: Example CWT with OSCORE parameters.
 ]]></artwork></figure>
 
+<t>
+  Note that the proof-of-possession required to bind the access token to the
+  client is implicitly performed by generating the shared OSCORE context using
+  the pop-key as master secret, both on the client and RS side.  An attacker
+  using a stolen token will not be able to generate a valid OSCORE context and
+  thus not be able to prove possession of the pop-key.</t>
+
       </section> <!-- ends for line 153-->
 
     </section> <!-- ends from line 127-->
@@ -311,10 +337,23 @@
 
     <section title="Security Considerations">
 
-      <t>
-        TBD.
-      </t>
+      <t>This document specifies a profile for the Authentication and
+      Authorization for Constrained Environments (ACE) framework
+      <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general security
+      considerations from the framework also apply to this profile.</t>
 
+      <t>Furthermore the general security considerations of OSCORE <xref
+      target="I-D.ietf-core-object-security"/> also apply to this specific
+      use of the OSCORE protocol.</t>
+      
+      <t>Since OSCORE is designed to secure point-to-point communication,
+      providing a secure binding between the request and the response(s).
+      Thus the basic OSCORE protocol is not intended for use in
+      point-to-multipoint communication (e.g. multicast, publish-subscribe).
+      Implementers of this profile should make sure that their usecase
+      corresponds to the expected use of OSCORE, to prevent weakening the
+      security assurances provided by OSCORE.</t>
+      
     </section> <!-- ends from line 542-->
 
     <section title="Privacy Considerations">
@@ -327,9 +366,70 @@
 
     <section title=" IANA Considerations ">
 
-      <t>
-        TBD. 'coap_oscore' as profile id. Header parameters 'sid', 'rid', 'kdf' and 'slt' for COSE_Key.
-      </t>
+       <t>Note to RFC Editor: Please replace all occurrences of "&SELF;"
+      with the RFC number of this specification and delete this paragraph.</t>
+      
+      <t>The following registration is done for the ACE OAuth Profile
+      Registry following the procedure specified in section 8.6 of <xref
+      target="I-D.ietf-ace-oauth-authz"/>:</t>
+
+      <t><?rfc subcompact="yes"?><list style='symbols'>
+        <t>Profile name: coap_oscore</t>
+
+	<t>Profile Description: Profile for using OSCORE to secure communication
+	between constrained nodes using the Authentication and Authorization
+	for Constrained Environments framework.</t>
+
+	<t>Profile ID: 2</t>
+	
+	<t>Change Controller: IESG</t>
+
+	<t>Specification Document(s): &SELF;</t>
+      </list></t>
+	
+      <t>The following registrations are done for the COSE Header Parameter
+      Registry specified in section 16.2 of <xref target="RFC8152"/>:</t>
+
+       <t><?rfc subcompact="yes"?><list style='symbols'>
+         <t>Name: clientId</t>
+	 <t>Label: 10</t>
+	 <t>Value Type: bstr</t>
+	 <t>Value Registry: N/A</t>
+	 <t>Description: Identifies the client of an OSCORE context in the
+	 header of a COSE_Key used as master secret</t>
+	 <t>Reference: &SELF;</t>
+       </list></t>
+
+       <t><?rfc subcompact="yes"?><list style='symbols'>
+         <t>Name: serverId</t>
+	 <t>Label: 11</t>
+	 <t>Value Type: bstr</t>
+	 <t>Value Registry: N/A</t>
+	 <t>Description: Identifies the server of an OSCORE context in the
+	 header of a COSE_Key used as master secret</t>
+	 <t>Reference: &SELF;</t>
+       </list></t>
+       
+       <t><?rfc subcompact="yes"?><list style='symbols'>
+         <t>Name: kdf</t>
+	 <t>Label: 12</t>
+	 <t>Value Type: bstr</t>
+	 <t>Value Registry: COSE Algorithms registry</t>
+	 <t>Description: Identifies the KDF algorithm of an OSCORE context
+	 in the header of a COSE_Key used as master secret</t>
+	 <t>Reference: &SELF;</t>
+       </list></t>
+
+       <t><?rfc subcompact="yes"?><list style='symbols'>
+         <t>Name: slt</t>
+	 <t>Label: 13</t>
+	 <t>Value Type: bstr</t>
+	 <t>Value Registry: N/A</t>
+	 <t>Description: Identifies the master salt of an OSCORE context in the
+	 header of a COSE_Key used as master secret.</t>
+	 <t>Reference: &SELF;</t>
+       </list></t>
+      
 
     </section> <!-- ends from line 558-->
 
