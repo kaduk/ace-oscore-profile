@@ -13,7 +13,7 @@ Expires: September 2, 2018                                   Ericsson AB
 
  OSCORE profile of the Authentication and Authorization for Constrained
                          Environments Framework
-                    draft-ietf-ace-oscore-profile-01
+                  draft-ietf-ace-oscore-profile-latest
 
 Abstract
 
