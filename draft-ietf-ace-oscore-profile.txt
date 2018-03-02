@@ -8,6 +8,8 @@ Intended status: Standards Track                            F. Palombini
 Expires: September 3, 2018                                   Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
+                                                             G. Selander
+                                                             ERICSSON AB
                                                            March 2, 2018
 
 
@@ -48,8 +50,6 @@ Copyright Notice
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
 
 
 
@@ -58,6 +58,8 @@ Seitz, et al.           Expires September 3, 2018               [Page 1]
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
@@ -104,8 +106,6 @@ Table of Contents
    [RFC8152] to secure CoAP messages.  In order to provide replay and
    reordering protection OSCORE also introduces sequence numbers that
    are used together with COSE.
-
-
 
 
 
@@ -983,13 +983,13 @@ Authors' Addresses
    Email: martin.gunnarsson@ri.se
 
 
+   Goeran Selander
+   ERICSSON AB
+   Farogatan 6
+   Kista  SE-16480 Stockholm
+   Sweden
 
-
-
-
-
-
-
+   Email: goran.selander@ericsson.com
 
 
 
