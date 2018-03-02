@@ -131,21 +131,21 @@
     <section title="Client to Resource Server"> 
     
       <t>
-        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.5 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
       <section title="Signaling the use of OSCORE"> 
         
         <t>
-          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.5.1 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.6.1 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
-          The AS responding to a successful access token request as defined in section 5.5.2 of the ACE framework can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+          The AS responding to a successful access token request as defined in section 5.6.2 of the ACE framework can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
-          The error response procedures defined in section 5.5.3 of the ACE framework are unchanged by this profile.
+          The error response procedures defined in section 5.6.3 of the ACE framework are unchanged by this profile.
         </t>
 
         <t>
@@ -192,7 +192,7 @@
 
         <t>
           The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
-	  response as defined in section 5.5.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
+	  response as defined in section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
 	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
 	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
 	  COSE_Key as defined in table 1.
@@ -225,22 +225,22 @@
 +----------+-------+--------------+------------+-------------------+
 | name     | label | CBOR type    | registry   | description       |
 +----------+-------+--------------+------------+-------------------+
-| clientId | 10    | bstr         |            | Identifies the    |
+| clientId |  6    | bstr         |            | Identifies the    |
 |          |       |              |            | client in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| serverId | 11    | bstr         |            | Identifies the    |
+| serverId |  7    | bstr         |            | Identifies the    |
 |          |       |              |            | server in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| kdf      | 12    | bstr         |            | Identifies the    |
+| kdf      |  8    | bstr         |            | Identifies the    |
 |          |       |              |            | KDF algorithm in  |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| slt      | 13    | bstr         |            | Identifies the    |
+| slt      |  9    | bstr         |            | Identifies the    |
 |          |       |              |            | master salt in    |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
@@ -314,11 +314,11 @@
     <section anchor="c-as" title="Client to Authorization Server"> 
 
       <t>
-        As specified in the ACE framework section 5.5 <xref target="I-D.ietf-ace-oauth-authz"/>, the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        As specified in the ACE framework section 5.6 <xref target="I-D.ietf-ace-oauth-authz"/>, the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
       </t>
 
       <t>
-        The client and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        The client and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section> <!--ends from line 516 -->
@@ -326,11 +326,11 @@
     <section title="Resource Server to Authorization Server">
 
       <t>
-        As specified in the ACE framework section 5.6 <xref target="I-D.ietf-ace-oauth-authz"/>, the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        As specified in the ACE framework section 5.7 <xref target="I-D.ietf-ace-oauth-authz"/>, the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
       </t>
 
       <t>
-        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section> <!-- ends from line 530-->
@@ -387,46 +387,44 @@
 	<t>Specification Document(s): &SELF;</t>
       </list></t>
 	
-      <t>The following registrations are done for the COSE Header Parameter
-      Registry specified in section 16.2 of <xref target="RFC8152"/>:</t>
+      <t>The following registrations are done for the COSE Key Common Parameter
+      Registry specified in section 16.5 of <xref target="RFC8152"/>:</t>
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: clientId</t>
-	 <t>Label: 10</t>
-	 <t>Value Type: bstr</t>
+	 <t>Label: 6</t>
+	 <t>CBOR Type: bstr</t>
 	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the client of an OSCORE context in the
-	 header of a COSE_Key used as master secret</t>
+	 <t>Description: Identifies the client in an OSCORE context</t>
 	 <t>Reference: &SELF;</t>
        </list></t>
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: serverId</t>
-	 <t>Label: 11</t>
+	 <t>Label: 7</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the server of an OSCORE context in the
-	 header of a COSE_Key used as master secret</t>
+	 <t>Description: Identifies the server in an OSCORE context</t>
 	 <t>Reference: &SELF;</t>
        </list></t>
        
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: kdf</t>
-	 <t>Label: 12</t>
+	 <t>Label: 8</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: COSE Algorithms registry</t>
-	 <t>Description: Identifies the KDF algorithm of an OSCORE context
-	 in the header of a COSE_Key used as master secret</t>
+	 <t>Description: Identifies the KDF algorithm to be used in an
+    OSCORE context</t>
 	 <t>Reference: &SELF;</t>
        </list></t>
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: slt</t>
-	 <t>Label: 13</t>
+	 <t>Label: 9</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the master salt of an OSCORE context in the
-	 header of a COSE_Key used as master secret.</t>
+	 <t>Description: Identifies the master salt of to be used in an
+    OSCORE context</t>
 	 <t>Reference: &SELF;</t>
        </list></t>
       
@@ -524,7 +522,7 @@
       <section anchor="edhoc-asym" title="Using Asymmetric Keys">
         
         <t>
-          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
+          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
         <!-- TODO: check that the rs_cnf is used correctly -->
         </t>
 
@@ -586,7 +584,7 @@ Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
       <section anchor="edhoc-sym" title="Using Symmetric Keys">
         
         <t>
-          In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in section 5.5.2. of <xref target="I-D.ietf-ace-oauth-authz"/>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <xref target="I-D.ietf-ace-oauth-authz"/>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in section 5.6.2. of <xref target="I-D.ietf-ace-oauth-authz"/>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <xref target="I-D.ietf-ace-oauth-authz"/>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
@@ -651,7 +649,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         </t>
         
         <t>
-          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in section 5.7.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
+          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
         </t>
         
         <t>
@@ -672,11 +670,11 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         </t>
 
         <t>
-          In the case of EDHOC being used with symmetric keys, the protocol in section 5 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.  If the key is asymmetric, the RS MUST also use an asymmetric key for authentication.  This key is known to the client through the access token response (see section 5.5.2 of the ACE framework).  In this case the protocol in section 4 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.
+          In the case of EDHOC being used with symmetric keys, the protocol in section 5 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.  If the key is asymmetric, the RS MUST also use an asymmetric key for authentication.  This key is known to the client through the access token response (see section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>).  In this case the protocol in section 4 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.
         </t>
 
         <t>
-          Figure 7 illustrates the message exchanges for using OSCORE+EDHOC  (step C in figure 1 of <xref target="I-D.ietf-ace-oauth-authz"/>).
+          Figure 7 illustrates the message exchanges for using OSCORE+EDHOC (step C in figure 1 of <xref target="I-D.ietf-ace-oauth-authz"/>).
         </t>
 
 <figure><artwork><![CDATA[
