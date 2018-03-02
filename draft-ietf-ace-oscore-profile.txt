@@ -5,10 +5,10 @@
 ACE Working Group                                               L. Seitz
 Internet-Draft                                              RISE SICS AB
 Intended status: Standards Track                            F. Palombini
-Expires: September 2, 2018                                   Ericsson AB
+Expires: September 3, 2018                                   Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                           March 1, 2018
+                                                           March 2, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 2, 2018.
+   This Internet-Draft will expire on September 3, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 1]
+Seitz, et al.           Expires September 3, 2018               [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 2]
+Seitz, et al.           Expires September 3, 2018               [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -148,24 +148,24 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    uses and their purpose for securing the communication between a
    client and a resource server, and the parameters needed to negotiate
    the use of this profile with the token resource at the authorization
-   server as specified in section 5.5 of the ACE framework
+   server as specified in section 5.6 of the ACE framework
    [I-D.ietf-ace-oauth-authz].
 
 2.1.  Signaling the use of OSCORE
 
    A client requests a token at an AS via the /token resource.  This
-   follows the message formats specified in section 5.5.1 of the ACE
+   follows the message formats specified in section 5.6.1 of the ACE
    framework [I-D.ietf-ace-oauth-authz].
 
    The AS responding to a successful access token request as defined in
-   section 5.5.2 of the ACE framework can signal that the use of OSCORE
+   section 5.6.2 of the ACE framework can signal that the use of OSCORE
    is REQUIRED for a specific access token by including the "profile"
    parameter with the value "coap_oscore" in the access token response.
    This means that the client MUST use OSCORE towards all resource
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 3]
+Seitz, et al.           Expires September 3, 2018               [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -173,7 +173,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    servers for which this access token is valid, and follow Section 2.2
    to derive the security context to run OSCORE.
 
-   The error response procedures defined in section 5.5.3 of the ACE
+   The error response procedures defined in section 5.6.3 of the ACE
    framework are unchanged by this profile.
 
    Note the the client and the authorization server MAY OPTIONALLY use
@@ -212,7 +212,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    o  a replay window type and size
 
    The master secret MUST be communicated as COSE_Key in the 'cnf'
-   parameter of the access token response as defined in section 5.5.4.5
+   parameter of the access token response as defined in section 5.6.4.5
    of [I-D.ietf-ace-oauth-authz].  The AEAD algorithm MAY be included as
    the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be
    included as the 'kdf' parameter of the COSE_Key and the salt MAY be
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 4]
+Seitz, et al.           Expires September 3, 2018               [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 5]
+Seitz, et al.           Expires September 3, 2018               [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -285,22 +285,22 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    +----------+-------+--------------+------------+-------------------+
    | name     | label | CBOR type    | registry   | description       |
    +----------+-------+--------------+------------+-------------------+
-   | clientId | 10    | bstr         |            | Identifies the    |
+   | clientId |  6    | bstr         |            | Identifies the    |
    |          |       |              |            | client in an      |
    |          |       |              |            | OSCORE context    |
    |          |       |              |            | using this key    |
    |          |       |              |            |                   |
-   | serverId | 11    | bstr         |            | Identifies the    |
+   | serverId |  7    | bstr         |            | Identifies the    |
    |          |       |              |            | server in an      |
    |          |       |              |            | OSCORE context    |
    |          |       |              |            | using this key    |
    |          |       |              |            |                   |
-   | kdf      | 12    | bstr         |            | Identifies the    |
+   | kdf      |  8    | bstr         |            | Identifies the    |
    |          |       |              |            | KDF algorithm in  |
    |          |       |              |            | an OSCORE context |
    |          |       |              |            | using this key    |
    |          |       |              |            |                   |
-   | slt      | 13    | bstr         |            | Identifies the    |
+   | slt      |  9    | bstr         |            | Identifies the    |
    |          |       |              |            | master salt in    |
    |          |       |              |            | an OSCORE context |
    |          |       |              |            | using this key    |
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 6]
+Seitz, et al.           Expires September 3, 2018               [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -389,14 +389,14 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 7]
+Seitz, et al.           Expires September 3, 2018               [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 3.  Client to Authorization Server
 
-   As specified in the ACE framework section 5.5
+   As specified in the ACE framework section 5.6
    [I-D.ietf-ace-oauth-authz], the Client and AS can also use CoAP
    instead of HTTP to communicate via the token resource.  This section
    specifies how to use OSCORE between Client and AS together with CoAP.
@@ -407,12 +407,12 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    contexts in place.  How these security contexts are established is
    out of scope for this profile.  Furthermore the client and the AS
    communicate using OSCORE ([I-D.ietf-core-object-security]) through
-   the introspection resource as specified in section 5.6 of
+   the introspection resource as specified in section 5.7 of
    [I-D.ietf-ace-oauth-authz].
 
 4.  Resource Server to Authorization Server
 
-   As specified in the ACE framework section 5.6
+   As specified in the ACE framework section 5.7
    [I-D.ietf-ace-oauth-authz], the RS and AS can also use CoAP instead
    of HTTP to communicate via the introspection resource.  This section
    specifies how to use OSCORE between RS and AS.  The use of OSCORE for
@@ -423,7 +423,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    contexts in place.  How these security contexts are established is
    out of scope for this profile.  Furthermore the RS and the AS
    communicate using OSCORE ([I-D.ietf-core-object-security]) through
-   the introspection resource as specified in section 5.6 of
+   the introspection resource as specified in section 5.7 of
    [I-D.ietf-ace-oauth-authz].
 
 5.  Security Considerations
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 8]
+Seitz, et al.           Expires September 3, 2018               [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -475,47 +475,45 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    o  Change Controller: IESG
    o  Specification Document(s): [[this specification]]
 
-   The following registrations are done for the COSE Header Parameter
-   Registry specified in section 16.2 of [RFC8152]:
+   The following registrations are done for the COSE Key Common
+   Parameter Registry specified in section 16.5 of [RFC8152]:
 
    o  Name: clientId
-   o  Label: 10
-   o  Value Type: bstr
+   o  Label: 6
+   o  CBOR Type: bstr
    o  Value Registry: N/A
-   o  Description: Identifies the client of an OSCORE context in the
-      header of a COSE_Key used as master secret
+   o  Description: Identifies the client in an OSCORE context
    o  Reference: [[this specification]]
 
    o  Name: serverId
-   o  Label: 11
+   o  Label: 7
    o  Value Type: bstr
    o  Value Registry: N/A
-   o  Description: Identifies the server of an OSCORE context in the
-      header of a COSE_Key used as master secret
+   o  Description: Identifies the server in an OSCORE context
    o  Reference: [[this specification]]
 
    o  Name: kdf
-   o  Label: 12
+   o  Label: 8
    o  Value Type: bstr
    o  Value Registry: COSE Algorithms registry
+   o  Description: Identifies the KDF algorithm to be used in an OSCORE
+      context
 
 
 
-Seitz, et al.           Expires September 2, 2018               [Page 9]
+Seitz, et al.           Expires September 3, 2018               [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
-   o  Description: Identifies the KDF algorithm of an OSCORE context in
-      the header of a COSE_Key used as master secret
    o  Reference: [[this specification]]
 
    o  Name: slt
-   o  Label: 13
+   o  Label: 9
    o  Value Type: bstr
    o  Value Registry: N/A
-   o  Description: Identifies the master salt of an OSCORE context in
-      the header of a COSE_Key used as master secret.
+   o  Description: Identifies the master salt of to be used in an OSCORE
+      context
    o  Reference: [[this specification]]
 
 8.  References
@@ -557,7 +555,9 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 10]
+
+
+Seitz, et al.           Expires September 3, 2018              [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -613,7 +613,7 @@ Appendix A.  Profile Requirements
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 11]
+Seitz, et al.           Expires September 3, 2018              [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -669,7 +669,7 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 12]
+Seitz, et al.           Expires September 3, 2018              [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -678,9 +678,9 @@ B.1.  Using Asymmetric Keys
 
    In case of an asymmetric key, C MUST communicate its own asymmetric
    key to the AS in the 'cnf' parameter of the access token request, as
-   specified in section 5.5.1 of [I-D.ietf-ace-oauth-authz]; the AS MUST
+   specified in section 5.6.1 of [I-D.ietf-ace-oauth-authz]; the AS MUST
    communicate the RS's public key to C in the response, in the 'rs_cnf'
-   parameter, as specified in section 5.5.1 of
+   parameter, as specified in section 5.6.1 of
    [I-D.ietf-ace-oauth-authz].  Note that the RS's public key MUST
    include a 'kid' parameter, and that the value of the 'kid' MUST be
    included in the access token, to let the RS know which of its public
@@ -725,7 +725,7 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 13]
+Seitz, et al.           Expires September 3, 2018              [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -755,7 +755,7 @@ B.2.  Using Symmetric Keys
 
    In the case of a symmetric key, the AS MUST communicate the key to
    the client in the 'cnf' parameter of the access token response, as
-   specified in section 5.5.2. of [I-D.ietf-ace-oauth-authz].  AS MUST
+   specified in section 5.6.2. of [I-D.ietf-ace-oauth-authz].  AS MUST
    also select a key identifier, that MUST be included as the 'kid'
    parameter either directly in the 'cnf' structure, as in figure 4 of
    [I-D.ietf-ace-oauth-authz], or as the 'kid' parameter of the
@@ -781,7 +781,7 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 14]
+Seitz, et al.           Expires September 3, 2018              [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 15]
+Seitz, et al.           Expires September 3, 2018              [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -853,7 +853,7 @@ B.3.  Processing
    modifications.
 
    The first EDHOC message is sent after the access token is posted to
-   the /authz-info resource of the RS as specified in section 5.7.1 of
+   the /authz-info resource of the RS as specified in section 5.8.1 of
    [I-D.ietf-ace-oauth-authz].  Then the EDHOC message_1 is sent and the
    EDHOC protocol is initiated [I-D.selander-ace-cose-ecdhe]).
 
@@ -881,9 +881,9 @@ B.3.  Processing
    section 5 of [I-D.selander-ace-cose-ecdhe] MUST be used.  If the key
    is asymmetric, the RS MUST also use an asymmetric key for
    authentication.  This key is known to the client through the access
-   token response (see section 5.5.2 of the ACE framework).  In this
-   case the protocol in section 4 of [I-D.selander-ace-cose-ecdhe] MUST
-   be used.
+   token response (see section 5.6.2 of [I-D.ietf-ace-oauth-authz]).  In
+   this case the protocol in section 4 of [I-D.selander-ace-cose-ecdhe]
+   MUST be used.
 
    Figure 7 illustrates the message exchanges for using OSCORE+EDHOC
    (step C in figure 1 of [I-D.ietf-ace-oauth-authz]).
@@ -893,7 +893,7 @@ B.3.  Processing
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 16]
+Seitz, et al.           Expires September 3, 2018              [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -949,7 +949,7 @@ Acknowledgments
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 17]
+Seitz, et al.           Expires September 3, 2018              [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.           Expires September 2, 2018              [Page 18]
+Seitz, et al.           Expires September 3, 2018              [Page 18]
