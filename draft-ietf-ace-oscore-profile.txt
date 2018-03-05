@@ -5,12 +5,12 @@
 ACE Working Group                                               L. Seitz
 Internet-Draft                                              RISE SICS AB
 Intended status: Standards Track                            F. Palombini
-Expires: September 3, 2018                                   Ericsson AB
+Expires: September 6, 2018                                   Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
                                                              G. Selander
-                                                             ERICSSON AB
-                                                           March 2, 2018
+                                                             Ericsson AB
+                                                           March 5, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 3, 2018.
+   This Internet-Draft will expire on September 6, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 1]
+Seitz, et al.           Expires September 6, 2018               [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 2]
+Seitz, et al.           Expires September 6, 2018               [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 3]
+Seitz, et al.           Expires September 6, 2018               [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 4]
+Seitz, et al.           Expires September 6, 2018               [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -229,10 +229,8 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    The same parameters MUST be included as metadata of the access token;
    if the token is a CWT [I-D.ietf-ace-cbor-web-token], the same
    COSE_Key structure MUST be placed in the 'cnf' claim of this token.
-   If a CWT is used, it MUST be encrypted in order to protect the key
-   from eavesdroppers, when the token is initially transferred from the
-   client to the RS, as this communication happens over an unprotected
-   channel.
+   If a CWT is used it MUST be encrypted, since the token is transferred
+   from the client to the RS over an unprotected channel.
 
    The AS MUST also assign identifiers to both client and RS, which are
    then used as Sender ID and Recipient ID in the OSCORE context as
@@ -277,7 +275,9 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 5]
+
+
+Seitz, et al.           Expires September 6, 2018               [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 6]
+Seitz, et al.           Expires September 6, 2018               [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 7]
+Seitz, et al.           Expires September 6, 2018               [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -437,21 +437,21 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
    [I-D.ietf-core-object-security] also apply to this specific use of
    the OSCORE protocol.
 
-   Since OSCORE is designed to secure point-to-point communication,
-   providing a secure binding between the request and the response(s).
-   Thus the basic OSCORE protocol is not intended for use in point-to-
-   multipoint communication (e.g. multicast, publish-subscribe).
-   Implementers of this profile should make sure that their usecase
+   OSCORE is designed to secure point-to-point communication, providing
+   a secure binding between the request and the response(s).  Thus the
+   basic OSCORE protocol is not intended for use in point-to-multipoint
+   communication (e.g. multicast, publish-subscribe).  Implementers of
+   this profile should make sure that their usecase corresponds to the
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 8]
+Seitz, et al.           Expires September 6, 2018               [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
-   corresponds to the expected use of OSCORE, to prevent weakening the
-   security assurances provided by OSCORE.
+   expected use of OSCORE, to prevent weakening the security assurances
+   provided by OSCORE.
 
 6.  Privacy Considerations
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018               [Page 9]
+Seitz, et al.           Expires September 6, 2018               [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 10]
+Seitz, et al.           Expires September 6, 2018              [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -613,7 +613,7 @@ Appendix A.  Profile Requirements
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 11]
+Seitz, et al.           Expires September 6, 2018              [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -669,7 +669,7 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 12]
+Seitz, et al.           Expires September 6, 2018              [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -725,7 +725,7 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 13]
+Seitz, et al.           Expires September 6, 2018              [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -781,7 +781,7 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 14]
+Seitz, et al.           Expires September 6, 2018              [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2018
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 15]
+Seitz, et al.           Expires September 6, 2018              [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -893,7 +893,7 @@ B.3.  Processing
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 16]
+Seitz, et al.           Expires September 6, 2018              [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -949,7 +949,7 @@ Acknowledgments
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 17]
+Seitz, et al.           Expires September 6, 2018              [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE               March 2018
 
@@ -984,7 +984,7 @@ Authors' Addresses
 
 
    Goeran Selander
-   ERICSSON AB
+   Ericsson AB
    Farogatan 6
    Kista  SE-16480 Stockholm
    Sweden
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.           Expires September 3, 2018              [Page 18]
+Seitz, et al.           Expires September 6, 2018              [Page 18]
