@@ -69,7 +69,7 @@
       </address>
     </author>
   <author fullname="Göran Selander" initials="G." surname="Selander">
-      <organization>ERICSSON AB</organization>
+      <organization>Ericsson AB</organization>
       <address>
         <postal>
           <street>Farogatan 6</street>
@@ -213,12 +213,13 @@
 	  COSE_Key as defined in table 1.
 	</t>
 	<t>
-	  The same parameters MUST be included as metadata of the access token; if the token is a CWT <xref
-	  target="I-D.ietf-ace-cbor-web-token"/>, the same COSE_Key structure MUST be placed in the 'cnf'
-	  claim of this token.  If a CWT is used, it MUST be encrypted in order to protect the key from
-	  eavesdroppers, when the token is initially transferred from the client to the RS, as this
-	  communication happens over an unprotected channel.</t>
-
+	  The same parameters MUST be included as metadata of the access token;
+	  if the token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>,
+	  the same COSE_Key structure MUST be placed in the 'cnf' claim of this
+	  token.  If a CWT is used it MUST be encrypted, since the token is
+	  transferred from the client to the RS over an unprotected channel.
+	</t>
+	
 	<t>
           The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and
 	  Recipient ID in the OSCORE context as described in section 3.1 of <xref
@@ -361,7 +362,7 @@
       target="I-D.ietf-core-object-security"/> also apply to this specific
       use of the OSCORE protocol.</t>
       
-      <t>Since OSCORE is designed to secure point-to-point communication,
+      <t>OSCORE is designed to secure point-to-point communication,
       providing a secure binding between the request and the response(s).
       Thus the basic OSCORE protocol is not intended for use in
       point-to-multipoint communication (e.g. multicast, publish-subscribe).
