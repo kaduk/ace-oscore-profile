@@ -5,7 +5,6 @@
 <!ENTITY I-D.ietf-core-object-security SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-object-security.xml">
 <!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
-<!ENTITY I-D.ietf-ace-cbor-web-token SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-cbor-web-token.xml">
 <!ENTITY I-D.ietf-ace-actors SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-actors.xml">
 <!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
@@ -15,6 +14,7 @@
 <!ENTITY RFC6749 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
 <!ENTITY RFC7049 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7049.xml">
 <!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY RFC8392 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8392.xml">
 ]>
 
 <?rfc toc="yes"?>
@@ -207,14 +207,14 @@
 
         <t>
           The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
-	  response as defined in section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
+	  response as defined in Section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
 	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
 	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
 	  COSE_Key as defined in table 1.
 	</t>
 	<t>
 	  The same parameters MUST be included as metadata of the access token;
-	  if the token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>,
+	  if the token is a CWT <xref target="RFC8392"/>,
 	  the same COSE_Key structure MUST be placed in the 'cnf' claim of this
 	  token.  If a CWT is used it MUST be encrypted, since the token is
 	  transferred from the client to the RS over an unprotected channel.
@@ -455,7 +455,7 @@
 
       &I-D.ietf-core-object-security;
       &I-D.ietf-ace-oauth-authz;
-      &I-D.ietf-ace-cbor-web-token;
+      &RFC8392;
       &RFC2119;
       &RFC7252;
       &RFC8152;
@@ -538,7 +538,7 @@
       <section anchor="edhoc-asym" title="Using Asymmetric Keys">
         
         <t>
-          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
+          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="RFC8392"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
         <!-- TODO: check that the rs_cnf is used correctly -->
         </t>
 
@@ -629,7 +629,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
 ]]></artwork></figure>
 
         <t>
-          In both cases, the AS MUST also include the same key identifier as 'kid' parameter in the access token metadata. If the access token is a CWT <xref target="I-D.ietf-ace-cbor-web-token"/>, the key identifier MUST be placed inside the 'cnf' claim as 'kid' parameter of the COSE_Key or directly in the 'cnf' structure (if the key is only referenced).
+          In both cases, the AS MUST also include the same key identifier as 'kid' parameter in the access token metadata. If the access token is a CWT <xref target="RFC8392"/>, the key identifier MUST be placed inside the 'cnf' claim as 'kid' parameter of the COSE_Key or directly in the 'cnf' structure (if the key is only referenced).
         </t>
         <t>
           Figure 6 shows an example CWT containing the necessary EDHOC+OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
