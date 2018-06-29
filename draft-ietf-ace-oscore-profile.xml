@@ -146,17 +146,17 @@
     <section title="Client to Resource Server"> 
     
       <t>
-        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
       <section title="Signaling the use of OSCORE"> 
         
         <t>
-          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.6.1 of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.
+          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
-          The AS responding to a successful access token request as defined in section 5.6.2 of the ACE framework can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+          The AS responding to a successful access token request as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/> can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
@@ -172,7 +172,7 @@
       <section anchor="oscore-only" title="Key establishment for OSCORE"> 
 
         <t>
-          Section 3.2 of OSCORE <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MAY, in case of pre-shared keys, be used directly as master secret in OSCORE.
+          Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MAY, in case of pre-shared keys, be used directly as master secret in OSCORE.
         </t>
 
         <t>
@@ -532,13 +532,13 @@
       </t>
 
       <t>
-        Note that in the case described in this section, the 'expires_in' parameter, defined in section 4.2.2. of <xref target="RFC6749"/> defines the lifetime in seconds of both the access token and the shared secret. After expiration, C MUST acquire a new access token from the AS, and run EDHOC again, as specified in this section
+        Note that in the case described in this section, the 'expires_in' parameter, defined in Section 4.2.2. of <xref target="RFC6749"/> defines the lifetime in seconds of both the access token and the shared secret. After expiration, C MUST acquire a new access token from the AS, and run EDHOC again, as specified in this section
       </t>
 
       <section anchor="edhoc-asym" title="Using Asymmetric Keys">
         
         <t>
-          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="RFC8392"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
+          In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in Section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in Section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="RFC8392"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
         <!-- TODO: check that the rs_cnf is used correctly -->
         </t>
 
@@ -600,7 +600,7 @@ Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
       <section anchor="edhoc-sym" title="Using Symmetric Keys">
         
         <t>
-          In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in section 5.6.2. of <xref target="I-D.ietf-ace-oauth-authz"/>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <xref target="I-D.ietf-ace-oauth-authz"/>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in Section 5.6.2. of <xref target="I-D.ietf-ace-oauth-authz"/>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <xref target="I-D.ietf-ace-oauth-authz"/>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
@@ -665,7 +665,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         </t>
         
         <t>
-          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
+          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in Section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
         </t>
         
         <t>
@@ -686,7 +686,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         </t>
 
         <t>
-          In the case of EDHOC being used with symmetric keys, the protocol in section 5 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.  If the key is asymmetric, the RS MUST also use an asymmetric key for authentication.  This key is known to the client through the access token response (see section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>).  In this case the protocol in section 4 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.
+          In the case of EDHOC being used with symmetric keys, the protocol in Section 5 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.  If the key is asymmetric, the RS MUST also use an asymmetric key for authentication.  This key is known to the client through the access token response (see Section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>).  In this case the protocol in Section 4 of <xref target="I-D.selander-ace-cose-ecdhe"/> MUST be used.
         </t>
 
         <t>
