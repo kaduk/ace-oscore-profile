@@ -241,27 +241,27 @@
 +----------+-------+--------------+------------+-------------------+
 | name     | label | CBOR type    | registry   | description       |
 +----------+-------+--------------+------------+-------------------+
-| clientId |  6    | bstr         |            | Identifies the    |
+| clientId | TBD1  | bstr         |            | Identifies the    |
 |          |       |              |            | client in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| serverId |  7    | bstr         |            | Identifies the    |
+| serverId | TBD2  | bstr         |            | Identifies the    |
 |          |       |              |            | server in an      |
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| kdf      |  8    | bstr         |            | Identifies the    |
+| kdf      | TBD3  | bstr         |            | Identifies the    |
 |          |       |              |            | KDF algorithm in  |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| slt      |  9    | bstr         |            | Identifies the    |
+| slt      | TBD4  | bstr         |            | Identifies the    |
 |          |       |              |            | master salt in    |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 +----------+-------+--------------+------------+-------------------+
-    Table 1: Additional common header parameters for COSE_Key
+    Table 1: Additional COSE_Key Common Parameters
 
 ]]></artwork></figure>
 
@@ -330,7 +330,7 @@
     <section anchor="c-as" title="Client to Authorization Server"> 
 
       <t>
-        As specified in the ACE framework section 5.6 <xref target="I-D.ietf-ace-oauth-authz"/>, the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        As specified in the ACE framework (section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>), the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
       </t>
 
       <t>
@@ -342,7 +342,7 @@
     <section title="Resource Server to Authorization Server">
 
       <t>
-        As specified in the ACE framework section 5.7 <xref target="I-D.ietf-ace-oauth-authz"/>, the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
       </t>
 
       <t>
@@ -396,7 +396,7 @@
 	between constrained nodes using the Authentication and Authorization
 	for Constrained Environments framework.</t>
 
-	<t>Profile ID: 2</t>
+	<t>Profile ID: TBD (value between 1 and 255)</t>
 	
 	<t>Change Controller: IESG</t>
 
@@ -408,7 +408,7 @@
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: clientId</t>
-	 <t>Label: 6</t>
+	 <t>Label: TBD1 (value between 1 and 255)</t>
 	 <t>CBOR Type: bstr</t>
 	 <t>Value Registry: N/A</t>
 	 <t>Description: Identifies the client in an OSCORE context</t>
@@ -417,7 +417,7 @@
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: serverId</t>
-	 <t>Label: 7</t>
+	 <t>Label: TBD2 (value between 1 and 255)</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: N/A</t>
 	 <t>Description: Identifies the server in an OSCORE context</t>
@@ -426,7 +426,7 @@
        
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: kdf</t>
-	 <t>Label: 8</t>
+	 <t>Label: TBD3 (value between 1 and 255)</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: COSE Algorithms registry</t>
 	 <t>Description: Identifies the KDF algorithm to be used in an
@@ -436,7 +436,7 @@
 
        <t><?rfc subcompact="yes"?><list style='symbols'>
          <t>Name: slt</t>
-	 <t>Label: 9</t>
+	 <t>Label: TBD4 (value between 1 and 255)</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: N/A</t>
 	 <t>Description: Identifies the master salt of to be used in an
@@ -477,7 +477,7 @@
     <section title="Profile Requirements">
 
       <t>
-        This section lists the specifications on this profile based on the requirements on the framework, as requested in Appendix C. of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        This section lists the specifications on this profile based on the requirements on the framework, as requested in Appendix C of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
       <t>
