@@ -149,6 +149,7 @@
         The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
+      <!-- Commented out since this is part of the framework
       <section title="Signaling the use of OSCORE"> 
         
         <t>
@@ -167,7 +168,8 @@
           Note the the client and the authorization server MAY OPTIONALLY use OSCORE to protect the interaction via the /token resource. See <xref target="c-as"/> for details.
         </t>
       
-      </section> <!-- ends from line 133-->
+      </section>
+      --> <!-- ends from line 133-->
 
       <section anchor="oscore-only" title="Key establishment for OSCORE"> 
 
