@@ -143,10 +143,10 @@
       </section> <!-- ends from line 91-->
     </section> <!-- ends from line 101-->
 
-    <section title="Client to Resource Server"> 
+    <section title="Profile Overview"> 
     
       <t>
-        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
       <!-- Commented out since this is part of the framework
@@ -168,10 +168,11 @@
           Note the the client and the authorization server MAY OPTIONALLY use OSCORE to protect the interaction via the /token resource. See <xref target="c-as"/> for details.
         </t>
       
+      -->
       </section>
-      --> <!-- ends from line 133-->
+    
 
-      <section anchor="oscore-only" title="Key establishment for OSCORE"> 
+      <section anchor="oscore-only" title="OSCORE Setup Between C and RS"> 
 
         <t>
           Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MAY, in case of pre-shared keys, be used directly as master secret in OSCORE.
@@ -182,7 +183,11 @@
   client is implicitly performed by generating the shared OSCORE context using
   the pop-key as master secret, both on the Client and RS side.  An attacker
   using a stolen token will not be able to generate a valid OSCORE context and
-  thus not be able to prove possession of the pop-key.</t>
+  thus not be able to prove possession of the pop-key.
+  </t>
+
+
+      <section anchor="as-c" title="AS To C And Token Formatting"> 
 
         <t>
           If OSCORE is used directly with the symmetric pop-key as master secret, then the AS MUST provision the following data, in response to the access token request:
@@ -325,6 +330,14 @@
 ]]></artwork></figure>
 
     </section> <!-- ends for line 153-->
+
+    <section anchor="c-rs" title="C - RS Set Up">
+
+      <t>
+        TODO
+      </t>
+
+    </section>
 
     </section> <!-- ends from line 127-->
 
