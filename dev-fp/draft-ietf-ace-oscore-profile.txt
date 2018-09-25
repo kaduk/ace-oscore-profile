@@ -70,16 +70,18 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Client to Resource Server . . . . . . . . . . . . . . . . . .   3
-     2.1.  Key establishment for OSCORE  . . . . . . . . . . . . . .   3
-   3.  Client to Authorization Server  . . . . . . . . . . . . . . .   7
-   4.  Resource Server to Authorization Server . . . . . . . . . . .   7
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   8
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
+   2.  Profile Overview  . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  OSCORE Setup Between C and RS . . . . . . . . . . . . . . . .   3
+     3.1.  AS To C And Token Formatting  . . . . . . . . . . . . . .   4
+     3.2.  C - RS Set Up . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  Client to Authorization Server  . . . . . . . . . . . . . . .   7
+   5.  Resource Server to Authorization Server . . . . . . . . . . .   7
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   8
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  10
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  10
    Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  11
      B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  12
@@ -103,8 +105,6 @@ Table of Contents
 
    OSCORE specifies how to use CBOR Object Signing and Encryption (COSE)
    [RFC8152] to secure CoAP messages.  In order to provide replay and
-   reordering protection OSCORE also introduces sequence numbers that
-   are used together with COSE.
 
 
 
@@ -113,6 +113,9 @@ Seitz, et al.            Expires March 29, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
+
+   reordering protection OSCORE also introduces sequence numbers that
+   are used together with COSE.
 
    Note that OSCORE can be used to secure CoAP messages, as well as HTTP
    and combinations of HTTP and CoAP; a profile of ACE similar to the
@@ -141,26 +144,23 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    document that a given resource on a specific RS is associated to a
    unique AS.
 
-2.  Client to Resource Server
+2.  Profile Overview
 
    The use of OSCORE for arbitrary CoAP messages is specified in
-   [I-D.ietf-core-object-security].  This section defines the specific
-   uses and their purpose for securing the communication between a
-   client and a resource server, and the parameters needed to negotiate
-   the use of this profile with the token resource at the authorization
-   server as specified in section 5.6 of [I-D.ietf-ace-oauth-authz].
+   [I-D.ietf-core-object-security].  This gives an overview on how to
+   use the ACE Framework [I-D.ietf-ace-oauth-authz] to secure the
+   communication between a client and a resource server, and the
+   parameters needed to negotiate the use of this profile with the token
+   resource at the authorization server as specified in section 5.6 of
+   [I-D.ietf-ace-oauth-authz].
 
-2.1.  Key establishment for OSCORE
+3.  OSCORE Setup Between C and RS
 
    Section 3.2 of [I-D.ietf-core-object-security] defines how to derive
    a security context based on a shared master secret and a set of other
    parameters, established between client and server.  The proof-of-
    possession key (pop-key) provisioned from the AS MAY, in case of pre-
    shared keys, be used directly as master secret in OSCORE.
-
-   If OSCORE is used directly with the symmetric pop-key as master
-   secret, then the AS MUST provision the following data, in response to
-   the access token request:
 
 
 
@@ -169,6 +169,19 @@ Seitz, et al.            Expires March 29, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
+
+   Note that the proof-of-possession required to bind the access token
+   to the client is implicitly performed by generating the shared OSCORE
+   context using the pop-key as master secret, both on the Client and RS
+   side.  An attacker using a stolen token will not be able to generate
+   a valid OSCORE context and thus not be able to prove possession of
+   the pop-key.
+
+3.1.  AS To C And Token Formatting
+
+   If OSCORE is used directly with the symmetric pop-key as master
+   secret, then the AS MUST provision the following data, in response to
+   the access token request:
 
    o  a master secret
 
@@ -205,6 +218,14 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    The AS MUST also assign identifiers to both client and RS, which are
    then used as Sender ID and Recipient ID in the OSCORE context as
+
+
+
+Seitz, et al.            Expires March 29, 2019                 [Page 4]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
    described in section 3.1 of [I-D.ietf-core-object-security].  These
    identifiers MUST be unique in the set of all clients and RS
    identifiers for a certain AS.  Moreover, these MUST be included in
@@ -216,15 +237,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    the case, collisions of identifiers may appear in the RS, in which
    case the RS needs to have a mechanism in place to disambiguate
    identifiers or mitigate their effect.
-
-
-
-
-
-Seitz, et al.            Expires March 29, 2019                 [Page 4]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
 
    Note that C should set the Sender ID of its security context to the
    clientId value received and the Recipient ID to the serverId value,
@@ -258,18 +270,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    Figure 1 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -324,12 +324,12 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
         Figure 2: Example CWT with OSCORE parameters.
 
-   Note that the proof-of-possession required to bind the access token
-   to the client is implicitly performed by generating the shared OSCORE
-   context using the pop-key as master secret, both on the client and RS
-   side.  An attacker using a stolen token will not be able to generate
-   a valid OSCORE context and thus not be able to prove possession of
-   the pop-key.
+3.2.  C - RS Set Up
+
+   TODO
+
+
+
 
 
 
@@ -338,7 +338,7 @@ Seitz, et al.            Expires March 29, 2019                 [Page 6]
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
-3.  Client to Authorization Server
+4.  Client to Authorization Server
 
    As specified in the ACE framework (section 5.6 of
    [I-D.ietf-ace-oauth-authz]), the Client and AS can also use CoAP
@@ -354,7 +354,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    the introspection resource as specified in section 5.7 of
    [I-D.ietf-ace-oauth-authz].
 
-4.  Resource Server to Authorization Server
+5.  Resource Server to Authorization Server
 
    As specified in the ACE framework (section 5.7 of
    [I-D.ietf-ace-oauth-authz]), the RS and AS can also use CoAP instead
@@ -370,7 +370,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    the introspection resource as specified in section 5.7 of
    [I-D.ietf-ace-oauth-authz].
 
-5.  Security Considerations
+6.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework
@@ -397,11 +397,11 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    expected use of OSCORE, to prevent weakening the security assurances
    provided by OSCORE.
 
-6.  Privacy Considerations
+7.  Privacy Considerations
 
    TBD.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    Note to RFC Editor: Please replace all occurrences of "[[this
    specification]]" with the RFC number of this specification and delete
@@ -460,9 +460,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
       context
    o  Reference: [[this specification]]
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
@@ -506,7 +506,7 @@ Seitz, et al.            Expires March 29, 2019                 [Page 9]
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
-8.2.  Informative References
+9.2.  Informative References
 
    [I-D.gerdes-ace-dcaf-authorize]
               Gerdes, S., Bergmann, O., and C. Bormann, "Delegated CoAP
