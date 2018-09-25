@@ -178,6 +178,13 @@
         </t>
 
         <t>
+  Note that the proof-of-possession required to bind the access token to the
+  client is implicitly performed by generating the shared OSCORE context using
+  the pop-key as master secret, both on the Client and RS side.  An attacker
+  using a stolen token will not be able to generate a valid OSCORE context and
+  thus not be able to prove possession of the pop-key.</t>
+
+        <t>
           If OSCORE is used directly with the symmetric pop-key as master secret, then the AS MUST provision the following data, in response to the access token request:
           <!-- 
             Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
@@ -317,14 +324,7 @@
      Figure 2: Example CWT with OSCORE parameters.
 ]]></artwork></figure>
 
-<t>
-  Note that the proof-of-possession required to bind the access token to the
-  client is implicitly performed by generating the shared OSCORE context using
-  the pop-key as master secret, both on the client and RS side.  An attacker
-  using a stolen token will not be able to generate a valid OSCORE context and
-  thus not be able to prove possession of the pop-key.</t>
-
-      </section> <!-- ends for line 153-->
+    </section> <!-- ends for line 153-->
 
     </section> <!-- ends from line 127-->
 
