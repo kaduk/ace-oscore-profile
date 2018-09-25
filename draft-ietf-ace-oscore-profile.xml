@@ -146,9 +146,55 @@
     <section title="Profile Overview"> 
     
       <t>
-        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a Client and a Resource Server using OSCORE. The parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/> are described in detail in <xref target="oscore-only"/>.  The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.
       </t>
 
+      <t>
+        This profile requires a Client to retrieve an Access Token from the AS for the resource it wants to access on a RS, using the token endpoint, as specified in <xref target="I-D.ietf-ace-oauth-authz"/>.  To determine the AS in charge of a resource hosted at the RS, the client C MAY send an initial Unauthorized Resource Request message to the RS. The RS then denies the request and sends the address of its AS back to the client C as specified in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. The Access Token request and response MUST be confidentiality-protected and ensure authenticity.  This profile RECOMMENDS the use of TLS if HTTP is used between Client and AS, and OSCORE if CoAP is used, but DTLS MAY be used instead.
+      </t>
+
+      <t>
+        Once the Client has retrieved the Access Token, it forwards it to the R using the authz-info endpoint and mechanisms specified in section 5.8.1. of <xref target="I-D.ietf-ace-oauth-authz"/>. The authz-info endpoint itself is not protected, nor are error responses from this endpoint. If the Token is valid, the RS replies to this request with a POST Token response, which contains a nonce N1.
+      </t>
+
+      <t>
+        After receiving the nonce N1, the Client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context to N1 concatenated with N2. The client can then derive the full Security Context from the ID Context plus the parameters received from the AS.
+      </t>
+
+      <t>
+        Finally, the Client sends a request protected with OSCORE to the RS.This first message will contain the kid context. When receiving this first request after the POST Token response, the server extract the kid context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets the ID Context to kid context and derives the full Security Context from it plus the parameters received in the AS.  If the request verifies then this Security Context is stored in the server, and used in the response, and in further communications with the Client. The client will not include the kid context in further requests, since the kid is enough on server side to identify the Security Context.
+      </t>
+
+      <t>
+        An overview of the profile flow for the OSCORE profile is given in <xref target="prof-overview"/>.
+      </t>
+
+
+      <figure anchor="prof-overview"><artwork><![CDATA[
+   C                            RS                   AS
+   | [-- Resource Request --->] |                     |
+   |                            |                     |
+   | [<----- AS Information --] |                     |
+   |                            |                     |
+   | --- Token Request  ----------------------------> |
+   |                            |                     |
+   | <---------------------------- Access Token ----- |
+   |                               + RS Information   |
+   | ------- Token POST ------> |                     |
+   |                            |                     |
+   | <--- 2.01 Created (N1) --- |                     |
+   |                            |                     |
+/Sec Context Derivation/        |                     |
+   |                            |                     |
+   | ---- OSCORE Request -----> |                     |
+   |   (kid context = N1||N2)   |                     |
+   |                            |                     |
+   |               /Sec Context Derivation/           |
+   |                            |                     |
+   | <--- OSCORE Response ----- |                     |
+   | ---- OSCORE Request -----> |                     |
+   |          ...               |                     |
+]]></artwork></figure>
       <!-- Commented out since this is part of the framework
       <section title="Signaling the use of OSCORE"> 
         
