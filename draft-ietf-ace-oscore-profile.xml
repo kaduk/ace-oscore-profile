@@ -310,11 +310,8 @@
 	  COSE_Key as defined in <xref target="tab1"/>.
 	</t>
 	<t>
-	  The same parameters MUST be included as metadata of the access token;
-	  if the token is a CWT <xref target="RFC8392"/>,
-	  the same COSE_Key structure MUST be placed in the 'cnf' claim of this
-	  token.  If a CWT is used it MUST be encrypted, since the token is
-	  transferred from the client to the RS over an unprotected channel.
+	  The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT,
+	  the same COSE_Key structure defined above MUST be placed in the 'cnf' claim of this token. 
 	</t>
 	
 	<t>
@@ -408,10 +405,41 @@
 
     </section> <!-- ends for line 153-->
 
-    <section anchor="c-rs" title="C-to-RS Set Up">
+    <section anchor="c-rs" title="C-to-RS: POST Token /authz-info">
 
       <t>
-        TODO
+        The Client MUST use CoAP and the Authorization Information endpoint as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
+      </t>
+
+      <t>
+        As mentioned above, the authz-info endpoint is not protected, nor are the responses from this endpoint.
+      </t>
+
+      <t>
+        If a CWT is used it MUST be encrypted, since the token is
+        transferred from the client to the RS over an unprotected channel.
+      </t>
+
+      <t>
+        <xref target="ex3"/> shows an example of the request sent from the Client to the RS.
+      </t>
+
+<figure anchor="ex3" title="Example C-to-RS POST Token request using CWT"><artwork><![CDATA[
+    Header: POST (Code=0.02)
+    Uri-Host: "rs.example.com"
+    Uri-Path: "authz-info"
+    Content-Format: "application/cwt"
+    Payload:
+     b64'SlAV32hkKG ...
+       (remainder of access token omitted for brevity)',
+]]></artwork></figure>
+
+    </section>
+
+    <section anchor="rs-c" title="RS-to-C: POST Token Response">
+
+      <t>
+        The RS MUST follow the procedures defined in sections 5.8.1 and 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
       </t>
 
     </section>
