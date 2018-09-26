@@ -289,6 +289,7 @@ ul.toc li {
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 AS-to-C: Access Token Response And Token Formatting">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 C-to-RS: POST Token /authz-info">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 RS-to-C: POST Token Response">
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 OSCORE Set Up">
 <link href="#rfc.section.4" rel="Chapter" title="4 Client to Authorization Server">
 <link href="#rfc.section.5" rel="Chapter" title="5 Resource Server to Authorization Server">
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
@@ -397,6 +398,8 @@ ul.toc li {
 <li>3.3.   <a href="#rfc.section.3.3">C-to-RS: POST Token /authz-info</a>
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">RS-to-C: POST Token Response</a>
+</li>
+<li>3.5.   <a href="#rfc.section.3.5">OSCORE Set Up</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Client to Authorization Server</a>
 </li>
@@ -632,7 +635,22 @@ ul.toc li {
 <h1 id="rfc.section.3.4">
 <a href="#rfc.section.3.4">3.4.</a> <a href="#rs-c" id="rs-c">RS-to-C: POST Token Response</a>
 </h1>
-<p id="rfc.section.3.4.p.1">The RS MUST follow the procedures defined in sections 5.8.1 and 5.8.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token to the RS.  </p>
+<p id="rfc.section.3.4.p.1">The RS MUST follow the procedures defined in sections 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. Namely, the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
+<p id="rfc.section.3.4.p.2">Additionally, the RS MUST generate a pseudo-random large nonce, and include it in the payload of the 2.01 (Created) response as a CBOR byte string.  </p>
+<p><a href="#ex4" class="xref">Figure 7</a> shows an example of the response sent from the RS to the Client.  </p>
+<div id="rfc.figure.7"></div>
+<div id="ex4"></div>
+<pre>
+    Header: Created (Code=2.01)
+    Content-Format: "application/cbor"
+    Payload:
+     h'018a278f7faab55a',
+</pre>
+<p class="figure">Figure 7: Example RS-to-C 2.01 esponse</p>
+<h1 id="rfc.section.3.5">
+<a href="#rfc.section.3.5">3.5.</a> <a href="#oscore-setup" id="oscore-setup">OSCORE Set Up</a>
+</h1>
+<p id="rfc.section.3.5.p.1">Once receiving the 2.01 (Created) response from the RS, following the POST Token request, </p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#c-as-prot" id="c-as-prot">Client to Authorization Server</a>
 </h1>
