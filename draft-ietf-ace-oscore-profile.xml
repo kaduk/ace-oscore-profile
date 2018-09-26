@@ -290,7 +290,7 @@
         </t>
 
         <t>
-          Additionally, the AS MAY provision the following data, in the same response.  In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+          Additionally, the AS MAY provision the following data, in the same response. 
         </t>
 
         <t>
@@ -305,8 +305,8 @@
         <t>
           The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
 	  response as defined in Section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
-	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
-	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
+	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included
+	  as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
 	  COSE_Key as defined in <xref target="tab1"/>.
 	</t>
 	<t>
@@ -345,7 +345,7 @@
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| kdf      | TBD3  | bstr         |            | Identifies the    |
+| hkdf     | TBD3  | bstr         |            | Identifies the    |
 |          |       |              |            | KDF algorithm in  |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
@@ -439,11 +439,11 @@
     <section anchor="rs-c" title="RS-to-C: POST Token Response">
 
       <t>
-        The RS MUST follow the procedures defined in sections 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Namely, the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.
+        The RS MUST follow the procedures defined in sections 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Namely, the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
       </t>
 
       <t>
-        Additionally, the RS MUST generate a pseudo-random large nonce, and include it in the payload of the 2.01 (Created) response as a CBOR byte string.
+        Additionally, the RS MUST generate a pseudo-random large nonce (N1), and include it in the payload of the 2.01 (Created) response as a CBOR byte string.
       </t>
       <!-- TODO: format?-->
 
@@ -463,7 +463,11 @@
     <section anchor="oscore-setup" title="OSCORE Set Up">
 
       <t>
-        Once receiving the 2.01 (Created) response from the RS, following the POST Token request,
+        Once receiving the 2.01 (Created) response from the RS, following the POST Token request, the client MUST exctract the nonce N1 from the payload of the response. The client MUST generate itself a pseudo-random large nonce (N2). Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target=="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target=="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the Client MUST derive the full Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.
+      </t>
+
+      <t>
+        TODO: Server exctracting N2 and deriving the Sec Context
       </t>
 
     </section>
@@ -569,7 +573,7 @@
        </list></t>
        
        <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: kdf</t>
+         <t>Name: hkdf</t>
 	 <t>Label: TBD3 (value between 1 and 255)</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: COSE Algorithms registry</t>
