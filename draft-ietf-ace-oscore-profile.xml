@@ -170,7 +170,7 @@
       </t>
 
 
-      <figure anchor="prof-overview"><artwork><![CDATA[
+      <figure anchor="prof-overview" title="Profile Overview"><artwork><![CDATA[
    C                            RS                   AS
    | [-- Resource Request --->] |                     |
    |                            |                     |
