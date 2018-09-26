@@ -439,7 +439,31 @@
     <section anchor="rs-c" title="RS-to-C: POST Token Response">
 
       <t>
-        The RS MUST follow the procedures defined in sections 5.8.1 and 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
+        The RS MUST follow the procedures defined in sections 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Namely, the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.
+      </t>
+
+      <t>
+        Additionally, the RS MUST generate a pseudo-random large nonce, and include it in the payload of the 2.01 (Created) response as a CBOR byte string.
+      </t>
+      <!-- TODO: format?-->
+
+      <t>
+        <xref target="ex4"/> shows an example of the response sent from the RS to the Client.
+      </t>
+
+<figure anchor="ex4" title="Example RS-to-C 2.01 esponse"><artwork><![CDATA[
+    Header: Created (Code=2.01)
+    Content-Format: "application/cbor"
+    Payload:
+     h'018a278f7faab55a',
+]]></artwork></figure>
+
+    </section>
+
+    <section anchor="oscore-setup" title="OSCORE Set Up">
+
+      <t>
+        Once receiving the 2.01 (Created) response from the RS, following the POST Token request,
       </t>
 
     </section>
