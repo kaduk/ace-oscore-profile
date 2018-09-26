@@ -72,23 +72,24 @@ Table of Contents
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Profile Overview  . . . . . . . . . . . . . . . . . . . . . .   3
    3.  OSCORE Setup Between C and RS . . . . . . . . . . . . . . . .   5
-     3.1.  AS To C And Token Formatting  . . . . . . . . . . . . . .   5
-     3.2.  C - RS Set Up . . . . . . . . . . . . . . . . . . . . . .   8
-   4.  Client to Authorization Server  . . . . . . . . . . . . . . .   9
-   5.  Resource Server to Authorization Server . . . . . . . . . . .   9
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  10
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  12
-   Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  13
-     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  14
-     B.2.  Using Symmetric Keys  . . . . . . . . . . . . . . . . . .  15
-     B.3.  Processing  . . . . . . . . . . . . . . . . . . . . . . .  17
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+     3.1.  C-to-AS: Token Request  . . . . . . . . . . . . . . . . .   5
+     3.2.  AS-to-C: Access Token Response And Token Formatting . . .   6
+     3.3.  C-to-RS Set Up  . . . . . . . . . . . . . . . . . . . . .   9
+   4.  Client to Authorization Server  . . . . . . . . . . . . . . .  10
+   5.  Resource Server to Authorization Server . . . . . . . . . . .  10
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  11
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  13
+   Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  13
+   Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  14
+     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  15
+     B.2.  Using Symmetric Keys  . . . . . . . . . . . . . . . . . .  16
+     B.3.  Processing  . . . . . . . . . . . . . . . . . . . . . . .  18
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  19
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
 
    OSCORE specifies how to use CBOR Object Signing and Encryption (COSE)
    [RFC8152] to secure CoAP messages.  In order to provide replay and
-
 
 
 
@@ -239,7 +239,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
       |                            |                     |
       | <--- 2.01 Created (N1) --- |                     |
       |                            |                     |
-   /Sec Context Derivation/        |                     |
+    /Sec Context Derivation/       |                     |
       |                            |                     |
       | ---- OSCORE Request -----> |                     |
       |   (kid context = N1||N2)   |                     |
@@ -247,10 +247,11 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
       |               /Sec Context Derivation/           |
       |                            |                     |
       | <--- OSCORE Response ----- |                     |
+      |                            |                     |
       | ---- OSCORE Request -----> |                     |
       |          ...               |                     |
 
-                                 Figure 1
+                        Figure 1: Profile Overview
 
 3.  OSCORE Setup Between C and RS
 
@@ -267,13 +268,12 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    a valid OSCORE context and thus not be able to prove possession of
    the pop-key.
 
-3.1.  AS To C And Token Formatting
+3.1.  C-to-AS: Token Request
 
-   If OSCORE is used directly with the symmetric pop-key as master
-   secret, then the AS MUST provision the following data, in response to
-   the access token request:
+   As previously mentioned, the Client-to-AS request is specified in
+   Section 5.6.1 of [I-D.ietf-ace-oauth-authz].
 
-   o  a master secret
+
 
 
 
@@ -281,6 +281,42 @@ Seitz, et al.            Expires March 30, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
+
+   The Client MAY include in its Token request a cnf object carrying an
+   identifier for a symmetric key.  This identifier can be used by the
+   AS to determine the shared secret to construct the proof-of-
+   possession token and therefore MUST specify a symmetric key that was
+   previously generated by the AS as a shared secret for the
+   communication between the Client and the RS.
+
+   As previously mentioned, the Client MUST send this Token request over
+   a secure channel that guarantees authentication, message integrity
+   and confidentiality.
+
+   An example of such a request, in CBOR diagnostic notation without the
+   tag and value abbreviations is reported in Figure 2
+
+       Header: POST (Code=0.02)
+       Uri-Host: "as.example.com"
+       Uri-Path: "token"
+       Content-Format: "application/ace+cbor"
+       Payload:
+       {
+         "grant_type" : "client_credentials",
+         "client_id" : "myclient",
+         "aud" : "tempSensor4711"
+        }
+
+     Figure 2: Example C-to-AS request for an access token bound to a
+                              symmetric key.
+
+3.2.  AS-to-C: Access Token Response And Token Formatting
+
+   After verifying the Token request and that the client is authorized
+   to obtain an access token corresponding to its access token request,
+   the AS MUST provision the following data:
+
+   o  a master secret
 
    o  the sender identifier
 
@@ -295,6 +331,13 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    o  a KDF algorithm
 
+
+
+Seitz, et al.            Expires March 30, 2019                 [Page 6]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
    o  a salt
 
    o  a replay window type and size
@@ -304,8 +347,8 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    of [I-D.ietf-ace-oauth-authz].  The AEAD algorithm MAY be included as
    the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be
    included as the 'kdf' parameter of the COSE_Key and the salt MAY be
-   included as the 'slt' parameter of the COSE_Key as defined in table
-   1.
+   included as the 'slt' parameter of the COSE_Key as defined in
+   Figure 3.
 
    The same parameters MUST be included as metadata of the access token;
    if the token is a CWT [RFC8392], the same COSE_Key structure MUST be
@@ -318,7 +361,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    described in section 3.1 of [I-D.ietf-core-object-security].  These
    identifiers MUST be unique in the set of all clients and RS
    identifiers for a certain AS.  Moreover, these MUST be included in
-   the COSE_Key as header parameters, as defined in table 1.
+   the COSE_Key as header parameters, as defined in Figure 3.
 
    We assume in this document that a resource is associated to one
    single AS, which makes it possible to assume unique identifiers for
@@ -333,7 +376,20 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seitz, et al.            Expires March 30, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -361,10 +417,10 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    |          |       |              |            | an OSCORE context |
    |          |       |              |            | using this key    |
    +----------+-------+--------------+------------+-------------------+
-       Table 1: Additional COSE_Key Common Parameters
 
+              Figure 3: Additional COSE_Key Common Parameters
 
-   Figure 1 shows an example of such an AS response, in CBOR diagnostic
+   Figure 4 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
 
 
@@ -389,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                 [Page 7]
+Seitz, et al.            Expires March 30, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -413,9 +469,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
          }
        }
 
-       Figure 1: Example AS response with OSCORE parameters.
+           Figure 4: Example AS response with OSCORE parameters.
 
-   Figure 2 shows an example CWT, containing the necessary OSCORE
+   Figure 5 shows an example CWT, containing the necessary OSCORE
    parameters in the 'cnf' claim, in CBOR diagnostic notation without
    tag and value abbreviations.
 
@@ -434,9 +490,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
        }
      }
 
-        Figure 2: Example CWT with OSCORE parameters.
+               Figure 5: Example CWT with OSCORE parameters.
 
-3.2.  C - RS Set Up
+3.3.  C-to-RS Set Up
 
    TODO
 
@@ -445,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                 [Page 8]
+Seitz, et al.            Expires March 30, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -501,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                 [Page 9]
+Seitz, et al.            Expires March 30, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -557,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 10]
+Seitz, et al.            Expires March 30, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -613,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 11]
+Seitz, et al.            Expires March 30, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -669,7 +725,7 @@ Appendix A.  Profile Requirements
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 12]
+Seitz, et al.            Expires March 30, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -725,7 +781,7 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 13]
+Seitz, et al.            Expires March 30, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -781,7 +837,7 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 14]
+Seitz, et al.            Expires March 30, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -837,7 +893,7 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 15]
+Seitz, et al.            Expires March 30, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -893,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 16]
+Seitz, et al.            Expires March 30, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -949,7 +1005,7 @@ B.3.  Processing
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 17]
+Seitz, et al.            Expires March 30, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -1005,7 +1061,7 @@ Acknowledgments
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 18]
+Seitz, et al.            Expires March 30, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
@@ -1061,4 +1117,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.            Expires March 30, 2019                [Page 19]
+Seitz, et al.            Expires March 30, 2019                [Page 20]
