@@ -192,6 +192,7 @@
    |               /Sec Context Derivation/           |
    |                            |                     |
    | <--- OSCORE Response ----- |                     |
+   |                            |                     |
    | ---- OSCORE Request -----> |                     |
    |          ...               |                     |
 ]]></artwork></figure>
@@ -285,7 +286,7 @@
 	  Recipient ID in the OSCORE context as described in section 3.1 of <xref
 	  target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all
 	  clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as
-	  header parameters, as defined in table 1.
+	  header parameters, as defined in <xref target="tab1"/>.
         </t>
 
         <t>
@@ -297,7 +298,7 @@
           Note that C should set the Sender ID of its security context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
         </t>
 
-<figure><artwork><![CDATA[
+<figure anchor="tab1" title="Additional COSE_Key Common Parameters"><artwork><![CDATA[
 +----------+-------+--------------+------------+-------------------+
 | name     | label | CBOR type    | registry   | description       |
 +----------+-------+--------------+------------+-------------------+
@@ -321,15 +322,13 @@
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 +----------+-------+--------------+------------+-------------------+
-    Table 1: Additional COSE_Key Common Parameters
-
 ]]></artwork></figure>
 
         <t>
-          Figure 1 shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex1"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
-<figure><artwork><![CDATA[
+<figure anchor="ex1" title="Example AS response with OSCORE parameters."><artwork><![CDATA[
     Header: Created (Code=2.01)
     Content-Type: "application/cose+cbor"
     Payload:
@@ -348,15 +347,13 @@
         }
       }
     }
-
-    Figure 1: Example AS response with OSCORE parameters.
 ]]></artwork></figure>
 
         <t>
-          Figure 2 shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
+          <xref target="ex2"/> shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
         </t>
 
-<figure><artwork><![CDATA[
+<figure anchor="ex2" title="Example CWT with OSCORE parameters."><artwork><![CDATA[
   {
     "aud" : "tempSensorInLivingRoom",
     "iat" : "1360189224",
@@ -371,8 +368,6 @@
         "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
     }
   }
-
-     Figure 2: Example CWT with OSCORE parameters.
 ]]></artwork></figure>
 
     </section> <!-- ends for line 153-->
