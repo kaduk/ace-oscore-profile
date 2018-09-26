@@ -309,7 +309,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Seitz, L., Palombini, F., Gunnarsson, M., and G. Selander" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-oscore-profile-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-26" />
   <meta name="dct.abstract" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
   <meta name="description" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
 
@@ -333,7 +333,7 @@ ul.toc li {
 <td class="right">F. Palombini</td>
 </tr>
 <tr>
-<td class="left">Expires: March 29, 2019</td>
+<td class="left">Expires: March 30, 2019</td>
 <td class="right">Ericsson AB</td>
 </tr>
 <tr>
@@ -354,7 +354,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">September 25, 2018</td>
+<td class="right">September 26, 2018</td>
 </tr>
 
     	
@@ -370,7 +370,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 29, 2019.</p>
+<p>This Internet-Draft will expire on March 30, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -441,7 +441,40 @@ ul.toc li {
 <p id="rfc.section.1.1.p.4">Terminology for entities in the architecture is defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> and <a href="#I-D.ietf-ace-actors" class="xref">[I-D.ietf-ace-actors]</a>, such as client (C), resource server (RS), and authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated to a unique AS.  </p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> Profile Overview</h1>
-<p id="rfc.section.2.p.1">The use of OSCORE for arbitrary CoAP messages is specified in <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  This gives an overview on how to use the ACE Framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to secure the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.2.p.1">This section gives an overview on how to use the ACE Framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to secure the communication between a Client and a Resource Server using OSCORE. The parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> are described in detail in <a href="#oscore-only" class="xref">Section 3</a>.  The use of OSCORE for arbitrary CoAP messages is specified in <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </p>
+<p id="rfc.section.2.p.2">This profile requires a Client to retrieve an Access Token from the AS for the resource it wants to access on a RS, using the token endpoint, as specified in section 5.6.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  To determine the AS in charge of a resource hosted at the RS, the client C MAY send an initial Unauthorized Resource Request message to the RS. The RS then denies the request and sends the address of its AS back to the client C as specified in section 5.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The Access Token request and response MUST be confidentiality-protected and ensure authenticity.  This profile RECOMMENDS the use of TLS if HTTP is used between Client and AS, and OSCORE if CoAP is used, but DTLS MAY be used instead.  </p>
+<p id="rfc.section.2.p.3">Once the Client has retrieved the Access Token, it forwards it to the RS using the authz-info endpoint and mechanisms specified in section 5.8.1. of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The authz-info endpoint itself is not protected, nor are error responses from this endpoint. If the Token is valid, the RS replies to this request with a POST Token response, which contains a nonce N1.  </p>
+<p id="rfc.section.2.p.4">After receiving the nonce N1, the Client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context to N1 concatenated with N2. The Client can then derive the full Security Context from the ID Context plus the parameters received from the AS.  </p>
+<p id="rfc.section.2.p.5">Finally, the Client sends a request protected with OSCORE to the RS.This first message will contain the kid context. When receiving this first request after the POST Token response, the server extract the kid context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets the ID Context to kid context and derives the full Security Context from it plus the parameters received in the AS.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the Client, until token expiration. The client will not include the kid context in further requests, since the kid is enough on server side to identify the Security Context.  </p>
+<p id="rfc.section.2.p.6">An overview of the profile flow for the OSCORE profile is given in <a href="#prof-overview" class="xref">Figure 1</a>.  </p>
+<div id="rfc.figure.1"></div>
+<div id="prof-overview"></div>
+<pre>
+   C                            RS                   AS
+   | [-- Resource Request ---&gt;] |                     |
+   |                            |                     |
+   | [&lt;----- AS Information --] |                     |
+   |                            |                     |
+   | --- Token Request  ----------------------------&gt; |
+   |                            |                     |
+   | &lt;---------------------------- Access Token ----- |
+   |                               + RS Information   |
+   | ------- Token POST ------&gt; |                     |
+   |                            |                     |
+   | &lt;--- 2.01 Created (N1) --- |                     |
+   |                            |                     |
+/Sec Context Derivation/        |                     |
+   |                            |                     |
+   | ---- OSCORE Request -----&gt; |                     |
+   |   (kid context = N1||N2)   |                     |
+   |                            |                     |
+   |               /Sec Context Derivation/           |
+   |                            |                     |
+   | &lt;--- OSCORE Response ----- |                     |
+   | ---- OSCORE Request -----&gt; |                     |
+   |          ...               |                     |
+</pre>
+<p class="figure">Figure 1</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#oscore-only" id="oscore-only">OSCORE Setup Between C and RS</a>
 </h1>
