@@ -419,7 +419,7 @@
     </section> <!-- ends from line 127-->
 
 
-    <section anchor="c-as" title="Client to Authorization Server"> 
+    <section anchor="c-as-prot" title="Client to Authorization Server"> 
 
       <t>
         As specified in the ACE framework (section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>), the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
