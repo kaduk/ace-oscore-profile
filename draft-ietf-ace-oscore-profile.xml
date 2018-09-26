@@ -234,10 +234,31 @@
   </t>
 
 
-      <section anchor="as-c" title="AS To C And Token Formatting"> 
+      <section anchor="c-as" title="C-to-AS: Token Request"> 
 
         <t>
-          If OSCORE is used directly with the symmetric pop-key as master secret, then the AS MUST provision the following data, in response to the access token request:
+          As previously mentioned, the Client-to-AS request is specified in Section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex0"/>
+        </t>
+
+<figure anchor="ex0" title="Example C-to-AS request for an access token bound to a symmetric key."><artwork><![CDATA[
+    Header: POST (Code=0.02)
+    Uri-Host: "as.example.com"
+    Uri-Path: "token"
+    Content-Format: "application/ace+cbor"
+    Payload:
+    {
+      "grant_type" : "client_credentials",
+      "client_id" : "myclient",
+      "aud" : "tempSensor4711"
+     }
+]]></artwork></figure>
+      
+      </section>
+
+      <section anchor="as-c" title="AS-to-C: Access Token Response And Token Formatting"> 
+
+        <t>
+          Since OSCORE is used directly with the symmetric pop-key as master secret, the AS MUST provision the following data, in response to the access token request:
           <!-- 
             Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
           
@@ -372,7 +393,7 @@
 
     </section> <!-- ends for line 153-->
 
-    <section anchor="c-rs" title="C - RS Set Up">
+    <section anchor="c-rs" title="C-to-RS Set Up">
 
       <t>
         TODO
