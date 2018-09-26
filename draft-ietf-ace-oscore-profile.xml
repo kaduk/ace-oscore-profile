@@ -184,7 +184,7 @@
    |                            |                     |
    | <--- 2.01 Created (N1) --- |                     |
    |                            |                     |
-/Sec Context Derivation/        |                     |
+ /Sec Context Derivation/       |                     |
    |                            |                     |
    | ---- OSCORE Request -----> |                     |
    |   (kid context = N1||N2)   |                     |
