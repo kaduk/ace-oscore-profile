@@ -139,7 +139,7 @@
       </section> <!-- ends from line 117-->
     </section> <!-- ends from line 106-->
 
-    <section title="Profile Overview"> 
+    <section title="Protocol Overview"> 
     
       <t>
         This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a Client and a Resource Server using OSCORE <xref target="I-D.ietf-core-object-security"/>. The parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/> are described in detail in the following sections.
@@ -173,11 +173,11 @@
    |                            |                     |
    | [<----- AS Information --] |                     |
    |                            |                     |
-   | --- Token Request  ----------------------------> |
+   | ----- POST /token  ----------------------------> |
    |                            |                     |
    | <---------------------------- Access Token ----- |
    |                               + RS Information   |
-   | ------- Token POST ------> |                     |
+   | ---- POST /authz-info ---> |                     |
    |                            |                     |
    | <--- 2.01 Created (N1) --- |                     |
    |                            |                     |
@@ -214,7 +214,7 @@
         The following subsections describe the details of the Access Token request and response between Client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used directly as master secret in OSCORE.
       </t>
 
-      <section anchor="c-as" title="C-to-AS: Token Request"> 
+      <section anchor="c-as" title="C-to-AS: POST /token"> 
 
         <t>
           As previously mentioned, the Client-to-AS request is specified in Section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.
@@ -253,10 +253,10 @@
       
       </section> <!-- closes from line 227 -->
 
-      <section anchor="as-c" title="AS-to-C: Access Token Response And Token Formatting"> 
+      <section anchor="as-c" title="AS-to-C: Access Token"> 
 
         <t>
-          After verifying the Token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+          After verifying the Token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
@@ -406,14 +406,6 @@
     <section anchor="c-rs1" title="C-to-RS">
 
       <t>
-        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the RS and AS can use CoAP instead of HTTP to communicate via the introspection resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.
-      </t>
-
-      <t>
-        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
-      </t>
-
-      <t>
         Note that the proof-of-possession required to bind the access token to the
         client is implicitly performed by generating the shared OSCORE context using
         the pop-key as master secret, both on the Client and RS side.  An attacker
@@ -421,7 +413,7 @@
         thus not be able to prove possession of the pop-key.
       </t>
 
-      <section anchor="c-rs" title="C-to-RS: POST Token /authz-info">
+      <section anchor="c-rs" title="C-to-RS: POST /authz-info">
 
         <t>
           The Client MUST use CoAP and the Authorization Information endpoint as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
@@ -455,7 +447,7 @@
 
       </section> <!-- ends for line 418 -->
 
-      <section anchor="rs-c" title="RS-to-C: POST Token Response">
+      <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
           The RS MUST follow the procedures defined in sections 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
@@ -483,6 +475,18 @@
       </section> <!-- ends for line 452-->
 
     </section> <!-- ends for line 408-->
+
+    <section anchor="rs-as" title="RS-to-AS">
+
+      <t>
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the RS and AS can use CoAP instead of HTTP to communicate via the introspection resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.
+      </t>
+
+      <t>
+        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+      </t>
+
+    </section>
 
     <section anchor="oscore-setup" title="OSCORE Set Up">
 
