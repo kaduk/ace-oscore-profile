@@ -290,7 +290,7 @@ ul.toc li {
 <link href="#rfc.section.4" rel="Chapter" title="4 C-to-RS">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 C-to-RS: POST /authz-info">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 RS-to-C: 2.01 (Created)">
-<link href="#rfc.section.5" rel="Chapter" title="5 RS-to-AS">
+<link href="#rfc.section.5" rel="Chapter" title="5 Protocols for Introspection">
 <link href="#rfc.section.6" rel="Chapter" title="6 OSCORE Set Up">
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.8" rel="Chapter" title="8 Privacy Considerations">
@@ -401,7 +401,7 @@ ul.toc li {
 </li>
 <li>4.2.   <a href="#rfc.section.4.2">RS-to-C: 2.01 (Created)</a>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">RS-to-AS</a>
+</ul><li>5.   <a href="#rfc.section.5">Protocols for Introspection</a>
 </li>
 <li>6.   <a href="#rfc.section.6">OSCORE Set Up</a>
 </li>
@@ -661,10 +661,10 @@ ul.toc li {
           </pre>
 <p class="figure">Figure 7: Example RS-to-C 2.01 esponse</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#rs-as" id="rs-as">RS-to-AS</a>
+<a href="#rfc.section.5">5.</a> <a href="#introsp" id="introsp">Protocols for Introspection</a>
 </h1>
-<p id="rfc.section.5.p.1">As specified in the ACE framework (section 5.7 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>), the RS and AS can use CoAP instead of HTTP to communicate via the introspection resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.  </p>
-<p id="rfc.section.5.p.2">The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>) through the introspection resource as specified in section 5.7 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.5.p.1">As specified in the ACE framework (section 5.7 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>), the requesting entity (RS and/or Client) and the AS can use CoAP instead of HTTP to communicate via the introspection resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.  </p>
+<p id="rfc.section.5.p.2">The requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>) through the introspection resource as specified in section 5.7 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#oscore-setup" id="oscore-setup">OSCORE Set Up</a>
 </h1>
