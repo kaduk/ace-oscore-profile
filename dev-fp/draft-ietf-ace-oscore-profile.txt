@@ -658,14 +658,14 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    Secret, Sender ID and Recipient ID from the parameters received from
    the client in the access token in Section 4.1.  The RS MUST set the
    AEAD Algorithm, Master Salt, HKDF and Replay Window from the
-   parameters received from the client in Section 4.1, if present.  In
-   case these parameters are omitted, the default values are used as
-   described in section 3.2 of [I-D.ietf-core-object-security].  After
-   that, the RS MUST derive the complete Security Context following
-   section 3.2.1 of [I-D.ietf-core-object-security].
+   parameters received from the client in the access token in
+   Section 4.1, if present.  In case these parameters are omitted, the
+   default values are used as described in section 3.2 of
+   [I-D.ietf-core-object-security].  After that, the RS MUST derive the
+   complete Security Context following section 3.2.1 of
+   [I-D.ietf-core-object-security].
 
-   The RS then uses this Security Context to verify the request and send
-   responses to RS using OSCORE.  The RS MUST store the Security Context
+
 
 
 
@@ -674,6 +674,8 @@ Seitz, et al.            Expires March 31, 2019                [Page 12]
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
+   The RS then uses this Security Context to verify the request and send
+   responses to RS using OSCORE.  The RS MUST store the Security Context
    as long as the access token is valid.  The RS MAY delete the Security
    Context from memory when the related access token expires.
 
@@ -721,8 +723,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    The following registrations are done for the COSE Key Common
    Parameter Registry specified in section 16.5 of [RFC8152]:
 
-   o  Name: clientId
-
 
 
 Seitz, et al.            Expires March 31, 2019                [Page 13]
@@ -730,6 +730,7 @@ Seitz, et al.            Expires March 31, 2019                [Page 13]
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
+   o  Name: clientId
    o  Label: TBD1 (value between 1 and 255)
    o  CBOR Type: bstr
    o  Value Registry: N/A
@@ -775,7 +776,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
               "Object Security for Constrained RESTful Environments
               (OSCORE)", draft-ietf-core-object-security-15 (work in
               progress), August 2018.
-
 
 
 
