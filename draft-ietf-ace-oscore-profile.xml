@@ -195,26 +195,7 @@
 ]]>
         </artwork>
       </figure>
-      <!-- Commented out since this is part of the framework
-      <section title="Signaling the use of OSCORE"> 
-        
-        <t>
-          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.
-        </t>
 
-        <t>
-          The AS responding to a successful access token request as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/> can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
-        </t>
-
-        <t>
-          The error response procedures defined in section 5.6.3 of the ACE framework are unchanged by this profile.
-        </t>
-
-        <t>
-          Note the the client and the authorization server MAY OPTIONALLY use OSCORE to protect the interaction via the /token resource. See <xref target="c-as"/> for details.
-        </t>
-      
-      -->
     </section> <!-- closes from line 142 -->
     
 
@@ -226,7 +207,7 @@
       </t>
 
       <t>
-        The client and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used between client and AS, they are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
       <t>
@@ -275,7 +256,15 @@
       <section anchor="as-c" title="AS-to-C: Access Token Response And Token Formatting"> 
 
         <t>
-          After verifying the Token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS MUST provision the following data:
+          After verifying the Token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+        </t>
+
+        <t>
+          The error response procedures defined in section 5.6.3 of the ACE framework are unchanged by this profile.
+        </t>
+
+        <t>
+          Moreover, the AS MUST provision the following data:
           <!-- 
             Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
           
