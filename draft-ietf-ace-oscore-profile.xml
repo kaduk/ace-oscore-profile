@@ -154,7 +154,7 @@
       </t>
 
       <t>
-        After receiving the nonce N1, the client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2.The client can then derive the complete Security Context from the ID Context plus the parameters received from the AS.
+        After receiving the nonce N1, the client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The client then derives the complete Security Context from the ID Context plus the parameters received from the AS.
       </t>
 
       <t>
@@ -202,7 +202,7 @@
     <section anchor="client-as" title="Client-AS Communication"> 
 
       <t>
-        The following subsections describe the details of the POST /token request and response between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used directly as master secret in OSCORE.
+        The following subsections describe the details of the POST /token request and response between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used directly as master secret in OSCORE.
       </t>
 
       <section anchor="c-as" title="C-to-AS: POST /token"> 
@@ -395,6 +395,10 @@
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
+        The following subsections describe the details of the POST /authz-info request and response between client and RS. The client posts the token that includes the materials provisioned by the AS to the RS, which can then use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and a set of other parameters, established between client and server.
+      </t>
+
+      <t>
         Note that the proof-of-possession required to bind the access token to the
         client is implicitly performed by generating the shared OSCORE context using
         the pop-key as master secret, both on the client and RS side.  An attacker
@@ -403,7 +407,7 @@
       </t>
 
       <t>
-        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the resource server MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session.
+        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the resource server MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
       </t>
 
       <section anchor="c-rs" title="C-to-RS: POST /authz-info">
@@ -417,7 +421,7 @@
         </t>
 
         <t>
-          If a CWT is used it MUST be encrypted, since the token is
+          The access token MUST be encrypted, since it is
           transferred from the client to the RS over an unprotected channel.
         </t>
 
