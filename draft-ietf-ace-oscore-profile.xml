@@ -447,7 +447,7 @@
         </t>
 
         <t>
-          Additionally, the RS MUST generate a pseudo-random large nonce (N1), and include it in the payload of the 2.01 (Created) response as a CBOR byte string. The RS MUST store this nonce as long as the Token related to it is still valid.
+          Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of X bytes. The RS MUST store this nonce as long as the Token related to it is still valid.
         </t>
 
         <t>
@@ -483,11 +483,19 @@
     <section anchor="oscore-setup" title="OSCORE Set Up">
 
       <t>
-        Once receiving the 2.01 (Created) response from the RS, following the POST Token request, the client MUST exctract the nonce N1 from the payload of the response. The client MUST generate itself a pseudo-random large nonce (N2). Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the Client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.
+        Once receiving the 2.01 (Created) response from the RS, following the POST Token request, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of X bytes. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the Client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.  The Client MUST store the Security Context as long as the Token is valid. The Client MAY delete the Security Context from memory when the related Access Token expires.
       </t>
 
       <t>
-        TODO: Server extracting N2 and deriving the Sec Context + sec ctx delete when expiration of token
+        The Client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the Client MUST include the kid context, with value ID Context, i.e. N1 concatenated to N2. The Client needs to make sure the RS receives this first request, possibly replaying this request unchanged, if it presumes the message might have been lost.
+      </t>
+
+      <t>
+        When the RS receives this first OSCORE-protected request, it MUST extract the kid context from the message first. Then, it needs to verify that the first part of the kid context corresponds to the nonce N1 it previously sent, and that it is followed by a non-zero-length byte string. If that is verified, the RS MUST set the ID Context to the kid context value. Then, the RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the Client in the Access Token in <xref target="c-rs"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the Client in <xref target="c-rs"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.
+      </t>
+
+      <t>
+        The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. The RS MUST store the Security Context as long as the Token is valid. The RS MAY delete the Security Context from memory when the related Access Token expires.
       </t>
 
     </section> <!-- ends from line 481-->
