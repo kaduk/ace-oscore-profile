@@ -80,16 +80,16 @@ Table of Contents
    5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  11
    6.  OSCORE Set Up . . . . . . . . . . . . . . . . . . . . . . . .  11
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  12
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  13
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  13
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  14
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  15
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  15
-   Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  15
-     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  16
+   Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  16
+     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  17
      B.2.  Using Symmetric Keys  . . . . . . . . . . . . . . . . . .  18
-     B.3.  Processing  . . . . . . . . . . . . . . . . . . . . . . .  19
+     B.3.  Processing  . . . . . . . . . . . . . . . . . . . . . . .  20
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  21
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
@@ -570,9 +570,10 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    validate the token before responding to the POST request to the
    authz-info endpoint.
 
-   Additionally, the RS MUST generate a pseudo-random large nonce (N1),
-   and include it in the payload of the 2.01 (Created) response as a
-   CBOR byte string.  The RS MUST store this nonce as long as the Token
+   Additionally, the RS MUST generate a nonce (N1) with a good amount of
+   randomness, and include it in the payload of the 2.01 (Created)
+   response as a CBOR byte string.  This profile RECOMMENDS to use a
+   nonce of X bytes.  The RS MUST store this nonce as long as the Token
    related to it is still valid.
 
    Figure 7 shows an example of the response sent from the RS to the
@@ -607,9 +608,8 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 6.  OSCORE Set Up
 
    Once receiving the 2.01 (Created) response from the RS, following the
-   POST Token request, the client MUST exctract the nonce N1 from the
-   payload of the response.  The client MUST generate itself a pseudo-
-   random large nonce (N2).  Then, the client MUST set the ID Context of
+   POST Token request, the client MUST extract the nonce N1 from the
+   CBOR byte string in the payload of the response.  The client MUST
 
 
 
@@ -618,24 +618,62 @@ Seitz, et al.            Expires March 31, 2019                [Page 11]
 Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
-   the Security Context created to communicate with the RS to the
-   concatenation of N1 and N2.  The client MUST set the Master Secret,
-   Sender ID and Recipient ID from the parameters received from the AS
-   in Section 3.2.  The client MUST set the AEAD Algorithm, Master Salt,
-   HKDF and Replay Window from the parameters received from the AS in
-   Section 3.2, if present.  In case these parameters are omitted, the
-   default values are used as described in section 3.2 of
-   [I-D.ietf-core-object-security].  After that, the Client MUST derive
-   the complete Security Context following section 3.2.1 of
-   [I-D.ietf-core-object-security].
+   generate itself a nonce (N2) with a good amount of randomness.  This
+   profile RECOMMENDS to use a nonce of X bytes.  Then, the client MUST
+   set the ID Context of the Security Context created to communicate
+   with the RS to the concatenation of N1 and N2.  The client MUST set
+   the Master Secret, Sender ID and Recipient ID from the parameters
+   received from the AS in Section 3.2.  The client MUST set the AEAD
+   Algorithm, Master Salt, HKDF and Replay Window from the parameters
+   received from the AS in Section 3.2, if present.  In case these
+   parameters are omitted, the default values are used as described in
+   section 3.2 of [I-D.ietf-core-object-security].  After that, the
+   Client MUST derive the complete Security Context following section
+   3.2.1 of [I-D.ietf-core-object-security].  The Client MUST store the
+   Security Context as long as the Token is valid.  The Client MAY
+   delete the Security Context from memory when the related Access Token
+   expires.
 
-   TODO: Server extracting N2 and deriving the Sec Context + sec ctx
-   delete when expiration of token
+   The Client then uses this Security Context to send requests to RS
+   using OSCORE.  In the first request sent to the RS, the Client MUST
+   include the kid context, with value ID Context, i.e. N1 concatenated
+   to N2.  The Client needs to make sure the RS receives this first
+   request, possibly replaying this request unchanged, if it presumes
+   the message might have been lost.
+
+   When the RS receives this first OSCORE-protected request, it MUST
+   extract the kid context from the message first.  Then, it needs to
+   verify that the first part of the kid context corresponds to the
+   nonce N1 it previously sent, and that it is followed by a non-zero-
+   length byte string.  If that is verified, the RS MUST set the ID
+   Context to the kid context value.  Then, the RS MUST set the Master
+   Secret, Sender ID and Recipient ID from the parameters received from
+   the Client in the Access Token in Section 4.1.  The RS MUST set the
+   AEAD Algorithm, Master Salt, HKDF and Replay Window from the
+   parameters received from the Client in Section 4.1, if present.  In
+   case these parameters are omitted, the default values are used as
+   described in section 3.2 of [I-D.ietf-core-object-security].  After
+   that, the RS MUST derive the complete Security Context following
+   section 3.2.1 of [I-D.ietf-core-object-security].
+
+   The RS then uses this Security Context to verify the request and send
+   responses to RS using OSCORE.  The RS MUST store the Security Context
+   as long as the Token is valid.  The RS MAY delete the Security
+   Context from memory when the related Access Token expires.
 
 7.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework
+
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 12]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
    [I-D.ietf-ace-oauth-authz].  Thus the general security considerations
    from the framework also apply to this profile.
 
@@ -666,14 +704,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    [I-D.ietf-ace-oauth-authz]:
 
    o  Profile name: coap_oscore
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 12]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    o  Profile Description: Profile for using OSCORE to secure
       communication between constrained nodes using the Authentication
       and Authorization for Constrained Environments framework.
@@ -692,6 +722,14 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    o  Reference: [[this specification]]
 
    o  Name: serverId
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 13]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
    o  Label: TBD2 (value between 1 and 255)
    o  Value Type: bstr
    o  Value Registry: N/A
@@ -718,18 +756,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 10.1.  Normative References
 
-
-
-
-
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 13]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
@@ -752,6 +778,13 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/info/rfc7252>.
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 14]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
 
    [RFC8152]  Schaad, J., "CBOR Object Signing and Encryption (COSE)",
               RFC 8152, DOI 10.17487/RFC8152, July 2017,
@@ -778,14 +811,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
               <https://www.rfc-editor.org/info/rfc4949>.
 
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 14]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
@@ -809,6 +834,14 @@ Appendix A.  Profile Requirements
       for an RS it wants to send a request to: Not specified
    o  communication protocol the client and the RS must use: CoAP
    o  security protocol the client and RS must use: OSCORE
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 15]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
    o  how the client and the RS mutually authenticate: Implicitly by
       possession of a common OSCORE security context
    o  Content-format of the protocol messages: "application/cose+cbor"
@@ -835,13 +868,6 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
    (PFS) and the initial proof-of-possession, which ties the proof-of-
    possession key to an OSCORE security context.
 
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 15]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    If EDHOC is used together with OSCORE, and the pop-key (symmetric or
    asymmetric) is used to authenticate the messages in EDHOC, then the
    AS MUST provision the following data, in response to the access token
@@ -862,6 +888,16 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    After expiration, C MUST acquire a new access token from the AS, and
    run EDHOC again, as specified in this section
 
+
+
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 16]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
 B.1.  Using Asymmetric Keys
 
    In case of an asymmetric key, C MUST communicate its own asymmetric
@@ -878,25 +914,6 @@ B.1.  Using Asymmetric Keys
 
    Figure 3 shows an example of such a request in CBOR diagnostic
    notation without tag and value abbreviations.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 16]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
 
    Header: POST (Code=0.02)
    Uri-Host: "server.example.com"
@@ -921,6 +938,22 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    Figure 4 shows an example of a corresponding response in CBOR
    diagnostic notation without tag and value abbreviations.
 
+
+
+
+
+
+
+
+
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 17]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
+
      Header: Created (Code=2.01)
      Content-Type: "application/cose+cbor"
      Payload:
@@ -942,18 +975,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
 
-
-
-
-
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 17]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
 B.2.  Using Symmetric Keys
 
    In the case of a symmetric key, the AS MUST communicate the key to
@@ -967,6 +988,27 @@ B.2.  Using Symmetric Keys
    Figure 5 shows an example of the necessary parameters in the AS
    response to the access token request when EDHOC is used.  The example
    uses CBOR diagnostic notation without tag and value abbreviations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 18]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
 
      Header: Created (Code=2.01)
      Content-Type: "application/cose+cbor"
@@ -997,19 +1039,6 @@ B.2.  Using Symmetric Keys
    parameters in the 'cnf' claim, in CBOR diagnostic notation without
    tag and value abbreviations.
 
-
-
-
-
-
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 18]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    {
      "aud" : "tempSensorInLivingRoom",
      "iat" : "1360189224",
@@ -1028,6 +1057,14 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    All other parameters defining OSCORE security context are derived
    from EDHOC message exchange, including the master secret (see
    Appendix C.2 of [I-D.selander-ace-cose-ecdhe]).
+
+
+
+
+Seitz, et al.            Expires March 31, 2019                [Page 19]
+
+Internet-Draft            OSCORE Profile of ACE           September 2018
+
 
 B.3.  Processing
 
@@ -1057,15 +1094,6 @@ B.3.  Processing
       response to the client with code 4.01 (Unauthorized).
    o  If RS has an access token for C but not for the resource that C
       has requested, RS MUST reject the request with a 4.03 (Forbidden).
-
-
-
-
-Seitz, et al.            Expires March 31, 2019                [Page 19]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    o  If RS has an access token for C but it does not cover the action C
       requested on the resource, RS MUST reject the request with a 4.05
       (Method Not Allowed).
@@ -1083,34 +1111,6 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    Figure 7 illustrates the message exchanges for using OSCORE+EDHOC
    (step C in figure 1 of [I-D.ietf-ace-oauth-authz]).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
