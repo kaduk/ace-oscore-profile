@@ -154,11 +154,11 @@
       </t>
 
       <t>
-        After receiving the nonce N1, the Client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2.The Client can then derive the complete Security Context from the ID Context plus the parameters received from the AS.
+        After receiving the nonce N1, the Client generates a nonce N2, and uses those nonces plus optionally some application data provided by the Client to construct the ID Context of the Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>). The Client can then derive the complete Security Context from the ID Context plus the parameters received from the AS.
       </t>
 
       <t>
-        Finally, the Client sends a request protected with OSCORE to the RS. This first message contains the ID Context value. When receiving this first request after the POST Token response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the Client, until token expiration. The client will not include the ID Context value in further requests.
+        Finally, the Client sends a request protected with OSCORE to the RS. This first message contains the ID Context value. When receiving this first request after the POST Token response, the server extract the ID Context from it, verifies that the N1 part is equal to the nonce it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the Client, until token expiration. The client does not include the ID Context value in further requests.
       </t>
 
       <t>
@@ -454,7 +454,7 @@
         </t>
 
         <t>
-          Additionally, the RS MUST generate a pseudo-random large nonce (N1), and include it in the payload of the 2.01 (Created) response as a CBOR byte string.
+          Additionally, the RS MUST generate a pseudo-random large nonce (N1), and include it in the payload of the 2.01 (Created) response as a CBOR byte string. The RS MUST store this nonce until the Token related to it is still valid.
         </t>
         <!-- TODO: format?-->
 
@@ -491,8 +491,19 @@
     <section anchor="oscore-setup" title="OSCORE Set Up">
 
       <t>
-        Once receiving the 2.01 (Created) response from the RS, following the POST Token request, the client MUST exctract the nonce N1 from the payload of the response. The client MUST generate itself a pseudo-random large nonce (N2). Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the Client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.
+        Once receiving the 2.01 (Created) response from the RS, following the POST Token request, the client MUST exctract the nonce N1 from the payload of the response. The client MUST generate itself a pseudo-random large nonce (N2). Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to a CBOR array containt N1, N2 and optionally any additional application data (see <xref target="cddl-idctx"/>. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the Client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>.
       </t>
+
+      <figure anchor="cddl-idctx" title="CDDL Definition for Context ID">
+        <artwork><![CDATA[
+ID Context = [N1, N2, ?app]
+
+N1 = bstr
+N2 = bstr
+app = any
+  ]]>
+        </artwork>
+      </figure>
 
       <t>
         TODO: Server exctracting N2 and deriving the Sec Context
