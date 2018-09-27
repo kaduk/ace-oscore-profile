@@ -201,15 +201,6 @@
 
     <section anchor="client-as" title="C-to-AS"> 
 
-
-      <t>
-        As specified in the ACE framework (section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>), the Client and AS can use CoAP instead of HTTP to communicate via the token resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.
-      </t>
-
-      <t>
-        If OSCORE is used between client and AS, they are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
-      </t>
-
       <t>
         The following subsections describe the details of the Access Token request and response between Client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used directly as master secret in OSCORE.
       </t>
@@ -479,11 +470,11 @@
     <section anchor="introsp" title="Protocols for Introspection">
 
       <t>
-        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or Client) and the AS can use CoAP instead of HTTP to communicate via the introspection resource. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or Client) and the AS can use CoAP instead of HTTP to communicate via the introspection or token endpoint. The use of OSCORE for this communication is RECOMMENDED in this profile, other security protocols (such as DTLS or TLS) MAY be used instead.
       </t>
 
       <t>
-        The requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section>
