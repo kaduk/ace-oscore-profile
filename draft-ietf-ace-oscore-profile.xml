@@ -536,7 +536,7 @@
         </t>
 
         <t>
-          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If verification fails, OSCORE error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
+          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
         </t>
 
       </section> <!-- ends from line 481-->
@@ -990,7 +990,7 @@ where does it say that? -->
     <section title="Acknowledgments" numbered='no'> 
 
       <t>
-        The authors wish to thank Jim Schaad, Goeran Selander and Marco Tiloca for the input on this memo.  The error responses specified in <xref target="edhoc-proc"/> were originally specified by Gerdes et al. in <xref target="I-D.gerdes-ace-dcaf-authorize"/>.
+        The authors wish to thank Jim Schaad and Marco Tiloca for the input on this memo.  The error responses specified in <xref target="edhoc-proc"/> were originally specified by Gerdes et al. in <xref target="I-D.gerdes-ace-dcaf-authorize"/>.
       </t>
 
     </section>
