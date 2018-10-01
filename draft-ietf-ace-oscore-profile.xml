@@ -278,7 +278,7 @@
         <t>
           <list style="symbols">
             <t>an AEAD algorithm</t>
-            <t>a KDF algorithm</t>
+            <t>an HKDF algorithm</t>
             <t>a salt</t>
             <t>a replay window type and size</t>
           </list>
@@ -384,6 +384,54 @@
         "clientId" : b64'Qg',
         "serverId" : b64'qA',
         "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
+    }
+  }
+]]>
+          </artwork>
+        </figure>
+
+        <t>
+          If the client has requested an update its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and recipient identifier both in the COSE_Key in the 'cnf' parameter and in the token. The sender identifier MUST be provisioned, in order for the RS to identify the previously generated Security Context specify.
+        </t>
+        
+        <t>
+          <xref target="ex5"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+        </t>
+
+        <figure anchor="ex5" title="Example AS-to-C Access Token response with OSCORE profile, for update of access rights.">
+          <artwork><![CDATA[
+    Header: Created (Code=2.01)
+    Content-Type: "application/cose+cbor"
+    Payload:
+    {
+      "access_token" : b64'SlAV32hkKG ...
+       (remainder of access token omitted for brevity)',
+      "profile" : "coap_oscore",
+      "expires_in" : "3600",
+      "cnf" : {
+        "COSE_Key" : {
+          "clientId" : b64'qA'
+        }
+      }
+    }
+]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <xref target="ex6"/> shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim for update of access rights, in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
+
+        <figure anchor="ex6" title="Example CWT with OSCORE parameters for update of access rights.">
+          <artwork><![CDATA[
+  {
+    "aud" : "tempSensorInLivingRoom",
+    "iat" : "1360189224",
+    "exp" : "1360289224",
+    "scope" :  "temperature_h",
+    "cnf" : {
+      "COSE_Key" : {
+        "clientId" : b64'Qg'
     }
   }
 ]]>
