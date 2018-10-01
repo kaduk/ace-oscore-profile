@@ -707,7 +707,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    Then, the RS MUST delete the nonce N1 from memory.
 
    The RS then uses this Security Context to verify the request and send
-   responses to RS using OSCORE.  If verification fails, OSCORE error
+   responses to RS using OSCORE.  If OSCORE verification fails, error
    responses are used, as specified in section 8 of
    [I-D.ietf-core-object-security].  Additionally, if OSCORE
    verification succeeds, the verification of access rights is performed
@@ -1276,9 +1276,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 Acknowledgments
 
-   The authors wish to thank Jim Schaad, Goeran Selander and Marco
-   Tiloca for the input on this memo.  The error responses specified in
-   Appendix B.3 were originally specified by Gerdes et al. in
+   The authors wish to thank Jim Schaad and Marco Tiloca for the input
+   on this memo.  The error responses specified in Appendix B.3 were
+   originally specified by Gerdes et al. in
    [I-D.gerdes-ace-dcaf-authorize].
 
 
