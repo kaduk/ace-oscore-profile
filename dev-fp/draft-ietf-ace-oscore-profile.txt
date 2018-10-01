@@ -77,14 +77,14 @@ Table of Contents
    4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  11
      4.1.  C-to-RS: POST /authz-info . . . . . . . . . . . . . . . .  11
      4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  11
-   5.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . . . .  12
-   6.  Secure Communication with AS  . . . . . . . . . . . . . . . .  13
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  14
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  15
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  16
+     4.3.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . .  12
+   5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  14
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  16
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  17
    Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  17
      B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  18
@@ -290,7 +290,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    The client MUST send this POST /token request over a secure channel
    that guarantees authentication, message integrity and confidentiality
-   (see Section 6).
+   (see Section 5).
 
    An example of such a request, in CBOR diagnostic notation without the
    tag and value abbreviations is reported in Figure 2
@@ -319,8 +319,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    REQUIRED for a specific access token by including the "profile"
    parameter with the value "coap_oscore" in the access token response.
    This means that the client MUST use OSCORE towards all resource
-   servers for which this access token is valid, and follow Section 5 to
-   derive the security context to run OSCORE.
+   servers for which this access token is valid, and follow Section 4.3
+   to derive the security context to run OSCORE.
 
    The error response procedures defined in section 5.6.3 of the ACE
    framework are unchanged by this profile.
@@ -650,7 +650,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    (Unauthorized) for any long running request before terminating the
    session, when the access token expires.
 
-5.  OSCORE Setup
+4.3.  OSCORE Setup
 
    Once receiving the 2.01 (Created) response from the RS, following the
    POST /authz-info request, the client MUST extract the nonce N1 from
@@ -710,7 +710,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    Context after the related token has expired, and MUST respond with a
    unprotected 4.01 (Unauthorized) error message.
 
-6.  Secure Communication with AS
+5.  Secure Communication with AS
 
    As specified in the ACE framework (section 5.7 of
    [I-D.ietf-ace-oauth-authz]), the requesting entity (RS and/or client)
@@ -736,7 +736,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    the token endpoint as specified in section 5.6 of
    [I-D.ietf-ace-oauth-authz].
 
-7.  Security Considerations
+6.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework
@@ -755,11 +755,11 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    expected use of OSCORE, to prevent weakening the security assurances
    provided by OSCORE.
 
-8.  Privacy Considerations
+7.  Privacy Considerations
 
    TBD.
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    Note to RFC Editor: Please replace all occurrences of "[[this
    specification]]" with the RFC number of this specification and delete
@@ -819,9 +819,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
       context
    o  Reference: [[this specification]]
 
-10.  References
+9.  References
 
-10.1.  Normative References
+9.1.  Normative References
 
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
@@ -866,7 +866,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
 
-10.2.  Informative References
+9.2.  Informative References
 
    [I-D.gerdes-ace-dcaf-authorize]
               Gerdes, S., Bergmann, O., and C. Bormann, "Delegated CoAP
