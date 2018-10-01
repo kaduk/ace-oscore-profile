@@ -76,7 +76,7 @@ Table of Contents
      3.2.  AS-to-C: Access Token . . . . . . . . . . . . . . . . . .   6
    4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  11
      4.1.  C-to-RS: POST /authz-info . . . . . . . . . . . . . . . .  11
-     4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  12
+     4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  11
    5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  12
    6.  OSCORE Set Up . . . . . . . . . . . . . . . . . . . . . . . .  13
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
@@ -289,8 +289,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    communication between the client and the RS.
 
    The client MUST send this POST /token request over a secure channel
-   that guarantees authentication, message integrity and
-   confidentiality.
+   that guarantees authentication, message integrity and confidentiality
+   (see Section 5).
 
    An example of such a request, in CBOR diagnostic notation without the
    tag and value abbreviations is reported in Figure 2
@@ -573,15 +573,10 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    Note that the proof-of-possession required to bind the access token
    to the client is implicitly performed by generating the shared OSCORE
-   context using the pop-key as master secret, both on the client and RS
-   side.  An attacker using a stolen token will not be able to generate
-   a valid OSCORE context and thus not be able to prove possession of
-   the pop-key.
-
-   As specified in section 5.8.3 of [I-D.ietf-ace-oauth-authz], the
-   resource server MUST notify the client with an error response with
-   code 4.01 (Unauthorized) for any long running request before
-   terminating the session, when the access token expires.
+   context using the pop-key as master secret, for both client and RS.
+   An attacker using a stolen token will not be able to generate a valid
+   OSCORE context and thus not be able to prove possession of the pop-
+   key.
 
 4.1.  C-to-RS: POST /authz-info
 
@@ -609,7 +604,12 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
        Figure 8: Example C-to-RS POST /authz-info request using CWT
 
+4.2.  RS-to-C: 2.01 (Created)
 
+   The RS MUST follow the procedures defined in section 5.8.1 of
+   [I-D.ietf-ace-oauth-authz]: the RS MUST verify the validity of the
+   token.  If the token is valid, the RS MUST respond to the POST
+   request with 2.01 (Created).  This response MAY contain an identifier
 
 
 
@@ -618,12 +618,6 @@ Seitz, et al.             Expires April 4, 2019                [Page 11]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-4.2.  RS-to-C: 2.01 (Created)
-
-   The RS MUST follow the procedures defined in sections 5.8.1 of
-   [I-D.ietf-ace-oauth-authz]: the RS MUST verify the validity of the
-   token.  If the token is valid, the RS MUST respond to the POST
-   request with 2.01 (Created).  This response MAY contain an identifier
    of the token (e.g., the cti for a CWT) as a payload, in order to
    allow the client to refer to the token.  If the token is valid but is
    associated to claims that the RS cannot process (e.g., an unknown
@@ -637,7 +631,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    Additionally, the RS MUST generate a nonce (N1) with a good amount of
    randomness, and include it in the payload of the 2.01 (Created)
    response as a CBOR byte string.  This profile RECOMMENDS to use a
-   nonce of X bytes.  The RS MUST store this nonce as long as the access
+   nonce of 64 bits.  The RS MUST store this nonce as long as the access
    token related to it is still valid.
 
    Figure 9 shows an example of the response sent from the RS to the
@@ -650,6 +644,11 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
              Figure 9: Example RS-to-C 2.01 (Created) response
+
+   As specified in section 5.8.3 of [I-D.ietf-ace-oauth-authz], the RS
+   MUST notify the client with an error response with code 4.01
+   (Unauthorized) for any long running request before terminating the
+   session, when the access token expires.
 
 5.  Secure Communication with AS
 
@@ -669,6 +668,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
+
 Seitz, et al.             Expires April 4, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
@@ -683,7 +683,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    POST /authz-info request, the client MUST extract the nonce N1 from
    the CBOR byte string in the payload of the response.  The client MUST
    generate itself a nonce (N2) with a good amount of randomness.  This
-   profile RECOMMENDS to use a nonce of X bytes.  Then, the client MUST
+   profile RECOMMENDS to use a nonce of 64 bits.  Then, the client MUST
    set the ID Context of the Security Context created to communicate
    with the RS to the concatenation of N1 and N2.  The client MUST set
    the Master Secret, Sender ID and Recipient ID from the parameters
