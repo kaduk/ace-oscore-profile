@@ -266,8 +266,8 @@
         <t>
           <list style="symbols">
             <t>a master secret</t>
-            <t>the sender identifier</t>
-            <t>the recipient identifier</t>
+            <t>a client identifier</t>
+            <t>a server identifier</t>
           </list>
         </t>
 
@@ -306,7 +306,7 @@
         </t>
 
         <t>
-          Note that C should set the Sender ID of its security context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
+          Note that C should set the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
         </t>
 
         <figure anchor="tab1" title="Additional COSE_Key Common Parameters">
@@ -391,7 +391,7 @@
         </figure>
 
         <t>
-          If the client has requested an update its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and recipient identifier both in the COSE_Key in the 'cnf' parameter and in the token. The sender identifier MUST be provisioned, in order for the RS to identify the previously generated Security Context specify.
+          If the client has requested an update to its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
         </t>
         
         <t>
