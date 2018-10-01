@@ -5,12 +5,12 @@
 ACE Working Group                                               L. Seitz
 Internet-Draft                                              RISE SICS AB
 Intended status: Standards Track                            F. Palombini
-Expires: March 31, 2019                                      Ericsson AB
+Expires: April 4, 2019                                       Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
-                                                      September 27, 2018
+                                                         October 1, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 31, 2019.
+   This Internet-Draft will expire on April 4, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 1]
+Seitz, et al.             Expires April 4, 2019                 [Page 1]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    (https://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 2]
+Seitz, et al.             Expires April 4, 2019                 [Page 2]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    secure CoAP messages, as well as HTTP and combinations of HTTP and
@@ -165,9 +165,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 3]
+Seitz, et al.             Expires April 4, 2019                 [Page 3]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    Once the client has retrieved the access token, it forwards it to the
@@ -183,17 +183,16 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
    Context from the ID Context plus the parameters received from the AS.
 
    Finally, the client sends a request protected with OSCORE to the RS.
-   This first message contains the ID Context value.  When receiving
-   this first request after the 2.01 (Created) response, the server
-   extract the ID Context from it, verifies that the first part is equal
-   to the nonce N1 it previously sent, and if so, sets its own ID
-   Context and derives the complete Security Context from it plus the
-   parameters received in the AS, following section 3.2 of
-   [I-D.ietf-core-object-security].  If the request verifies, then this
-   Security Context is stored in the server, and used in the response,
-   and in further communications with the client, until token
-   expiration.  The client will not include the ID Context value in
-   further requests.
+   This message contains the ID Context value.  When receiving this
+   request after the 2.01 (Created) response, the server extract the ID
+   Context from it, verifies that the first part is equal to the nonce
+   N1 it previously sent, and if so, sets its own ID Context and derives
+   the complete Security Context from it plus the parameters received in
+   the AS, following section 3.2 of [I-D.ietf-core-object-security].  If
+   the request verifies, then this Security Context is stored in the
+   server, and used in the response, and in further communications with
+   the client, until token expiration.  The client will not include the
+   ID Context value in further requests.
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
@@ -221,9 +220,10 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 4]
+
+Seitz, et al.             Expires April 4, 2019                 [Page 4]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
       C                            RS                   AS
@@ -242,14 +242,16 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
     /Sec Context Derivation/       |                     |
       |                            |                     |
       | ---- OSCORE Request -----> |                     |
-      |      (N1, N2, ?app)        |                     |
+      |         (N1, N2)           |                     |
       |                            |                     |
       |               /Sec Context Derivation/           |
       |                            |                     |
       | <--- OSCORE Response ----- |                     |
       |                            |                     |
       | ---- OSCORE Request -----> |                     |
-      |          ...               |                     |
+      |                            |                     |
+      | <--- OSCORE Response ----- |                     |
+      |           ...              |                     |
 
 
                         Figure 1: Protocol Overview
@@ -272,16 +274,16 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    If the client wants to update its access rights using the same OSCORE
    Security Context, it MUST include in its POST /token request a cnf
+
+
+
+Seitz, et al.             Expires April 4, 2019                 [Page 5]
+
+Internet-Draft            OSCORE Profile of ACE             October 2018
+
+
    object carrying the Sender ID in the kid field.  This identifier can
    be used by the AS to determine the shared secret to construct the
-
-
-
-Seitz, et al.            Expires March 31, 2019                 [Page 5]
-
-Internet-Draft            OSCORE Profile of ACE           September 2018
-
-
    proof-of-possession token and therefore MUST specify a symmetric key
    that was previously generated by the AS as a shared secret for the
    communication between the client and the RS.
@@ -329,14 +331,14 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
    o  the sender identifier
 
-   o  the recipient identifier
 
 
-
-Seitz, et al.            Expires March 31, 2019                 [Page 6]
+Seitz, et al.             Expires April 4, 2019                 [Page 6]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   o  the recipient identifier
 
    Additionally, the AS MAY provision the following data, in the same
    response.
@@ -387,11 +389,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-
-
-Seitz, et al.            Expires March 31, 2019                 [Page 7]
+Seitz, et al.             Expires April 4, 2019                 [Page 7]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    +----------+-------+--------------+------------+-------------------+
@@ -445,9 +445,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 8]
+Seitz, et al.             Expires April 4, 2019                 [Page 8]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
        Header: Created (Code=2.01)
@@ -501,9 +501,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                 [Page 9]
+Seitz, et al.             Expires April 4, 2019                 [Page 9]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 4.  Client-RS Communication
@@ -557,9 +557,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 10]
+Seitz, et al.             Expires April 4, 2019                [Page 10]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 4.2.  RS-to-C: 2.01 (Created)
@@ -613,9 +613,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 11]
+Seitz, et al.             Expires April 4, 2019                [Page 11]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    the token endpoint as specified in section 5.6 of
@@ -669,9 +669,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 12]
+Seitz, et al.             Expires April 4, 2019                [Page 12]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    The RS then uses this Security Context to verify the request and send
@@ -725,9 +725,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 13]
+Seitz, et al.             Expires April 4, 2019                [Page 13]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    o  Name: clientId
@@ -768,7 +768,7 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-14
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-15
               (work in progress), September 2018.
 
    [I-D.ietf-core-object-security]
@@ -781,9 +781,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 14]
+Seitz, et al.             Expires April 4, 2019                [Page 14]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -837,9 +837,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 15]
+Seitz, et al.             Expires April 4, 2019                [Page 15]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 Appendix A.  Profile Requirements
@@ -893,9 +893,9 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 16]
+Seitz, et al.             Expires April 4, 2019                [Page 16]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
    "coap_oscore_edhoc" and follow Appendix B to derive the security
@@ -949,9 +949,9 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 17]
+Seitz, et al.             Expires April 4, 2019                [Page 17]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
      Header: Created (Code=2.01)
@@ -1005,9 +1005,9 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 18]
+Seitz, et al.             Expires April 4, 2019                [Page 18]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
      Header: Created (Code=2.01)
@@ -1061,9 +1061,9 @@ Internet-Draft            OSCORE Profile of ACE           September 2018
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 19]
+Seitz, et al.             Expires April 4, 2019                [Page 19]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 B.3.  Processing
@@ -1117,9 +1117,9 @@ B.3.  Processing
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 20]
+Seitz, et al.             Expires April 4, 2019                [Page 20]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
                     Resource
@@ -1173,9 +1173,9 @@ Acknowledgments
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 21]
+Seitz, et al.             Expires April 4, 2019                [Page 21]
 
-Internet-Draft            OSCORE Profile of ACE           September 2018
+Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 Authors' Addresses
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.            Expires March 31, 2019                [Page 22]
+Seitz, et al.             Expires April 4, 2019                [Page 22]
