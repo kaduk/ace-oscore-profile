@@ -77,8 +77,8 @@ Table of Contents
    4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  11
      4.1.  C-to-RS: POST /authz-info . . . . . . . . . . . . . . . .  11
      4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  11
-   5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  12
-   6.  OSCORE Set Up . . . . . . . . . . . . . . . . . . . . . . . .  13
+   5.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . . . .  12
+   6.  Secure Communication with AS  . . . . . . . . . . . . . . . .  13
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
    8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  14
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
@@ -290,7 +290,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    The client MUST send this POST /token request over a secure channel
    that guarantees authentication, message integrity and confidentiality
-   (see Section 5).
+   (see Section 6).
 
    An example of such a request, in CBOR diagnostic notation without the
    tag and value abbreviations is reported in Figure 2
@@ -319,7 +319,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    REQUIRED for a specific access token by including the "profile"
    parameter with the value "coap_oscore" in the access token response.
    This means that the client MUST use OSCORE towards all resource
-   servers for which this access token is valid, and follow Section 6 to
+   servers for which this access token is valid, and follow Section 5 to
    derive the security context to run OSCORE.
 
    The error response procedures defined in section 5.6.3 of the ACE
@@ -650,22 +650,22 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    (Unauthorized) for any long running request before terminating the
    session, when the access token expires.
 
-5.  Secure Communication with AS
+5.  OSCORE Setup
 
-   As specified in the ACE framework (section 5.7 of
-   [I-D.ietf-ace-oauth-authz]), the requesting entity (RS and/or client)
-   and the AS communicates via the introspection or token endpoint.  The
-   use of CoAP and OSCORE for this communication is RECOMMENDED in this
-   profile, other protocols (such as HTTP and DTLS or TLS) MAY be used
-   instead.
-
-   If OSCORE is used, the requesting entity and the AS are expected to
-   have pre-established security contexts in place.  How these security
-   contexts are established is out of scope for this profile.
-   Furthermore the requesting entity and the AS communicate using OSCORE
-   ([I-D.ietf-core-object-security]) through the introspection endpoint
-   as specified in section 5.7 of [I-D.ietf-ace-oauth-authz] and through
-
+   Once receiving the 2.01 (Created) response from the RS, following the
+   POST /authz-info request, the client MUST extract the nonce N1 from
+   the CBOR byte string in the payload of the response.  The client MUST
+   generate itself a nonce (N2) with a good amount of randomness.  This
+   profile RECOMMENDS to use a nonce of 64 bits.  Then, the client MUST
+   set the ID Context of the Security Context created to communicate
+   with the RS to the concatenation of N1 and N2, in this order: ID
+   Context = N1 | N2, where | denotes byte string concatenation.  The
+   client MUST set the Master Secret, Sender ID and Recipient ID from
+   the parameters received from the AS in Section 3.2.  The client MUST
+   set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the
+   parameters received from the AS in Section 3.2, if present.  In case
+   these parameters are omitted, the default values are used as
+   described in section 3.2 of [I-D.ietf-core-object-security].  After
 
 
 
@@ -674,36 +674,17 @@ Seitz, et al.             Expires April 4, 2019                [Page 12]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   the token endpoint as specified in section 5.6 of
-   [I-D.ietf-ace-oauth-authz].
-
-6.  OSCORE Set Up
-
-   Once receiving the 2.01 (Created) response from the RS, following the
-   POST /authz-info request, the client MUST extract the nonce N1 from
-   the CBOR byte string in the payload of the response.  The client MUST
-   generate itself a nonce (N2) with a good amount of randomness.  This
-   profile RECOMMENDS to use a nonce of 64 bits.  Then, the client MUST
-   set the ID Context of the Security Context created to communicate
-   with the RS to the concatenation of N1 and N2.  The client MUST set
-   the Master Secret, Sender ID and Recipient ID from the parameters
-   received from the AS in Section 3.2.  The client MUST set the AEAD
-   Algorithm, Master Salt, HKDF and Replay Window from the parameters
-   received from the AS in Section 3.2, if present.  In case these
-   parameters are omitted, the default values are used as described in
-   section 3.2 of [I-D.ietf-core-object-security].  After that, the
-   client MUST derive the complete Security Context following section
-   3.2.1 of [I-D.ietf-core-object-security].  The client MUST store the
-   Security Context as long as the access token is valid.  The client
-   MAY delete the Security Context from memory when the related access
-   token expires.
+   that, the client MUST derive the complete Security Context following
+   section 3.2.1 of [I-D.ietf-core-object-security].  From this point
+   on, the client MUST use this Security Context to communicate with the
+   RS.
 
    The client then uses this Security Context to send requests to RS
    using OSCORE.  In the first request sent to the RS, the client MUST
    include the kid context, with value ID Context, i.e. N1 concatenated
-   to N2.  The client needs to make sure the RS receives this first
-   request, possibly replaying this request unchanged, if it presumes
-   the message might have been lost.
+   with N2.  The client needs to make sure the RS receives the kid
+   context, possibly adding it to later requests, until it receives a
+   valide OSCORE response from the RS.
 
    When the RS receives this first OSCORE-protected request, it MUST
    extract the kid context from the message first.  Then, it needs to
@@ -719,9 +700,28 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    default values are used as described in section 3.2 of
    [I-D.ietf-core-object-security].  After that, the RS MUST derive the
    complete Security Context following section 3.2.1 of
-   [I-D.ietf-core-object-security].
+   [I-D.ietf-core-object-security], and delete the nonce N1 from memory.
 
+   The RS then uses this Security Context to verify the request and send
+   responses to RS using OSCORE.  If verification fails, OSCORE error
+   responses are used, as specified in section 8 of
+   [I-D.ietf-core-object-security].  The RS MUST NOT use the Security
+   Context when the related token expires, and MUST respond with 4.01
+   Unauthorized unprotected error message.
 
+6.  Secure Communication with AS
+
+   As specified in the ACE framework (section 5.7 of
+   [I-D.ietf-ace-oauth-authz]), the requesting entity (RS and/or client)
+   and the AS communicates via the introspection or token endpoint.  The
+   use of CoAP and OSCORE for this communication is RECOMMENDED in this
+   profile, other protocols (such as HTTP and DTLS or TLS) MAY be used
+   instead.
+
+   If OSCORE is used, the requesting entity and the AS are expected to
+   have pre-established security contexts in place.  How these security
+   contexts are established is out of scope for this profile.
+   Furthermore the requesting entity and the AS communicate using OSCORE
 
 
 
@@ -730,10 +730,10 @@ Seitz, et al.             Expires April 4, 2019                [Page 13]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   The RS then uses this Security Context to verify the request and send
-   responses to RS using OSCORE.  The RS MUST store the Security Context
-   as long as the access token is valid.  The RS MAY delete the Security
-   Context from memory when the related access token expires.
+   ([I-D.ietf-core-object-security]) through the introspection endpoint
+   as specified in section 5.7 of [I-D.ietf-ace-oauth-authz] and through
+   the token endpoint as specified in section 5.6 of
+   [I-D.ietf-ace-oauth-authz].
 
 7.  Security Considerations
 
