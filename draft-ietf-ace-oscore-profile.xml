@@ -184,7 +184,7 @@
  /Sec Context Derivation/       |                     |
    |                            |                     |
    | ---- OSCORE Request -----> |                     |
-   |      (N1, N2, ?app)        |                     |
+   |         (N1, N2)           |                     |
    |                            |                     |
    |               /Sec Context Derivation/           |
    |                            |                     |
