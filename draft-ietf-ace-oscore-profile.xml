@@ -191,7 +191,9 @@
    | <--- OSCORE Response ----- |                     |
    |                            |                     |
    | ---- OSCORE Request -----> |                     |
-   |          ...               |                     |
+   |                            |                     |
+   | <--- OSCORE Response ----- |                     |
+   |           ...              |                     |
 ]]>
         </artwork>
       </figure>
