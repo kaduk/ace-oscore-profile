@@ -524,7 +524,7 @@
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST /authz-info request, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS.
+          Once receiving the 2.01 (Created) response from the RS, following the POST /authz-info request, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
@@ -532,7 +532,7 @@
         </t>
 
         <t>
-          When the RS receives this first OSCORE-protected request, it MUST extract the kid context from the message first. Then, it needs to verify that the first part of the kid context corresponds to the nonce N1 it previously sent, and that it is followed by a non-zero-length byte string. If that is verified, the RS MUST set the ID Context to the kid context value. Then, the RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the client in the access token in <xref target="c-rs"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and delete the nonce N1 from memory.
+          When the RS receives this first OSCORE-protected request, it MUST extract the kid context from the message first. Then, it needs to verify that the first part of the kid context corresponds to the nonce N1 it previously sent, and that it is followed by a non-zero-length byte string. If that is verified, the RS MUST set the ID Context to the kid context value. Then, the RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the client in the access token in <xref target="c-rs"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. Then, the RS MUST delete the nonce N1 from memory.
         </t>
 
         <t>
@@ -540,6 +540,22 @@
         </t>
 
       </section> <!-- ends from line 481-->
+
+      <section anchor="tok-ver" title="Access rights verification">
+
+        <t>
+          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives a OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
+          requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
+
+         The response code MUST be 4.01 (Unauthorized) in case the client has
+         not used the Security Context associated with the access token, or if RS has no valid access token for the client.  If RS has an access token for the client but
+         not for the resource that was requested, RS MUST reject the request
+         with a 4.03 (Forbidden).  If RS has an access token for the client
+         but it does not cover the action that was requested on the resource,
+         RS MUST reject the request with a 4.05 (Method Not Allowed).
+        </t>
+
+      </section>
 
     </section>
 
@@ -557,23 +573,45 @@
 
     <section title="Security Considerations">
 
-      <t>This document specifies a profile for the Authentication and
-      Authorization for Constrained Environments (ACE) framework
-      <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general security
-      considerations from the framework also apply to this profile.</t>
+      <t>
+        This document specifies a profile for the Authentication and
+        Authorization for Constrained Environments (ACE) framework
+        <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general security
+        considerations from the framework also apply to this profile.
+      </t>
 
-      <t>Furthermore the general security considerations of OSCORE <xref
-      target="I-D.ietf-core-object-security"/> also apply to this specific
-      use of the OSCORE protocol.</t>
+      <t>
+        Furthermore the general security considerations of OSCORE <xref
+        target="I-D.ietf-core-object-security"/> also apply to this specific
+        use of the OSCORE protocol.
+      </t>
       
-      <t>OSCORE is designed to secure point-to-point communication,
-      providing a secure binding between the request and the response(s).
-      Thus the basic OSCORE protocol is not intended for use in
-      point-to-multipoint communication (e.g. multicast, publish-subscribe).
-      Implementers of this profile should make sure that their usecase
-      corresponds to the expected use of OSCORE, to prevent weakening the
-      security assurances provided by OSCORE.</t>
+      <t>
+        OSCORE is designed to secure point-to-point communication,
+        providing a secure binding between the request and the response(s).
+        Thus the basic OSCORE protocol is not intended for use in
+        point-to-multipoint communication (e.g. multicast, publish-subscribe).
+        Implementers of this profile should make sure that their usecase
+        corresponds to the expected use of OSCORE, to prevent weakening the
+        security assurances provided by OSCORE.
+      </t>
       
+      <t>
+        TODO: explain the rationale for the nonces construction, and the security
+        implications for Man-in-the-Middle attacks.
+      </t>
+
+      <!--
+        TODO: The construction with the nonces is to avoid the case where a 
+        RS would lose its Security Context (e.g. because of reboot); the profile
+        describes that the Client will resend the token, which can lead to 
+        reuse of the IV on the RS. With the nonces as ID Context,
+        the POST /auth-info will result in a new Security Context in both Client
+        and RS. Replaying the RS nonce by the client also protects against
+        an adversary substituting the nonce and provoking the creation of a different Security
+        Context in the RS.
+      --> 
+    
     </section> <!-- ends from line 518-->
 
     <section title="Privacy Considerations">
