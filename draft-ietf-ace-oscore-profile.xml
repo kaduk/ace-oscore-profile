@@ -219,7 +219,7 @@
 
 
         <t>
-          The client MUST send this POST /token request over a secure channel that guarantees authentication, message integrity and confidentiality. 
+          The client MUST send this POST /token request over a secure channel that guarantees authentication, message integrity and confidentiality (see <xref target="introsp"/>). 
         </t>
 
         <t>
