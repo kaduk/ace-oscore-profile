@@ -451,14 +451,11 @@
       <t>
         Note that the proof-of-possession required to bind the access token to the
         client is implicitly performed by generating the shared OSCORE context using
-        the pop-key as master secret, both on the client and RS side.  An attacker
+        the pop-key as master secret, for both client and RS.  An attacker
         using a stolen token will not be able to generate a valid OSCORE context and
         thus not be able to prove possession of the pop-key.
       </t>
 
-      <t>
-        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the resource server MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
-      </t>
 
       <section anchor="c-rs" title="C-to-RS: POST /authz-info">
 
@@ -497,7 +494,7 @@
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in sections 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
         <t>
@@ -517,6 +514,10 @@
   ]]>
           </artwork>
         </figure>
+
+      <t>
+        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
+      </t>
 
       </section> <!-- ends for line 452-->
 
