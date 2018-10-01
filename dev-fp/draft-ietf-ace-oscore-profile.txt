@@ -264,8 +264,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    context based on a shared master secret and a set of other
    parameters, established between client and server, which the client
    receives from the AS in this exchange.  The proof-of-possession key
-   (pop-key) provisioned from the AS MUST be used directly as master
-   secret in OSCORE.
+   (pop-key) provisioned from the AS MUST be used as master secret in
+   OSCORE.
 
 3.1.  C-to-AS: POST /token
 
@@ -573,10 +573,10 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    Note that the proof-of-possession required to bind the access token
    to the client is implicitly performed by generating the shared OSCORE
-   context using the pop-key as master secret, for both client and RS.
-   An attacker using a stolen token will not be able to generate a valid
-   OSCORE context and thus not be able to prove possession of the pop-
-   key.
+   Security Context using the pop-key as master secret, for both client
+   and RS.  An attacker using a stolen token will not be able to
+   generate a valid OSCORE context and thus not be able to prove
+   possession of the pop-key.
 
 4.1.  C-to-RS: POST /authz-info
 
@@ -709,9 +709,11 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    The RS then uses this Security Context to verify the request and send
    responses to RS using OSCORE.  If verification fails, OSCORE error
    responses are used, as specified in section 8 of
-   [I-D.ietf-core-object-security].  The RS MUST NOT use the Security
-   Context after the related token has expired, and MUST respond with a
-   unprotected 4.01 (Unauthorized) error message.
+   [I-D.ietf-core-object-security].  Additionally, if OSCORE
+   verification succeeds, the verification of access rights is performed
+   as described in section Section 4.4.  The RS MUST NOT use the
+   Security Context after the related token has expired, and MUST
+   respond with a unprotected 4.01 (Unauthorized) error message.
 
 4.4.  Access rights verification
 
@@ -720,8 +722,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    request from a client, then it processes according to
    [I-D.ietf-core-object-security].  If OSCORE verification succeeds,
    and the target resource requires authorization, the RS retrieves the
-   authorization information from the access token associated to the
-   Security Context.  The RS then MUST verify that the authorization
 
 
 
@@ -730,12 +730,15 @@ Seitz, et al.             Expires April 4, 2019                [Page 13]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   information covers the resource and the action requested.  The
-   response code MUST be 4.01 (Unauthorized) in case the client has not
-   used the Security Context associated with the access token, or if RS
-   has no valid access token for the client.  If RS has an access token
-   for the client but not for the resource that was requested, RS MUST
-   reject the request with a 4.03 (Forbidden).  If RS has an access
+   authorization information from the access token associated to the
+   Security Context.  The RS then MUST verify that the authorization
+   information covers the resource and the action requested.
+
+   The response code MUST be 4.01 (Unauthorized) in case the client has
+   not used the Security Context associated with the access token, or if
+   RS has no valid access token for the client.  If RS has an access
+   token for the client but not for the resource that was requested, RS
+   MUST reject the request with a 4.03 (Forbidden).  If RS has an access
    token for the client but it does not cover the action that was
    requested on the resource, RS MUST reject the request with a 4.05
    (Method Not Allowed).
@@ -774,9 +777,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    basic OSCORE protocol is not intended for use in point-to-multipoint
    communication (e.g. multicast, publish-subscribe).  Implementers of
    this profile should make sure that their usecase corresponds to the
-   expected use of OSCORE, to prevent weakening the security assurances
-   provided by OSCORE.
-
 
 
 
@@ -785,6 +785,9 @@ Seitz, et al.             Expires April 4, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   expected use of OSCORE, to prevent weakening the security assurances
+   provided by OSCORE.
 
    TODO: explain the rationale for the nonces construction, and the
    security implications for Man-in-the-Middle attacks.
@@ -831,9 +834,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    o  Name: hkdf
    o  Label: TBD3 (value between 1 and 255)
    o  Value Type: bstr
-   o  Value Registry: COSE Algorithms registry
-   o  Description: Identifies the KDF algorithm to be used in an OSCORE
-      context
 
 
 
@@ -842,6 +842,9 @@ Seitz, et al.             Expires April 4, 2019                [Page 15]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   o  Value Registry: COSE Algorithms registry
+   o  Description: Identifies the KDF algorithm to be used in an OSCORE
+      context
    o  Reference: [[this specification]]
 
    o  Name: slt
@@ -886,9 +889,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
-
-
-
 
 
 
