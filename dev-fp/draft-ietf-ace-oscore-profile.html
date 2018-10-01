@@ -534,7 +534,7 @@ ul.toc li {
 
 <ul>
 <li>an AEAD algorithm</li>
-<li>a KDF algorithm</li>
+<li>an HKDF algorithm</li>
 <li>a salt</li>
 <li>a replay window type and size</li>
 </ul>
@@ -620,6 +620,45 @@ ul.toc li {
 
           </pre>
 <p class="figure">Figure 5: Example CWT with OSCORE parameters.</p>
+<p id="rfc.section.3.2.p.14">If the client has requested an update its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and recipient identifier both in the COSE_Key in the 'cnf' parameter and in the token. The sender identifier MUST be provisioned, in order for the RS to identify the previously generated Security Context specify.  </p>
+<p><a href="#ex5" class="xref">Figure 6</a> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.  </p>
+<div id="rfc.figure.6"></div>
+<div id="ex5"></div>
+<pre>
+    Header: Created (Code=2.01)
+    Content-Type: "application/cose+cbor"
+    Payload:
+    {
+      "access_token" : b64'SlAV32hkKG ...
+       (remainder of access token omitted for brevity)',
+      "profile" : "coap_oscore",
+      "expires_in" : "3600",
+      "cnf" : {
+        "COSE_Key" : {
+          "clientId" : b64'qA'
+        }
+      }
+    }
+
+          </pre>
+<p class="figure">Figure 6: Example AS-to-C Access Token response with OSCORE profile, for update of access rights.</p>
+<p><a href="#ex6" class="xref">Figure 7</a> shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim for update of access rights, in CBOR diagnostic notation without tag and value abbreviations.  </p>
+<div id="rfc.figure.7"></div>
+<div id="ex6"></div>
+<pre>
+  {
+    "aud" : "tempSensorInLivingRoom",
+    "iat" : "1360189224",
+    "exp" : "1360289224",
+    "scope" :  "temperature_h",
+    "cnf" : {
+      "COSE_Key" : {
+        "clientId" : b64'Qg'
+    }
+  }
+
+          </pre>
+<p class="figure">Figure 7: Example CWT with OSCORE parameters for update of access rights.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#c-rs1" id="c-rs1">Client-RS Communication</a>
 </h1>
@@ -632,8 +671,8 @@ ul.toc li {
 <p id="rfc.section.4.1.p.1">The client MUST use CoAP and the Authorization Information endpoint as described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token to the RS.  </p>
 <p id="rfc.section.4.1.p.2">The authz-info endpoint is not protected, nor are the responses from this endpoint.  </p>
 <p id="rfc.section.4.1.p.3">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
-<p><a href="#ex3" class="xref">Figure 6</a> shows an example of the request sent from the client to the RS.  </p>
-<div id="rfc.figure.6"></div>
+<p><a href="#ex3" class="xref">Figure 8</a> shows an example of the request sent from the client to the RS.  </p>
+<div id="rfc.figure.8"></div>
 <div id="ex3"></div>
 <pre>
       Header: POST (Code=0.02)
@@ -645,14 +684,14 @@ ul.toc li {
          (remainder of access token omitted for brevity)',
   
           </pre>
-<p class="figure">Figure 6: Example C-to-RS POST /authz-info request using CWT</p>
+<p class="figure">Figure 8: Example C-to-RS POST /authz-info request using CWT</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#rs-c" id="rs-c">RS-to-C: 2.01 (Created)</a>
 </h1>
 <p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in sections 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
 <p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of X bytes. The RS MUST store this nonce as long as the access token related to it is still valid.  </p>
-<p><a href="#ex4" class="xref">Figure 7</a> shows an example of the response sent from the RS to the client.  </p>
-<div id="rfc.figure.7"></div>
+<p><a href="#ex4" class="xref">Figure 9</a> shows an example of the response sent from the RS to the client.  </p>
+<div id="rfc.figure.9"></div>
 <div id="ex4"></div>
 <pre>
       Header: Created (Code=2.01)
@@ -661,7 +700,7 @@ ul.toc li {
        h'018a278f7faab55a',
   
           </pre>
-<p class="figure">Figure 7: Example RS-to-C 2.01 (Created) response</p>
+<p class="figure">Figure 9: Example RS-to-C 2.01 (Created) response</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#introsp" id="introsp">Secure Communication with AS</a>
 </h1>
