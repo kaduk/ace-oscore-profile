@@ -329,7 +329,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    o  a master secret
 
-   o  the sender identifier
+   o  a client identifier
 
 
 
@@ -338,7 +338,7 @@ Seitz, et al.             Expires April 4, 2019                 [Page 6]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   o  the recipient identifier
+   o  a server identifier
 
    Additionally, the AS MAY provision the following data, in the same
    response.
@@ -378,7 +378,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    case the RS needs to have a mechanism in place to disambiguate
    identifiers or mitigate their effect.
 
-   Note that C should set the Sender ID of its security context to the
+   Note that C should set the Sender ID of its Security Context to the
    clientId value received and the Recipient ID to the serverId value,
    and RS should do the opposite.
 
@@ -494,10 +494,10 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
                Figure 5: Example CWT with OSCORE parameters.
 
-   If the client has requested an update its access rights using the
+   If the client has requested an update to its access rights using the
    same OSCORE Security Context, and the token associated with it is not
-   expired, the AS MAY omit the master secret and recipient identifier
-   both in the COSE_Key in the 'cnf' parameter and in the token.  The
+   expired, the AS MAY omit the master secret and server identifier both
+   in the COSE_Key in the 'cnf' parameter and in the token.  The client
 
 
 
@@ -506,8 +506,8 @@ Seitz, et al.             Expires April 4, 2019                 [Page 9]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   sender identifier MUST be provisioned, in order for the RS to
-   identify the previously generated Security Context specify.
+   identifier needs to be provisioned, in order for the RS to identify
+   the previously generated Security Context.
 
    Figure 6 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
@@ -683,8 +683,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    using OSCORE.  In the first request sent to the RS, the client MUST
    include the kid context, with value ID Context, i.e. N1 concatenated
    with N2.  The client needs to make sure the RS receives the kid
-   context, possibly adding it to later requests, until it receives a
-   valide OSCORE response from the RS.
+   context, possibly adding the kid context to later requests, until it
+   receives a valid OSCORE response from the RS using the same Security
+   Context.
 
    When the RS receives this first OSCORE-protected request, it MUST
    extract the kid context from the message first.  Then, it needs to
@@ -706,8 +707,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    responses to RS using OSCORE.  If verification fails, OSCORE error
    responses are used, as specified in section 8 of
    [I-D.ietf-core-object-security].  The RS MUST NOT use the Security
-   Context when the related token expires, and MUST respond with 4.01
-   Unauthorized unprotected error message.
+   Context after the related token has expired, and MUST respond with a
+   unprotected 4.01 (Unauthorized) error message.
 
 6.  Secure Communication with AS
 
@@ -721,7 +722,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    If OSCORE is used, the requesting entity and the AS are expected to
    have pre-established security contexts in place.  How these security
    contexts are established is out of scope for this profile.
-   Furthermore the requesting entity and the AS communicate using OSCORE
 
 
 
@@ -730,6 +730,7 @@ Seitz, et al.             Expires April 4, 2019                [Page 13]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   Furthermore the requesting entity and the AS communicate using OSCORE
    ([I-D.ietf-core-object-security]) through the introspection endpoint
    as specified in section 5.7 of [I-D.ietf-ace-oauth-authz] and through
    the token endpoint as specified in section 5.6 of
@@ -776,8 +777,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    o  Change Controller: IESG
    o  Specification Document(s): [[this specification]]
 
-   The following registrations are done for the COSE Key Common
-   Parameter Registry specified in section 16.5 of [RFC8152]:
+
 
 
 
@@ -785,6 +785,9 @@ Seitz, et al.             Expires April 4, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   The following registrations are done for the COSE Key Common
+   Parameter Registry specified in section 16.5 of [RFC8152]:
 
    o  Name: clientId
    o  Label: TBD1 (value between 1 and 255)
@@ -827,11 +830,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-15
               (work in progress), September 2018.
 
-   [I-D.ietf-core-object-security]
-              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security for Constrained RESTful Environments
-              (OSCORE)", draft-ietf-core-object-security-15 (work in
-              progress), August 2018.
+
+
 
 
 
@@ -841,6 +841,12 @@ Seitz, et al.             Expires April 4, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   [I-D.ietf-core-object-security]
+              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security for Constrained RESTful Environments
+              (OSCORE)", draft-ietf-core-object-security-15 (work in
+              progress), August 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -885,18 +891,17 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               Representation (CBOR)", RFC 7049, DOI 10.17487/RFC7049,
               October 2013, <https://www.rfc-editor.org/info/rfc7049>.
 
-   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
-              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
-              DOI 10.17487/RFC7231, June 2014,
-              <https://www.rfc-editor.org/info/rfc7231>.
-
-
 
 
 Seitz, et al.             Expires April 4, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
+              DOI 10.17487/RFC7231, June 2014,
+              <https://www.rfc-editor.org/info/rfc7231>.
 
 Appendix A.  Profile Requirements
 
@@ -942,11 +947,6 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
    o  a symmetric or public key (associated to the RS)
    o  a key identifier;
 
-   How these parameters are communicated depends on the type of key
-   (asymmetric or symmetric).  Moreover, the AS MUST signal the use of
-   OSCORE + EDHOC with the 'profile' parameter set to
-
-
 
 
 Seitz, et al.             Expires April 4, 2019                [Page 17]
@@ -954,6 +954,9 @@ Seitz, et al.             Expires April 4, 2019                [Page 17]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   How these parameters are communicated depends on the type of key
+   (asymmetric or symmetric).  Moreover, the AS MUST signal the use of
+   OSCORE + EDHOC with the 'profile' parameter set to
    "coap_oscore_edhoc" and follow Appendix B to derive the security
    context to run OSCORE.
 
@@ -1000,15 +1003,15 @@ B.1.  Using Asymmetric Keys
 
    Figure 3: Example access token request (OSCORE+EDHOC, asymmetric).
 
-   Figure 4 shows an example of a corresponding response in CBOR
-   diagnostic notation without tag and value abbreviations.
-
 
 
 Seitz, et al.             Expires April 4, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   Figure 4 shows an example of a corresponding response in CBOR
+   diagnostic notation without tag and value abbreviations.
 
      Header: Created (Code=2.01)
      Content-Type: "application/cose+cbor"
@@ -1044,9 +1047,6 @@ B.2.  Using Symmetric Keys
    Figure 5 shows an example of the necessary parameters in the AS
    response to the access token request when EDHOC is used.  The example
    uses CBOR diagnostic notation without tag and value abbreviations.
-
-
-
 
 
 
