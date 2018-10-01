@@ -530,7 +530,7 @@
       </t>
 
       <t>
-        The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MUST include the kid context, with value ID Context, i.e. N1 concatenated with N2. The client needs to make sure the RS receives the kid context, possibly adding it to later requests, until it receives a valide OSCORE response from the RS.
+        The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MUST include the kid context, with value ID Context, i.e. N1 concatenated with N2. The client needs to make sure the RS receives the kid context, possibly adding the kid context to later requests, until it receives a valid OSCORE response from the RS using the same Security Context.
       </t>
 
       <t>
@@ -538,7 +538,7 @@
       </t>
 
       <t>
-        The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If verification fails, OSCORE error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. The RS MUST NOT use the Security Context when the related token expires, and MUST respond with 4.01 Unauthorized unprotected error message.
+        The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If verification fails, OSCORE error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
       </t>
 
     </section> <!-- ends from line 481-->
