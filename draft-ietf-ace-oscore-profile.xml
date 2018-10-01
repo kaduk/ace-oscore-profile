@@ -204,7 +204,7 @@
     <section anchor="client-as" title="Client-AS Communication"> 
 
       <t>
-        The following subsections describe the details of the POST /token request and response between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used directly as master secret in OSCORE.
+        The following subsections describe the details of the POST /token request and response between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used as master secret in OSCORE.
       </t>
 
       <section anchor="c-as" title="C-to-AS: POST /token"> 
@@ -450,7 +450,7 @@
 
       <t>
         Note that the proof-of-possession required to bind the access token to the
-        client is implicitly performed by generating the shared OSCORE context using
+        client is implicitly performed by generating the shared OSCORE Security Context using
         the pop-key as master secret, for both client and RS.  An attacker
         using a stolen token will not be able to generate a valid OSCORE context and
         thus not be able to prove possession of the pop-key.
@@ -536,7 +536,7 @@
         </t>
 
         <t>
-          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If verification fails, OSCORE error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
+          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If verification fails, OSCORE error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
         </t>
 
       </section> <!-- ends from line 481-->
@@ -546,7 +546,9 @@
         <t>
           The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives a OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
           requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
+        </t>
 
+        <t>
          The response code MUST be 4.01 (Unauthorized) in case the client has
          not used the Security Context associated with the access token, or if RS has no valid access token for the client.  If RS has an access token for the client but
          not for the resource that was requested, RS MUST reject the request
