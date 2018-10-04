@@ -352,8 +352,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    o  a replay window type and size
 
    The master secret MUST be communicated as COSE_Key in the 'cnf'
-   parameter of the access token response as defined in Section 5.6.4.5
-   of [I-D.ietf-ace-oauth-authz].  The AEAD algorithm MAY be included as
+   parameter of the access token response as defined in Section 3.2 of
+   [I-D.ietf-ace-oauth-params].  The AEAD algorithm MAY be included as
    the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be
    included as the 'hkdf' parameter of the COSE_Key and the salt MAY be
    included as the 'slt' parameter of the COSE_Key as defined in
@@ -803,7 +803,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    this paragraph.
 
    The following registration is done for the ACE OAuth Profile Registry
-   following the procedure specified in section 8.6 of
+   following the procedure specified in section 8.7 of
    [I-D.ietf-ace-oauth-authz]:
 
    o  Profile name: coap_oscore
@@ -866,6 +866,11 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-16
               (work in progress), October 2018.
 
+   [I-D.ietf-ace-oauth-params]
+              Seitz, L., "Additional OAuth Parameters for Authorization
+              in Constrained Environments (ACE)", draft-ietf-ace-oauth-
+              params-00 (work in progress), September 2018.
+
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
               "Object Security for Constrained RESTful Environments
@@ -886,17 +891,16 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               RFC 8152, DOI 10.17487/RFC8152, July 2017,
               <https://www.rfc-editor.org/info/rfc8152>.
 
-   [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
-              "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
-              May 2018, <https://www.rfc-editor.org/info/rfc8392>.
-
-
 
 
 Seitz, et al.             Expires April 7, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
+
+   [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
+              "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
+              May 2018, <https://www.rfc-editor.org/info/rfc8392>.
 
 9.2.  Informative References
 
@@ -941,10 +945,6 @@ Appendix A.  Profile Requirements
    o  how the client and the RS mutually authenticate: Implicitly by
       possession of a common OSCORE security context
    o  Content-format of the protocol messages: "application/cose+cbor"
-   o  proof-of-possession protocol(s) and how to select one; which key
-      types (e.g. symmetric/asymmetric) supported: OSCORE algorithms;
-      pre-established symmetric keys
-   o  profile identifier: coap_oscore
 
 
 
@@ -954,6 +954,10 @@ Seitz, et al.             Expires April 7, 2019                [Page 17]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   o  proof-of-possession protocol(s) and how to select one; which key
+      types (e.g. symmetric/asymmetric) supported: OSCORE algorithms;
+      pre-established symmetric keys
+   o  profile identifier: coap_oscore
    o  (Optional) how the RS talks to the AS for introspection: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
    o  how the client talks to the AS for requesting a token: HTTP/CoAP
@@ -996,12 +1000,8 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 B.1.  Using Asymmetric Keys
 
    In case of an asymmetric key, C MUST communicate its own asymmetric
-   key to the AS in the 'cnf' parameter of the access token request, as
-   specified in Section 5.6.1 of [I-D.ietf-ace-oauth-authz]; the AS MUST
-   communicate the RS's public key to C in the response, in the 'rs_cnf'
-   parameter, as specified in Section 5.6.1 of
-   [I-D.ietf-ace-oauth-authz].  Note that the RS's public key MUST
-   include a 'kid' parameter, and that the value of the 'kid' MUST be
+   key to the AS in the 'req_cnf' parameter of the access token request,
+   as specified in Section 3.1 of [I-D.ietf-ace-oauth-params]; the AS
 
 
 
@@ -1010,6 +1010,10 @@ Seitz, et al.             Expires April 7, 2019                [Page 18]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   MUST communicate the RS's public key to C in the response, in the
+   'rs_cnf' parameter, as specified in Section 3.2 of
+   [I-D.ietf-ace-oauth-params].  Note that the RS's public key MUST
+   include a 'kid' parameter, and that the value of the 'kid' MUST be
    included in the access token, to let the RS know which of its public
    keys C used.  If the access token is a CWT [RFC8392], the key
    identifier MUST be placed directly in the 'cnf' structure (if the key
@@ -1025,7 +1029,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    Payload:
    {
     "grant_type" : "client_credentials",
-    "cnf" : {
+    "req_cnf" : {
       "COSE_Key" : {
         "kid" : "client_key"
         "kty" : "EC",
@@ -1040,10 +1044,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    Figure 4 shows an example of a corresponding response in CBOR
    diagnostic notation without tag and value abbreviations.
-
-
-
-
 
 
 
@@ -1091,15 +1091,15 @@ B.2.  Using Symmetric Keys
 
    In the case of a symmetric key, the AS MUST communicate the key to
    the client in the 'cnf' parameter of the access token response, as
-   specified in Section 5.6.2. of [I-D.ietf-ace-oauth-authz].  AS MUST
-   also select a key identifier, that MUST be included as the 'kid'
-   parameter either directly in the 'cnf' structure, as in figure 4 of
-   [I-D.ietf-ace-oauth-authz], or as the 'kid' parameter of the
-   COSE_key, as in figure 6 of [I-D.ietf-ace-oauth-authz].
+   specified in Section 3.2. of [I-D.ietf-ace-oauth-params].  The AS
+   MUST also select a key identifier, that MUST be included as the 'kid'
+   parameter of the COSE_key, as in figure 9 of
+   [I-D.ietf-ace-oauth-authz].
 
    Figure 5 shows an example of the necessary parameters in the AS
    response to the access token request when EDHOC is used.  The example
    uses CBOR diagnostic notation without tag and value abbreviations.
+
 
 
 

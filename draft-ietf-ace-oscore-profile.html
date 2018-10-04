@@ -543,7 +543,7 @@ ul.toc li {
 </ul>
 
 <p> </p>
-<p id="rfc.section.3.2.p.7">The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in Section 5.6.4.5 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  The AEAD algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the COSE_Key as defined in <a href="#tab1" class="xref">Figure 3</a>.  </p>
+<p id="rfc.section.3.2.p.7">The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The AEAD algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the COSE_Key as defined in <a href="#tab1" class="xref">Figure 3</a>.  </p>
 <p id="rfc.section.3.2.p.8">The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same COSE_Key structure defined above MUST be placed in the 'cnf' claim of this token.  </p>
 <p id="rfc.section.3.2.p.9">The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in <a href="#tab1" class="xref">Figure 3</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible to assume unique identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may appear in the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate their effect.  </p>
@@ -733,7 +733,7 @@ ul.toc li {
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a>  IANA Considerations </h1>
 <p id="rfc.section.8.p.1">Note to RFC Editor: Please replace all occurrences of "[[this specification]]" with the RFC number of this specification and delete this paragraph.</p>
-<p id="rfc.section.8.p.2">The following registration is done for the ACE OAuth Profile Registry following the procedure specified in section 8.6 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>:</p>
+<p id="rfc.section.8.p.2">The following registration is done for the ACE OAuth Profile Registry following the procedure specified in section 8.7 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>:</p>
 <p></p>
 
 <ul>
@@ -793,6 +793,11 @@ ul.toc li {
 <td class="reference"><b id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</b></td>
 <td class="top">
 <a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Wahlstroem, E.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-authz-16">Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)</a>", Internet-Draft draft-ietf-ace-oauth-authz-16, October 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.ietf-ace-oauth-params">[I-D.ietf-ace-oauth-params]</b></td>
+<td class="top">
+<a>Seitz, L.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-params-00">Additional OAuth Parameters for Authorization in Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-oauth-params-00, September 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
@@ -892,7 +897,7 @@ ul.toc li {
 <h1 id="rfc.appendix.B.1">
 <a href="#rfc.appendix.B.1">B.1.</a> <a href="#edhoc-asym" id="edhoc-asym">Using Asymmetric Keys</a>
 </h1>
-<p id="rfc.section.B.1.p.1">In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'cnf' parameter of the access token request, as specified in Section 5.6.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in Section 5.6.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <a href="#RFC8392" class="xref">[RFC8392]</a>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).  </p>
+<p id="rfc.section.B.1.p.1">In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'req_cnf' parameter of the access token request, as specified in Section 3.1 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <a href="#RFC8392" class="xref">[RFC8392]</a>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).  </p>
 <p id="rfc.section.B.1.p.2">Figure 3 shows an example of such a request in CBOR diagnostic notation without tag and value abbreviations.  </p>
 <pre>
 Header: POST (Code=0.02)
@@ -902,7 +907,7 @@ Content-Type: "application/cose+cbor"
 Payload:
 {
  "grant_type" : "client_credentials",
- "cnf" : {
+ "req_cnf" : {
    "COSE_Key" : {
      "kid" : "client_key"
      "kty" : "EC",
@@ -941,7 +946,7 @@ Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
 <h1 id="rfc.appendix.B.2">
 <a href="#rfc.appendix.B.2">B.2.</a> <a href="#edhoc-sym" id="edhoc-sym">Using Symmetric Keys</a>
 </h1>
-<p id="rfc.section.B.2.p.1">In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in Section 5.6.2. of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.   AS MUST also select a key identifier, that MUST be included as the 'kid' parameter either directly in the 'cnf' structure, as in figure 4 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, or as the 'kid' parameter of the COSE_key, as in figure 6 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.B.2.p.1">In the case of a symmetric key, the AS MUST communicate the key to the client in the 'cnf' parameter of the access token response, as specified in Section 3.2. of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.   The AS MUST also select a key identifier, that MUST be included as the 'kid' parameter of the COSE_key, as in figure 9 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p id="rfc.section.B.2.p.2">Figure 5 shows an example of the necessary parameters in the AS response to the access token request when EDHOC is used.  The example uses CBOR  diagnostic notation without tag and value abbreviations.  </p>
 <pre>
   Header: Created (Code=2.01)
