@@ -237,7 +237,7 @@
     {
       "grant_type" : "client_credentials",
       "client_id" : "myclient",
-      "aud" : "tempSensor4711"
+      "req_aud" : "tempSensor4711"
      }
 ]]>
           </artwork>
