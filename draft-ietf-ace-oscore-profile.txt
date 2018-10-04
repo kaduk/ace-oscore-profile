@@ -88,7 +88,7 @@ Table of Contents
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  17
    Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)  . . . .  18
-     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  18
+     B.1.  Using Asymmetric Keys . . . . . . . . . . . . . . . . . .  19
      B.2.  Using Symmetric Keys  . . . . . . . . . . . . . . . . . .  20
      B.3.  Processing  . . . . . . . . . . . . . . . . . . . . . . .  22
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  23
@@ -794,7 +794,13 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 7.  Privacy Considerations
 
-   TBD.
+   This document specifies a profile for the Authentication and
+   Authorization for Constrained Environments (ACE) framework
+   [I-D.ietf-ace-oauth-authz].  Thus the general privacy considerations
+   from the framework also apply to this profile.
+
+   As this document uses OSCORE, thus the privacy considerations from
+   [I-D.ietf-core-object-security] apply here as well.
 
 8.  IANA Considerations
 
@@ -828,12 +834,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    o  Label: TBD2 (value between 1 and 255)
    o  Value Type: bstr
    o  Value Registry: N/A
-   o  Description: Identifies the server in an OSCORE context
-   o  Reference: [[this specification]]
-
-   o  Name: hkdf
-   o  Label: TBD3 (value between 1 and 255)
-   o  Value Type: bstr
 
 
 
@@ -842,6 +842,12 @@ Seitz, et al.             Expires April 7, 2019                [Page 15]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   o  Description: Identifies the server in an OSCORE context
+   o  Reference: [[this specification]]
+
+   o  Name: hkdf
+   o  Label: TBD3 (value between 1 and 255)
+   o  Value Type: bstr
    o  Value Registry: COSE Algorithms registry
    o  Description: Identifies the KDF algorithm to be used in an OSCORE
       context
@@ -882,6 +888,16 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+Seitz, et al.             Expires April 7, 2019                [Page 16]
+
+Internet-Draft            OSCORE Profile of ACE             October 2018
+
+
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
@@ -890,13 +906,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    [RFC8152]  Schaad, J., "CBOR Object Signing and Encryption (COSE)",
               RFC 8152, DOI 10.17487/RFC8152, July 2017,
               <https://www.rfc-editor.org/info/rfc8152>.
-
-
-
-Seitz, et al.             Expires April 7, 2019                [Page 16]
-
-Internet-Draft            OSCORE Profile of ACE             October 2018
-
 
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
@@ -938,15 +947,6 @@ Appendix A.  Profile Requirements
    requirements on the framework, as requested in Appendix C of
    [I-D.ietf-ace-oauth-authz].
 
-   o  (Optional) discovery process of how the client finds the right AS
-      for an RS it wants to send a request to: Not specified
-   o  communication protocol the client and the RS must use: CoAP
-   o  security protocol the client and RS must use: OSCORE
-   o  how the client and the RS mutually authenticate: Implicitly by
-      possession of a common OSCORE security context
-   o  Content-format of the protocol messages: "application/cose+cbor"
-
-
 
 
 Seitz, et al.             Expires April 7, 2019                [Page 17]
@@ -954,6 +954,13 @@ Seitz, et al.             Expires April 7, 2019                [Page 17]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   o  (Optional) discovery process of how the client finds the right AS
+      for an RS it wants to send a request to: Not specified
+   o  communication protocol the client and the RS must use: CoAP
+   o  security protocol the client and RS must use: OSCORE
+   o  how the client and the RS mutually authenticate: Implicitly by
+      possession of a common OSCORE security context
+   o  Content-format of the protocol messages: "application/cose+cbor"
    o  proof-of-possession protocol(s) and how to select one; which key
       types (e.g. symmetric/asymmetric) supported: OSCORE algorithms;
       pre-established symmetric keys
@@ -994,14 +1001,7 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
    Note that in the case described in this section, the 'expires_in'
    parameter, defined in Section 4.2.2. of [RFC6749] defines the
    lifetime in seconds of both the access token and the shared secret.
-   After expiration, C MUST acquire a new access token from the AS, and
-   run EDHOC again, as specified in this section
 
-B.1.  Using Asymmetric Keys
-
-   In case of an asymmetric key, C MUST communicate its own asymmetric
-   key to the AS in the 'req_cnf' parameter of the access token request,
-   as specified in Section 3.1 of [I-D.ietf-ace-oauth-params]; the AS
 
 
 
@@ -1010,6 +1010,14 @@ Seitz, et al.             Expires April 7, 2019                [Page 18]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   After expiration, C MUST acquire a new access token from the AS, and
+   run EDHOC again, as specified in this section
+
+B.1.  Using Asymmetric Keys
+
+   In case of an asymmetric key, C MUST communicate its own asymmetric
+   key to the AS in the 'req_cnf' parameter of the access token request,
+   as specified in Section 3.1 of [I-D.ietf-ace-oauth-params]; the AS
    MUST communicate the RS's public key to C in the response, in the
    'rs_cnf' parameter, as specified in Section 3.2 of
    [I-D.ietf-ace-oauth-params].  Note that the RS's public key MUST
@@ -1044,14 +1052,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    Figure 4 shows an example of a corresponding response in CBOR
    diagnostic notation without tag and value abbreviations.
-
-
-
-
-
-
-
-
 
 
 
