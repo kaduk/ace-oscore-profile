@@ -5,7 +5,6 @@
 <!ENTITY I-D.ietf-core-object-security SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-object-security.xml">
 <!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
-<!ENTITY I-D.ietf-ace-actors SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-actors.xml">
 <!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
@@ -107,14 +106,11 @@
     <section anchor="introduction" title=" Introduction"> 
       
       <t>
-        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  In order to provide communication security, proof of possession, and server authentication they use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.  Optionally the client and the resource server may also use CoAP and OSCORE to communicate with the authorization server.
+        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  In order to provide communication security, proof of possession, and server authentication they use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.
       </t>
 
       <t>
-        OSCORE specifies how to use CBOR Object Signing and Encryption (COSE) <xref target="RFC8152"/> to secure CoAP messages.  In order to provide replay and reordering protection OSCORE also introduces sequence numbers that are used together with COSE.
-      </t>
-
-      <t>
+        OSCORE specifies how to use CBOR Object Signing and Encryption (COSE) <xref target="RFC8152"/> to secure CoAP messages.
         Note that OSCORE can be used to secure CoAP messages, as well as HTTP and combinations of HTTP and CoAP; a profile of ACE similar to the one described in this document, with the difference of using HTTP instead of CoAP as communication protocol, could be specified analogously to this one.
       </t>
 
@@ -129,34 +125,129 @@
         </t>
 
         <t>
-          Since we describe exchanges as RESTful protocol interactions HTTP <xref target="RFC7231"/> offers useful terminology.
+          RESTful terminology follows HTTP <xref target="RFC7231"/>.
         </t>
 
         <t>
-          Terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749"/> and <xref target="I-D.ietf-ace-actors"/>, such as client (C), resource server (RS), and authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated to a unique AS.
+          Terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749"/>, such as client (C), resource server (RS), and authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated to a unique AS.
         </t>
 
         <!-- <t>
           Note that the term "endpoint" is used here following its OAuth definition, which is to denote resources such as /token and /introspect at the AS and /authz-info at the RS.  The CoAP <xref target="RFC7252"/> definition, which is "An entity participating in the CoAP protocol" is not used in this memo.
         </t> DONE: changed the above to "resource" in the whole doc-->
 
-      </section> <!-- ends from line 91-->
-    </section> <!-- ends from line 101-->
+      </section> <!-- ends from line 117-->
+    </section> <!-- ends from line 106-->
 
-    <section title="Client to Resource Server"> 
+    <section title="Protocol Overview"> 
     
       <t>
-        The use of OSCORE for arbitrary CoAP messages is specified in <xref target="I-D.ietf-core-object-security"/>.  This section defines the specific uses and their purpose for securing the communication between a client and a resource server, and the parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server using OSCORE <xref target="I-D.ietf-core-object-security"/>. The parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/> are described in detail in the following sections.
       </t>
 
-      <section title="Signaling the use of OSCORE"> 
-        
+      <t>
+        This profile requires a client to retrieve an access token from the AS for the resource it wants to access on a RS, using the token endpoint, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.  To determine the AS in charge of a resource hosted at the RS, the client C MAY send an initial Unauthorized Resource Request message to the RS. The RS then denies the request and sends the address of its AS back to the client C as specified in section 5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. The access token request and response MUST be confidentiality-protected and ensure authenticity.  This profile RECOMMENDS the use of OSCORE between client and AS, but TLS or DTLS MAY be used additionally or instead.
+      </t>
+
+      <t>
+        Once the client has retrieved the access token, it forwards it to the RS using the authz-info endpoint and mechanisms specified in section 5.8.1. of <xref target="I-D.ietf-ace-oauth-authz"/>. If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N1.
+      </t>
+
+      <t>
+        After receiving the nonce N1, the client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The client then derives the complete Security Context from the ID Context plus the parameters received from the AS.
+      </t>
+
+      <t>
+        Finally, the client sends a request protected with OSCORE to the RS. This message contains the ID Context value. When receiving this request after the 2.01 (Created) response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. The client will not include the ID Context value in further requests.
+      </t>
+
+      <t>
+        An overview of the profile flow for the OSCORE profile is given in <xref target="prof-overview"/>.
+      </t>
+
+
+      <figure anchor="prof-overview" title="Protocol Overview">
+        <artwork><![CDATA[
+   C                            RS                   AS
+   | [-- Resource Request --->] |                     |
+   |                            |                     |
+   | [<----- AS Information --] |                     |
+   |                            |                     |
+   | ----- POST /token  ----------------------------> |
+   |                            |                     |
+   | <---------------------------- Access Token ----- |
+   |                               + RS Information   |
+   | ---- POST /authz-info ---> |                     |
+   |                            |                     |
+   | <--- 2.01 Created (N1) --- |                     |
+   |                            |                     |
+ /Sec Context Derivation/       |                     |
+   |                            |                     |
+   | ---- OSCORE Request -----> |                     |
+   |         (N1, N2)           |                     |
+   |                            |                     |
+   |               /Sec Context Derivation/           |
+   |                            |                     |
+   | <--- OSCORE Response ----- |                     |
+   |                            |                     |
+   | ---- OSCORE Request -----> |                     |
+   |                            |                     |
+   | <--- OSCORE Response ----- |                     |
+   |           ...              |                     |
+]]>
+        </artwork>
+      </figure>
+
+    </section> <!-- closes from line 142 -->
+    
+
+    <section anchor="client-as" title="Client-AS Communication"> 
+
+      <t>
+        The following subsections describe the details of the POST /token request and response between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used as master secret in OSCORE.
+      </t>
+
+      <section anchor="c-as" title="C-to-AS: POST /token"> 
+
         <t>
-          A client requests a token at an AS via the /token resource.  This follows the message formats specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          The client-to-AS request is specified in Section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
-          The AS responding to a successful access token request as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/> can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-only"/> to derive the security context to run OSCORE.
+          If the client wants to update its access rights using the same OSCORE Security Context, it MUST include in its POST /token request a cnf object carrying the Sender ID in the kid field. This identifier can be used by the AS to determine the shared secret to construct the proof-of-possession token and therefore MUST specify a symmetric key that was previously generated by the AS as a shared secret for the communication between the client and the RS.
+        </t>
+
+
+        <t>
+          The client MUST send this POST /token request over a secure channel that guarantees authentication, message integrity and confidentiality (see <xref target="introsp"/>). 
+        </t>
+
+        <t>
+          An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex0"/>
+        </t>
+
+        <figure anchor="ex0" title="Example C-to-AS POST /token request for an access token bound to a symmetric key.">
+          <artwork><![CDATA[
+    Header: POST (Code=0.02)
+    Uri-Host: "as.example.com"
+    Uri-Path: "token"
+    Content-Format: "application/ace+cbor"
+    Payload:
+    {
+      "grant_type" : "client_credentials",
+      "client_id" : "myclient",
+      "aud" : "tempSensor4711"
+     }
+]]>
+          </artwork>
+        </figure>
+      
+      </section> <!-- closes from line 227 -->
+
+      <section anchor="as-c" title="AS-to-C: Access Token"> 
+
+        <t>
+          After verifying the POST /token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
@@ -164,19 +255,7 @@
         </t>
 
         <t>
-          Note the the client and the authorization server MAY OPTIONALLY use OSCORE to protect the interaction via the /token resource. See <xref target="c-as"/> for details.
-        </t>
-      
-      </section> <!-- ends from line 133-->
-
-      <section anchor="oscore-only" title="Key establishment for OSCORE"> 
-
-        <t>
-          Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a security context based on a shared master secret and a set of other parameters, established between client and server.  The proof-of-possession key (pop-key) provisioned from the AS MAY, in case of pre-shared keys, be used directly as master secret in OSCORE.
-        </t>
-
-        <t>
-          If OSCORE is used directly with the symmetric pop-key as master secret, then the AS MUST provision the following data, in response to the access token request:
+          Moreover, the AS MUST provision the following data:
           <!-- 
             Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
           
@@ -187,19 +266,19 @@
         <t>
           <list style="symbols">
             <t>a master secret</t>
-            <t>the sender identifier</t>
-            <t>the recipient identifier</t>
+            <t>a client identifier</t>
+            <t>a server identifier</t>
           </list>
         </t>
 
         <t>
-          Additionally, the AS MAY provision the following data, in the same response.  In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+          Additionally, the AS MAY provision the following data, in the same response. 
         </t>
 
         <t>
           <list style="symbols">
             <t>an AEAD algorithm</t>
-            <t>a KDF algorithm</t>
+            <t>an HKDF algorithm</t>
             <t>a salt</t>
             <t>a replay window type and size</t>
           </list>
@@ -207,25 +286,18 @@
 
         <t>
           The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
-	  response as defined in Section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
-	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
-	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
-	  COSE_Key as defined in table 1.
-	</t>
-	<t>
-	  The same parameters MUST be included as metadata of the access token;
-	  if the token is a CWT <xref target="RFC8392"/>,
-	  the same COSE_Key structure MUST be placed in the 'cnf' claim of this
-	  token.  If a CWT is used it MUST be encrypted, since the token is
-	  transferred from the client to the RS over an unprotected channel.
-	</t>
-	
-	<t>
-          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and
-	  Recipient ID in the OSCORE context as described in section 3.1 of <xref
-	  target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all
-	  clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as
-	  header parameters, as defined in table 1.
+      	  response as defined in Section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
+      	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included
+      	  as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
+      	  COSE_Key as defined in <xref target="tab1"/>.
+        </t>
+	      
+        <t>
+        	  The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same COSE_Key structure defined above MUST be placed in the 'cnf' claim of this token. 
+	      </t>
+
+        <t>
+          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in <xref target="tab1"/>.
         </t>
 
         <t>
@@ -234,10 +306,11 @@
         </t>
 
         <t>
-          Note that C should set the Sender ID of its security context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
+          Note that C should set the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
         </t>
 
-<figure><artwork><![CDATA[
+        <figure anchor="tab1" title="Additional COSE_Key Common Parameters">
+          <artwork><![CDATA[
 +----------+-------+--------------+------------+-------------------+
 | name     | label | CBOR type    | registry   | description       |
 +----------+-------+--------------+------------+-------------------+
@@ -251,7 +324,7 @@
 |          |       |              |            | OSCORE context    |
 |          |       |              |            | using this key    |
 |          |       |              |            |                   |
-| kdf      | TBD3  | bstr         |            | Identifies the    |
+| hkdf     | TBD3  | bstr         |            | Identifies the    |
 |          |       |              |            | KDF algorithm in  |
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
@@ -261,15 +334,16 @@
 |          |       |              |            | an OSCORE context |
 |          |       |              |            | using this key    |
 +----------+-------+--------------+------------+-------------------+
-    Table 1: Additional COSE_Key Common Parameters
-
-]]></artwork></figure>
+]]>
+          </artwork>
+        </figure>
 
         <t>
-          Figure 1 shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex1"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
-<figure><artwork><![CDATA[
+        <figure anchor="ex1" title="Example AS-to-C Access Token response with OSCORE profile.">
+          <artwork><![CDATA[
     Header: Created (Code=2.01)
     Content-Type: "application/cose+cbor"
     Payload:
@@ -288,15 +362,16 @@
         }
       }
     }
-
-    Figure 1: Example AS response with OSCORE parameters.
-]]></artwork></figure>
+]]>
+          </artwork>
+        </figure>
 
         <t>
-          Figure 2 shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
+          <xref target="ex2"/> shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim, in CBOR diagnostic notation without tag and value abbreviations.
         </t>
 
-<figure><artwork><![CDATA[
+        <figure anchor="ex2" title="Example CWT with OSCORE parameters.">
+          <artwork><![CDATA[
   {
     "aud" : "tempSensorInLivingRoom",
     "iat" : "1360189224",
@@ -311,66 +386,235 @@
         "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
     }
   }
+]]>
+          </artwork>
+        </figure>
 
-     Figure 2: Example CWT with OSCORE parameters.
-]]></artwork></figure>
+        <t>
+          If the client has requested an update to its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
+        </t>
+        
+        <t>
+          <xref target="ex5"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+        </t>
 
-<t>
-  Note that the proof-of-possession required to bind the access token to the
-  client is implicitly performed by generating the shared OSCORE context using
-  the pop-key as master secret, both on the client and RS side.  An attacker
-  using a stolen token will not be able to generate a valid OSCORE context and
-  thus not be able to prove possession of the pop-key.</t>
+        <figure anchor="ex5" title="Example AS-to-C Access Token response with OSCORE profile, for update of access rights.">
+          <artwork><![CDATA[
+    Header: Created (Code=2.01)
+    Content-Type: "application/cose+cbor"
+    Payload:
+    {
+      "access_token" : b64'SlAV32hkKG ...
+       (remainder of access token omitted for brevity)',
+      "profile" : "coap_oscore",
+      "expires_in" : "3600",
+      "cnf" : {
+        "COSE_Key" : {
+          "clientId" : b64'qA'
+        }
+      }
+    }
+]]>
+          </artwork>
+        </figure>
 
-      </section> <!-- ends for line 153-->
+        <t>
+          <xref target="ex6"/> shows an example CWT, containing the necessary OSCORE parameters in the 'cnf' claim for update of access rights, in CBOR diagnostic notation without tag and value abbreviations.
+        </t>
 
-    </section> <!-- ends from line 127-->
+        <figure anchor="ex6" title="Example CWT with OSCORE parameters for update of access rights.">
+          <artwork><![CDATA[
+  {
+    "aud" : "tempSensorInLivingRoom",
+    "iat" : "1360189224",
+    "exp" : "1360289224",
+    "scope" :  "temperature_h",
+    "cnf" : {
+      "COSE_Key" : {
+        "clientId" : b64'Qg'
+    }
+  }
+]]>
+          </artwork>
+        </figure>
 
+      </section> <!-- ends for line 266-->
+    
+    </section> <!-- ends for line 221 -->
 
-    <section anchor="c-as" title="Client to Authorization Server"> 
+    <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        As specified in the ACE framework (section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>), the Client and AS can also use CoAP instead of HTTP to communicate via the token resource.  This section specifies how to use OSCORE between Client and AS together with CoAP.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        The following subsections describe the details of the POST /authz-info request and response between client and RS. The client posts the token that includes the materials provisioned by the AS to the RS, which can then use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and a set of other parameters, established between client and server.
       </t>
 
       <t>
-        The client and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile. Furthermore the client and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        Note that the proof-of-possession required to bind the access token to the
+        client is implicitly performed by generating the shared OSCORE Security Context using
+        the pop-key as master secret, for both client and RS.  An attacker
+        using a stolen token will not be able to generate a valid OSCORE context and
+        thus not be able to prove possession of the pop-key.
       </t>
 
-    </section> <!--ends from line 516 -->
 
-    <section title="Resource Server to Authorization Server">
+      <section anchor="c-rs" title="C-to-RS: POST /authz-info">
+
+        <t>
+          The client MUST use CoAP and the Authorization Information endpoint as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
+        </t>
+
+        <t>
+          The authz-info endpoint is not protected, nor are the responses from this endpoint.
+        </t>
+
+        <t>
+          The access token MUST be encrypted, since it is
+          transferred from the client to the RS over an unprotected channel.
+        </t>
+
+        <t>
+          <xref target="ex3"/> shows an example of the request sent from the client to the RS.
+        </t>
+
+        <figure anchor="ex3" title="Example C-to-RS POST /authz-info request using CWT">
+          <artwork><![CDATA[
+      Header: POST (Code=0.02)
+      Uri-Host: "rs.example.com"
+      Uri-Path: "authz-info"
+      Content-Format: "application/cwt"
+      Payload:
+       b64'SlAV32hkKG ...
+         (remainder of access token omitted for brevity)',
+  ]]>
+          </artwork>
+        </figure>
+
+      </section> <!-- ends for line 418 -->
+
+      <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
+
+        <t>
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
+        </t>
+
+        <t>
+          Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of 64 bits. The RS MUST store this nonce as long as the access token related to it is still valid.
+        </t>
+
+        <t>
+          <xref target="ex4"/> shows an example of the response sent from the RS to the client.
+        </t>
+
+        <figure anchor="ex4" title="Example RS-to-C 2.01 (Created) response">
+          <artwork><![CDATA[
+      Header: Created (Code=2.01)
+      Content-Format: "application/cbor"
+      Payload:
+       h'018a278f7faab55a',
+  ]]>
+          </artwork>
+        </figure>
 
       <t>
-        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the RS and AS can also use CoAP instead of HTTP to communicate via the introspection resource.  This section specifies how to use OSCORE between RS and AS.  The use of OSCORE for this communication is OPTIONAL in this profile, other security protocols (such as DTLS) MAY be used instead.
+        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
+      </t>
+
+      </section> <!-- ends for line 452-->
+
+      <section anchor="oscore-setup" title="OSCORE Setup">
+
+        <t>
+          Once receiving the 2.01 (Created) response from the RS, following the POST /authz-info request, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+        </t>
+
+        <t>
+          The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MUST include the kid context, with value ID Context, i.e. N1 concatenated with N2. The client needs to make sure the RS receives the kid context, possibly adding the kid context to later requests, until it receives a valid OSCORE response from the RS using the same Security Context.
+        </t>
+
+        <t>
+          When the RS receives this first OSCORE-protected request, it MUST extract the kid context from the message first. Then, it needs to verify that the first part of the kid context corresponds to the nonce N1 it previously sent, and that it is followed by a non-zero-length byte string. If that is verified, the RS MUST set the ID Context to the kid context value. Then, the RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the client in the access token in <xref target="c-rs"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. Then, the RS MUST delete the nonce N1 from memory.
+        </t>
+
+        <t>
+          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
+        </t>
+
+      </section> <!-- ends from line 481-->
+
+      <section anchor="tok-ver" title="Access rights verification">
+
+        <t>
+          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives a OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
+          requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
+        </t>
+
+        <t>
+         The response code MUST be 4.01 (Unauthorized) in case the client has
+         not used the Security Context associated with the access token, or if RS has no valid access token for the client.  If RS has an access token for the client but
+         not for the resource that was requested, RS MUST reject the request
+         with a 4.03 (Forbidden).  If RS has an access token for the client
+         but it does not cover the action that was requested on the resource,
+         RS MUST reject the request with a 4.05 (Method Not Allowed).
+        </t>
+
+      </section>
+
+    </section>
+
+    <section anchor="introsp" title="Secure Communication with AS">
+
+      <t>
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or client) and the AS communicates via the introspection or token endpoint. The use of CoAP and OSCORE for this communication is RECOMMENDED in this profile, other protocols (such as HTTP and DTLS or TLS) MAY be used instead.
       </t>
 
       <t>
-        The RS and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the RS and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
-    </section> <!-- ends from line 530-->
+    </section>
 
     <section title="Security Considerations">
 
-      <t>This document specifies a profile for the Authentication and
-      Authorization for Constrained Environments (ACE) framework
-      <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general security
-      considerations from the framework also apply to this profile.</t>
+      <t>
+        This document specifies a profile for the Authentication and
+        Authorization for Constrained Environments (ACE) framework
+        <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general security
+        considerations from the framework also apply to this profile.
+      </t>
 
-      <t>Furthermore the general security considerations of OSCORE <xref
-      target="I-D.ietf-core-object-security"/> also apply to this specific
-      use of the OSCORE protocol.</t>
+      <t>
+        Furthermore the general security considerations of OSCORE <xref
+        target="I-D.ietf-core-object-security"/> also apply to this specific
+        use of the OSCORE protocol.
+      </t>
       
-      <t>OSCORE is designed to secure point-to-point communication,
-      providing a secure binding between the request and the response(s).
-      Thus the basic OSCORE protocol is not intended for use in
-      point-to-multipoint communication (e.g. multicast, publish-subscribe).
-      Implementers of this profile should make sure that their usecase
-      corresponds to the expected use of OSCORE, to prevent weakening the
-      security assurances provided by OSCORE.</t>
+      <t>
+        OSCORE is designed to secure point-to-point communication,
+        providing a secure binding between the request and the response(s).
+        Thus the basic OSCORE protocol is not intended for use in
+        point-to-multipoint communication (e.g. multicast, publish-subscribe).
+        Implementers of this profile should make sure that their usecase
+        corresponds to the expected use of OSCORE, to prevent weakening the
+        security assurances provided by OSCORE.
+      </t>
       
-    </section> <!-- ends from line 542-->
+      <t>
+        TODO: explain the rationale for the nonces construction, and the security
+        implications for Man-in-the-Middle attacks.
+      </t>
+
+      <!--
+        TODO: The construction with the nonces is to avoid the case where a 
+        RS would lose its Security Context (e.g. because of reboot); the profile
+        describes that the Client will resend the token, which can lead to 
+        reuse of the IV on the RS. With the nonces as ID Context,
+        the POST /auth-info will result in a new Security Context in both Client
+        and RS. Replaying the RS nonce by the client also protects against
+        an adversary substituting the nonce and provoking the creation of a different Security
+        Context in the RS.
+      --> 
+    
+    </section> <!-- ends from line 518-->
 
     <section title="Privacy Considerations">
 
@@ -378,7 +622,7 @@
         TBD.
       </t>
 
-    </section> <!-- ends from line 550-->
+    </section> <!-- ends from line 539-->
 
     <section title=" IANA Considerations ">
 
@@ -425,7 +669,7 @@
        </list></t>
        
        <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: kdf</t>
+         <t>Name: hkdf</t>
 	 <t>Label: TBD3 (value between 1 and 255)</t>
 	 <t>Value Type: bstr</t>
 	 <t>Value Registry: COSE Algorithms registry</t>
@@ -445,7 +689,7 @@
        </list></t>
       
 
-    </section> <!-- ends from line 558-->
+    </section> <!-- ends from line 547-->
 
   </middle>
 
@@ -464,7 +708,6 @@
 
     <references title='Informative References'>
       
-      &I-D.ietf-ace-actors;
       &I-D.gerdes-ace-dcaf-authorize;
       &I-D.selander-ace-cose-ecdhe;
       &RFC4949;
@@ -747,7 +990,7 @@ where does it say that? -->
     <section title="Acknowledgments" numbered='no'> 
 
       <t>
-        The authors wish to thank Jim Schaad, Goeran Selander and Marco Tiloca for the input on this memo.  The error responses specified in <xref target="edhoc-proc"/> were originally specified by Gerdes et al. in <xref target="I-D.gerdes-ace-dcaf-authorize"/>.
+        The authors wish to thank Jim Schaad and Marco Tiloca for the input on this memo.  The error responses specified in <xref target="edhoc-proc"/> were originally specified by Gerdes et al. in <xref target="I-D.gerdes-ace-dcaf-authorize"/>.
       </t>
 
     </section>
