@@ -286,29 +286,7 @@
         </t>
 
         <t>
-          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token
-<<<<<<< HEAD
-	  response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.  The AEAD
-	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the KDF algorithm MAY be included
-	  as the 'kdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
-	  COSE_Key as defined in table 1.
-	</t>
-	<t>
-	  The same parameters MUST be included as metadata of the access token;
-	  if the token is a CWT <xref target="RFC8392"/>,
-	  the same COSE_Key structure MUST be placed in the 'cnf' claim of this
-	  token.  If a CWT is used it MUST be encrypted, since the token is
-	  transferred from the client to the RS over an unprotected channel.
-	</t>
-	
-	<t>
-          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and
-	  Recipient ID in the OSCORE context as described in section 3.1 of <xref
-	  target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all
-	  clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as
-	  header parameters, as defined in table 1.
-=======
-      	  response as defined in Section 5.6.4.5 of <xref target="I-D.ietf-ace-oauth-authz"/>.  The AEAD
+          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.  The AEAD
       	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included
       	  as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
       	  COSE_Key as defined in <xref target="tab1"/>.
@@ -320,7 +298,6 @@
 
         <t>
           The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in <xref target="tab1"/>.
->>>>>>> e4d9bf6227b9fd0d5d380a183cf1f51b5138d320
         </t>
 
         <t>
