@@ -5,12 +5,12 @@
 ACE Working Group                                               L. Seitz
 Internet-Draft                                              RISE SICS AB
 Intended status: Standards Track                            F. Palombini
-Expires: April 4, 2019                                       Ericsson AB
+Expires: April 7, 2019                                       Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
-                                                         October 1, 2018
+                                                         October 4, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 4, 2019.
+   This Internet-Draft will expire on April 7, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 1]
+Seitz, et al.             Expires April 7, 2019                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 2]
+Seitz, et al.             Expires April 7, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 3]
+Seitz, et al.             Expires April 7, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 4]
+Seitz, et al.             Expires April 7, 2019                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 5]
+Seitz, et al.             Expires April 7, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 6]
+Seitz, et al.             Expires April 7, 2019                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 7]
+Seitz, et al.             Expires April 7, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 8]
+Seitz, et al.             Expires April 7, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                 [Page 9]
+Seitz, et al.             Expires April 7, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 10]
+Seitz, et al.             Expires April 7, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 11]
+Seitz, et al.             Expires April 7, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 12]
+Seitz, et al.             Expires April 7, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 13]
+Seitz, et al.             Expires April 7, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 14]
+Seitz, et al.             Expires April 7, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 15]
+Seitz, et al.             Expires April 7, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -863,8 +863,8 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-15
-              (work in progress), September 2018.
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-16
+              (work in progress), October 2018.
 
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 16]
+Seitz, et al.             Expires April 7, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -949,7 +949,7 @@ Appendix A.  Profile Requirements
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 17]
+Seitz, et al.             Expires April 7, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1005,7 +1005,7 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 18]
+Seitz, et al.             Expires April 7, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 19]
+Seitz, et al.             Expires April 7, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1117,7 +1117,7 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 20]
+Seitz, et al.             Expires April 7, 2019                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 21]
+Seitz, et al.             Expires April 7, 2019                [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1229,7 +1229,7 @@ B.3.  Processing
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 22]
+Seitz, et al.             Expires April 7, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1285,7 +1285,7 @@ Acknowledgments
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 23]
+Seitz, et al.             Expires April 7, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1341,4 +1341,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.             Expires April 4, 2019                [Page 24]
+Seitz, et al.             Expires April 7, 2019                [Page 24]
