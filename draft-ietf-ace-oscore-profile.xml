@@ -617,11 +617,16 @@
     </section> <!-- ends from line 518-->
 
     <section title="Privacy Considerations">
-
       <t>
-        TBD.
+        This document specifies a profile for the Authentication and
+        Authorization for Constrained Environments (ACE) framework
+        <xref target="I-D.ietf-ace-oauth-authz"/>.  Thus the general privacy
+        considerations from the framework also apply to this profile.
       </t>
-
+      <t>
+        As this document uses OSCORE, thus the privacy considerations from
+	<xref target="I-D.ietf-core-object-security"/> apply here as well.
+      </t>      
     </section> <!-- ends from line 539-->
 
     <section title=" IANA Considerations ">
