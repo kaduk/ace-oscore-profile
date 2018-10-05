@@ -247,7 +247,7 @@
           An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex7"/>
         </t>
 
-        <figure anchor="ex0" title="Example C-to-AS POST /token request for updating rights to an access token bound to a symmetric key.">
+        <figure anchor="ex7" title="Example C-to-AS POST /token request for updating rights to an access token bound to a symmetric key.">
           <artwork><![CDATA[
     Header: POST (Code=0.02)
     Uri-Host: "as.example.com"
