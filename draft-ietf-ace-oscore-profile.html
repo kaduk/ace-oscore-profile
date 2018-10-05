@@ -543,8 +543,8 @@ ul.toc li {
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#as-c" id="as-c">AS-to-C: Access Token</a>
 </h1>
-<p id="rfc.section.3.2.p.1">After verifying the POST /token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <a href="#oscore-setup" class="xref">Section 4.3</a> to derive the security context to run OSCORE.  </p>
-<p id="rfc.section.3.2.p.2">The error response procedures defined in section 5.6.3 of the ACE framework are unchanged by this profile.  </p>
+<p id="rfc.section.3.2.p.1">After verifying the POST /token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. If the client request was invalid, or not authorized, the AS returns an error response as described in section 5.6.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.3.2.p.2">The AS signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <a href="#oscore-setup" class="xref">Section 4.3</a> to derive the security context to run OSCORE.  </p>
 <p id="rfc.section.3.2.p.3">Moreover, the AS MUST provision the following data: </p>
 <p></p>
 
@@ -570,7 +570,7 @@ ul.toc li {
 <p id="rfc.section.3.2.p.8">The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same COSE_Key structure defined above MUST be placed in the 'cnf' claim of this token.  </p>
 <p id="rfc.section.3.2.p.9">The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  These identifiers MUST be unique in the set of all clients and RS identifiers for a certain AS.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in <a href="#tab1" class="xref">Figure 4</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible to assume unique identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may appear in the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate their effect.  </p>
-<p id="rfc.section.3.2.p.11">Note that C should set the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.  </p>
+<p id="rfc.section.3.2.p.11">Note that in <a href="#oscore-setup" class="xref">Section 4.3</a> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.  </p>
 <div id="rfc.figure.4"></div>
 <div id="tab1"></div>
 <pre>
@@ -646,7 +646,7 @@ ul.toc li {
 
           </pre>
 <p class="figure">Figure 6: Example CWT with OSCORE parameters.</p>
-<p id="rfc.section.3.2.p.14">If the client has requested an update to its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.  </p>
+<p id="rfc.section.3.2.p.14">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.  </p>
 <p><a href="#ex5" class="xref">Figure 7</a> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.7"></div>
 <div id="ex5"></div>

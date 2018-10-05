@@ -363,15 +363,16 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    After verifying the POST /token request and that the client is
    authorized to obtain an access token corresponding to its access
    token request, the AS responds as defined in section 5.6.2 of
-   [I-D.ietf-ace-oauth-authz].  It signals that the use of OSCORE is
-   REQUIRED for a specific access token by including the "profile"
-   parameter with the value "coap_oscore" in the access token response.
-   This means that the client MUST use OSCORE towards all resource
-   servers for which this access token is valid, and follow Section 4.3
-   to derive the security context to run OSCORE.
+   [I-D.ietf-ace-oauth-authz].  If the client request was invalid, or
+   not authorized, the AS returns an error response as described in
+   section 5.6.3 of [I-D.ietf-ace-oauth-authz].
 
-   The error response procedures defined in section 5.6.3 of the ACE
-   framework are unchanged by this profile.
+   The AS signals that the use of OSCORE is REQUIRED for a specific
+   access token by including the "profile" parameter with the value
+   "coap_oscore" in the access token response.  This means that the
+   client MUST use OSCORE towards all resource servers for which this
+   access token is valid, and follow Section 4.3 to derive the security
+   context to run OSCORE.
 
    Moreover, the AS MUST provision the following data:
 
@@ -385,7 +386,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    response.
 
    o  an AEAD algorithm
-
 
 
 
@@ -427,9 +427,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    case the RS needs to have a mechanism in place to disambiguate
    identifiers or mitigate their effect.
 
-   Note that C should set the Sender ID of its Security Context to the
-   clientId value received and the Recipient ID to the serverId value,
-   and RS should do the opposite.
+   Note that in Section 4.3 C sets the Sender ID of its Security Context
+   to the clientId value received and the Recipient ID to the serverId
+   value, and RS does the opposite.
 
 
 
@@ -551,9 +551,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
                Figure 6: Example CWT with OSCORE parameters.
 
    If the client has requested an update to its access rights using the
-   same OSCORE Security Context, and the token associated with it is not
-   expired, the AS MAY omit the master secret and server identifier both
-   in the COSE_Key in the 'cnf' parameter and in the token.  The client
+   same OSCORE Security Context, which is valid and authorized, the AS
+   MAY omit the master secret and server identifier both in the COSE_Key
+   in the 'cnf' parameter and in the token.  The client identifier needs
 
 
 
@@ -562,8 +562,8 @@ Seitz, et al.             Expires April 8, 2019                [Page 10]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   identifier needs to be provisioned, in order for the RS to identify
-   the previously generated Security Context.
+   to be provisioned, in order for the RS to identify the previously
+   generated Security Context.
 
    Figure 7 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
