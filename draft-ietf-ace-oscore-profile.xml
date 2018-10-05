@@ -274,11 +274,11 @@
       <section anchor="as-c" title="AS-to-C: Access Token"> 
 
         <t>
-          After verifying the POST /token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. It signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
+          After verifying the POST /token request and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz"/>. If the client request was invalid, or not authorized, the AS returns an error response as described in section 5.6.3 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
-          The error response procedures defined in section 5.6.3 of the ACE framework are unchanged by this profile.
+          The AS signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
