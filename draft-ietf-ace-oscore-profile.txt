@@ -5,12 +5,12 @@
 ACE Working Group                                               L. Seitz
 Internet-Draft                                              RISE SICS AB
 Intended status: Standards Track                            F. Palombini
-Expires: April 7, 2019                                       Ericsson AB
+Expires: April 8, 2019                                       Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
-                                                         October 4, 2018
+                                                         October 5, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 7, 2019.
+   This Internet-Draft will expire on April 8, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 1]
+Seitz, et al.             Expires April 8, 2019                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 2]
+Seitz, et al.             Expires April 8, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -145,35 +145,35 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    This section gives an overview on how to use the ACE Framework
    [I-D.ietf-ace-oauth-authz] to secure the communication between a
    client and a resource server using OSCORE
-   [I-D.ietf-core-object-security].  The parameters needed to negotiate
-   the use of this profile with the token resource at the authorization
-   server as specified in section 5.6 of [I-D.ietf-ace-oauth-authz] are
-   described in detail in the following sections.
+   [I-D.ietf-core-object-security].  The parameters needed by the client
+   to negotiate the use of this profile with the authorization server,
+   as well as OSCORE setup process, are described in detail in the
+   following sections.
 
    This profile requires a client to retrieve an access token from the
    AS for the resource it wants to access on a RS, using the token
-   endpoint, as specified in section 5.6.1 of
-   [I-D.ietf-ace-oauth-authz].  To determine the AS in charge of a
-   resource hosted at the RS, the client C MAY send an initial
-   Unauthorized Resource Request message to the RS.  The RS then denies
-   the request and sends the address of its AS back to the client C as
-   specified in section 5.1 of [I-D.ietf-ace-oauth-authz].  The access
-   token request and response MUST be confidentiality-protected and
-   ensure authenticity.  This profile RECOMMENDS the use of OSCORE
-   between client and AS, but TLS or DTLS MAY be used additionally or
-   instead.
+   resource, as specified in section 5.6 of [I-D.ietf-ace-oauth-authz].
+   To determine the AS in charge of a resource hosted at the RS, the
+   client C MAY send an initial Unauthorized Resource Request message to
+   the RS.  The RS then denies the request and sends the address of its
+   AS back to the client C as specified in section 5.1 of
+   [I-D.ietf-ace-oauth-authz].  The access token request and response
+   MUST be confidentiality-protected and ensure authenticity.  This
+   profile RECOMMENDS the use of OSCORE between client and AS, but TLS
+   or DTLS MAY be used additionally or instead.
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 3]
+
+Seitz, et al.             Expires April 8, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
-   Once the client has retrieved the access token, it forwards it to the
-   RS using the authz-info endpoint and mechanisms specified in section
-   5.8.1. of [I-D.ietf-ace-oauth-authz].  If the access token is valid,
-   the RS replies to this request with a 2.01 (Created) response, which
+   Once the client has retrieved the access token, it posts it to the RS
+   using the authz-info resource and mechanisms specified in section 5.8
+   of [I-D.ietf-ace-oauth-authz].  If the access token is valid, the RS
+   replies to this request with a 2.01 (Created) response, which
    contains a nonce N1.
 
    After receiving the nonce N1, the client generates a nonce N2,
@@ -191,8 +191,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    the AS, following section 3.2 of [I-D.ietf-core-object-security].  If
    the request verifies, then this Security Context is stored in the
    server, and used in the response, and in further communications with
-   the client, until token expiration.  The client will not include the
-   ID Context value in further requests.
+   the client, until token expiration.  Once the client receives a valid
+   response, it does not continue to include the ID Context value in
+   further requests.
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
@@ -220,8 +221,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-
-Seitz, et al.             Expires April 7, 2019                 [Page 4]
+Seitz, et al.             Expires April 8, 2019                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 5]
+Seitz, et al.             Expires April 8, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 6]
+Seitz, et al.             Expires April 8, 2019                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 7]
+Seitz, et al.             Expires April 8, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 8]
+Seitz, et al.             Expires April 8, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                 [Page 9]
+Seitz, et al.             Expires April 8, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 10]
+Seitz, et al.             Expires April 8, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -580,12 +580,12 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 4.1.  C-to-RS: POST /authz-info
 
-   The client MUST use CoAP and the Authorization Information endpoint
+   The client MUST use CoAP and the Authorization Information resource
    as described in section 5.8.1 of [I-D.ietf-ace-oauth-authz] to
    transport the token to the RS.
 
-   The authz-info endpoint is not protected, nor are the responses from
-   this endpoint.
+   The authz-info resource is not protected, nor are the responses from
+   this resource.
 
    The access token MUST be encrypted, since it is transferred from the
    client to the RS over an unprotected channel.
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 11]
+Seitz, et al.             Expires April 8, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -626,7 +626,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    additional information in the error response, in order to clarify
    what went wrong.  The RS MAY make an introspection request to
    validate the token before responding to the POST request to the
-   authz-info endpoint.
+   authz-info resource.
 
    Additionally, the RS MUST generate a nonce (N1) with a good amount of
    randomness, and include it in the payload of the 2.01 (Created)
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 12]
+Seitz, et al.             Expires April 8, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 13]
+Seitz, et al.             Expires April 8, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -747,7 +747,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    As specified in the ACE framework (section 5.7 of
    [I-D.ietf-ace-oauth-authz]), the requesting entity (RS and/or client)
-   and the AS communicates via the introspection or token endpoint.  The
+   and the AS communicates via the introspection or token resource.  The
    use of CoAP and OSCORE for this communication is RECOMMENDED in this
    profile, other protocols (such as HTTP and DTLS or TLS) MAY be used
    instead.
@@ -756,9 +756,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    have pre-established security contexts in place.  How these security
    contexts are established is out of scope for this profile.
    Furthermore the requesting entity and the AS communicate using OSCORE
-   ([I-D.ietf-core-object-security]) through the introspection endpoint
+   ([I-D.ietf-core-object-security]) through the introspection resource
    as specified in section 5.7 of [I-D.ietf-ace-oauth-authz] and through
-   the token endpoint as specified in section 5.6 of
+   the token resource as specified in section 5.6 of
    [I-D.ietf-ace-oauth-authz].
 
 6.  Security Considerations
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 14]
+Seitz, et al.             Expires April 8, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 15]
+Seitz, et al.             Expires April 8, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 16]
+Seitz, et al.             Expires April 8, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -949,7 +949,7 @@ Appendix A.  Profile Requirements
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 17]
+Seitz, et al.             Expires April 8, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1005,7 +1005,7 @@ Appendix B.  Using the pop-key with EDHOC (EDHOC+OSCORE)
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 18]
+Seitz, et al.             Expires April 8, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1061,7 +1061,7 @@ B.1.  Using Asymmetric Keys
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 19]
+Seitz, et al.             Expires April 8, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1117,7 +1117,7 @@ B.2.  Using Symmetric Keys
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 20]
+Seitz, et al.             Expires April 8, 2019                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 21]
+Seitz, et al.             Expires April 8, 2019                [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1229,7 +1229,7 @@ B.3.  Processing
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 22]
+Seitz, et al.             Expires April 8, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1285,7 +1285,7 @@ Acknowledgments
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 23]
+Seitz, et al.             Expires April 8, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
@@ -1341,4 +1341,4 @@ Authors' Addresses
 
 
 
-Seitz, et al.             Expires April 7, 2019                [Page 24]
+Seitz, et al.             Expires April 8, 2019                [Page 24]
