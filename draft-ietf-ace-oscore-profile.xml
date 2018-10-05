@@ -143,15 +143,15 @@
     <section title="Protocol Overview"> 
     
       <t>
-        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server using OSCORE <xref target="I-D.ietf-core-object-security"/>. The parameters needed to negotiate the use of this profile with the token resource at the authorization server as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/> are described in detail in the following sections.
+        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server using OSCORE <xref target="I-D.ietf-core-object-security"/>. The parameters needed by the client to negotiate the use of this profile with the authorization server, as well as OSCORE setup process, are described in detail in the following sections.
       </t>
 
       <t>
-        This profile requires a client to retrieve an access token from the AS for the resource it wants to access on a RS, using the token endpoint, as specified in section 5.6.1 of <xref target="I-D.ietf-ace-oauth-authz"/>.  To determine the AS in charge of a resource hosted at the RS, the client C MAY send an initial Unauthorized Resource Request message to the RS. The RS then denies the request and sends the address of its AS back to the client C as specified in section 5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. The access token request and response MUST be confidentiality-protected and ensure authenticity.  This profile RECOMMENDS the use of OSCORE between client and AS, but TLS or DTLS MAY be used additionally or instead.
+        This profile requires a client to retrieve an access token from the AS for the resource it wants to access on a RS, using the token resource, as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.  To determine the AS in charge of a resource hosted at the RS, the client C MAY send an initial Unauthorized Resource Request message to the RS. The RS then denies the request and sends the address of its AS back to the client C as specified in section 5.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. The access token request and response MUST be confidentiality-protected and ensure authenticity.  This profile RECOMMENDS the use of OSCORE between client and AS, but TLS or DTLS MAY be used additionally or instead.
       </t>
 
       <t>
-        Once the client has retrieved the access token, it forwards it to the RS using the authz-info endpoint and mechanisms specified in section 5.8.1. of <xref target="I-D.ietf-ace-oauth-authz"/>. If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N1.
+        Once the client has retrieved the access token, it posts it to the RS using the authz-info resource and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/>. If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N1.
       </t>
 
       <t>
@@ -159,7 +159,7 @@
       </t>
 
       <t>
-        Finally, the client sends a request protected with OSCORE to the RS. This message contains the ID Context value. When receiving this request after the 2.01 (Created) response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. The client will not include the ID Context value in further requests.
+        Finally, the client sends a request protected with OSCORE to the RS. This message contains the ID Context value. When receiving this request after the 2.01 (Created) response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. Once the client receives a valid response, it does not continue to include the ID Context value in further requests.
       </t>
 
       <t>
@@ -460,11 +460,11 @@
       <section anchor="c-rs" title="C-to-RS: POST /authz-info">
 
         <t>
-          The client MUST use CoAP and the Authorization Information endpoint as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
+          The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
         </t>
 
         <t>
-          The authz-info endpoint is not protected, nor are the responses from this endpoint.
+          The authz-info resource is not protected, nor are the responses from this resource.
         </t>
 
         <t>
@@ -494,7 +494,7 @@
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). This response MAY contain an identifier of the token (e.g., the cti for a CWT) as a payload, in order to allow the client to refer to the token. If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info resource. 
         </t>
 
         <t>
@@ -564,11 +564,11 @@
     <section anchor="introsp" title="Secure Communication with AS">
 
       <t>
-        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or client) and the AS communicates via the introspection or token endpoint. The use of CoAP and OSCORE for this communication is RECOMMENDED in this profile, other protocols (such as HTTP and DTLS or TLS) MAY be used instead.
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or client) and the AS communicates via the introspection or token resource. The use of CoAP and OSCORE for this communication is RECOMMENDED in this profile, other protocols (such as HTTP and DTLS or TLS) MAY be used instead.
       </t>
 
       <t>
-        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection resource as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token resource as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section>
