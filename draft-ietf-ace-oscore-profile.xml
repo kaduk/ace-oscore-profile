@@ -283,11 +283,6 @@
 
         <t>
           Moreover, the AS MUST provision the following data:
-          <!-- 
-            Jim: this is not really a POP key, it is a shared secret and not even a symmetric key 
-          
-          in the list below? (now fixed) or in the paragraph above?
-          -->
         </t>
 
         <t>
@@ -332,7 +327,7 @@
         </t>
 
         <t>
-          Note that C should set the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS should do the opposite.
+          Note that in <xref target="oscore-setup"/> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.
         </t>
 
         <figure anchor="tab1" title="Additional COSE_Key Common Parameters">
@@ -417,7 +412,7 @@
         </figure>
 
         <t>
-          If the client has requested an update to its access rights using the same OSCORE Security Context, and the token associated with it is not expired, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
+          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MAY omit the master secret and server identifier both in the COSE_Key in the 'cnf' parameter and in the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
         </t>
         
         <t>
