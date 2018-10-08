@@ -28,6 +28,12 @@
   <title abbrev="OSCORE Profile of ACE">OSCORE profile of the Authentication and Authorization for Constrained Environments Framework</title>
 
 
+    <author initials="F." surname="Palombini" fullname="Francesca Palombini">
+     <organization>Ericsson AB</organization>
+      <address>
+        <email>francesca.palombini@ericsson.com</email>
+      </address>
+    </author>
   <author fullname="Ludwig Seitz" initials="L." surname="Seitz">
       <organization>RISE SICS AB</organization>
       <address>
@@ -40,12 +46,6 @@
         </postal>
         <email>ludwig.seitz@ri.se</email>
         <!-- uri and facsimile elements may also be added -->
-      </address>
-    </author>
-        <author initials="F." surname="Palombini" fullname="Francesca Palombini">
-      <organization>Ericsson AB</organization>
-      <address>
-        <email>francesca.palombini@ericsson.com</email>
       </address>
     </author>
   <author fullname="Martin Gunnarsson" initials="M." surname="Gunnarsson">
