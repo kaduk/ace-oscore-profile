@@ -412,10 +412,6 @@
         <t>
           If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier in the 'kid' field in the 'cnf' parameter of the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
         </t>
-        
-        <t>
-          Note that the following applies for this profile: when updating the access rights, only the latest access information received by the client and the latest authorization information in the token received by the RS are valid. That is, when receiving an authorization information from the AS, the client MUST overwrite the previous authorization information; analogously, when receiving an updated access token with updated authorization information from the client, the RS MUST overwrite the previous token. This allows to minimize storage and processing, e.g. keeping track of several authorization information at the same time.
-        </t>
 
         <t>
           <xref target="ex5"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
@@ -490,6 +486,10 @@
         </t>
 
         <t>
+        	Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.
+        </t>
+
+        <t>
           <xref target="ex3"/> shows an example of the request sent from the client to the RS.
         </t>
 
@@ -519,7 +519,7 @@
         </t>
 
         <t>
-        	Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> specifies. 
+        	Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> allows. 
         </t>
 
         <t>
@@ -536,9 +536,13 @@
           </artwork>
         </figure>
 
-      <t>
-        As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
-      </t>
+        <t>
+          When receiving an updated access token with updated authorization information from the client (see section <xref target="c-as"/>), it is RECOMMENDED that the RS overwrites the previous token, that is only the latest authorization information in the token received by the RS is valid. This simplifies for the RS to keep track of authorization information for a given client. 
+        </t>
+        
+        <t>
+          As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
+        </t>
 
       </section> <!-- ends for line 452-->
 
@@ -620,7 +624,11 @@
       </t>
       
       <t>
-        The use of nonces during the OSCORE Setup <xref target="oscore-setup"/> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot). In fact, by using random nonces as ID Context, the POST /auth-info request results in a new different Security Context in both Client and RS, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.
+        The use of nonces during the OSCORE Setup <xref target="oscore-setup"/> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot) and receives a replayed access token. In fact, by using random nonces as ID Context, the POST /auth-info request results in a different Security Context, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.
+      </t>
+
+      <t>
+        This profiles recommends that the RS maintains a single access token for a client. The use of multiple access tokens for a single client increases the strain on the resource server as it must consider every access token and calculate the actual permissions of the client. Also, tokens may contradict each other which may lead the server to enforce wrong permissions. If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers should avoid using multiple access tokens for a client. 
       </t>
     
     </section> <!-- ends from line 518-->
@@ -635,7 +643,15 @@
       <t>
         As this document uses OSCORE, thus the privacy considerations from
 	<xref target="I-D.ietf-core-object-security"/> apply here as well.
+      </t>
+
+      <t>
+      	An unprotected response to an unauthorized request may disclose information about the resource server and/or its existing relationship with the client. It is advisable to include as little information as possible in an unencrypted response. When an OSCORE Security Context already exists between the client and the resource server, more detailed information may be included.
       </t>      
+
+      <t>
+      	Note that some information might still leak after OSCORE is established, due to observable message sizes, the source, and the destination addresses.
+      </t>
     </section> <!-- ends from line 539-->
 
     <section title=" IANA Considerations ">
@@ -786,7 +802,7 @@
       </t>
 
       <t>
-        How these parameters are communicated depends on the type of key (asymmetric or symmetric).  Moreover, the AS MUST signal the use of OSCORE + EDHOC with the 'profile' parameter set to "coap_oscore_edhoc" and follow  <xref target="oscore-edhoc"/> to derive the security context to run OSCORE.
+        How these parameters are communicated depends on the type of key (asymmetric or symmetric).  Moreover, the AS MUST signal the use of OSCORE + EDHOC with the 'profile' parameter set to "coap_oscore_edhoc".
       </t>
 
       <t>
