@@ -45,12 +45,6 @@
         <author initials="F." surname="Palombini" fullname="Francesca Palombini">
       <organization>Ericsson AB</organization>
       <address>
-        <postal>
-          <street>Farogatan 6</street>
-          <city>Kista</city>
-          <code>SE-16480 Stockholm</code>
-          <country>Sweden</country>
-        </postal>
         <email>francesca.palombini@ericsson.com</email>
       </address>
     </author>
@@ -71,13 +65,6 @@
   <author fullname="Göran Selander" initials="G." surname="Selander">
       <organization>Ericsson AB</organization>
       <address>
-        <postal>
-          <street>Farogatan 6</street>
-          <!-- Reorder these if your country does things differently -->
-          <city>Kista</city>
-          <code>SE-16480 Stockholm</code>
-          <country>Sweden</country>
-        </postal>
         <email>goran.selander@ericsson.com</email>
         <!-- uri and facsimile elements may also be added -->
       </address>
