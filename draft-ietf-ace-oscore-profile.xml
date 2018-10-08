@@ -48,6 +48,13 @@
         <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
+      <author fullname="Göran Selander" initials="G." surname="Selander">
+      <organization>Ericsson AB</organization>
+      <address>
+        <email>goran.selander@ericsson.com</email>
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
   <author fullname="Martin Gunnarsson" initials="M." surname="Gunnarsson">
       <organization>RISE SICS AB</organization>
       <address>
@@ -59,13 +66,6 @@
           <country>Sweden</country>
         </postal>
         <email>martin.gunnarsson@ri.se</email>
-        <!-- uri and facsimile elements may also be added -->
-      </address>
-    </author>
-  <author fullname="Göran Selander" initials="G." surname="Selander">
-      <organization>Ericsson AB</organization>
-      <address>
-        <email>goran.selander@ericsson.com</email>
         <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
