@@ -414,7 +414,7 @@
         </t>
         
         <t>
-          Note that the following applies for this profile: when updating the access rights, only the latest authorization information received from the client and the RS contain the full access rights. That is, when receiving an authorization information from the AS, the client MUST overwrite the previous authorization information; analogously, when receiving an updated access token with updated authorization information from the client, the RS MUST overwrite the previous token. This allows to minimize storage and processing, e.g. keeping track of several authorization information at the same time.
+          Note that the following applies for this profile: when updating the access rights, only the latest access information received by the client and the latest authorization information in the token received by the RS are valid. That is, when receiving an authorization information from the AS, the client MUST overwrite the previous authorization information; analogously, when receiving an updated access token with updated authorization information from the client, the RS MUST overwrite the previous token. This allows to minimize storage and processing, e.g. keeping track of several authorization information at the same time.
         </t>
 
         <t>
@@ -565,7 +565,7 @@
       <section anchor="tok-ver" title="Access rights verification">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives a OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
+          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
           requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
         </t>
 
