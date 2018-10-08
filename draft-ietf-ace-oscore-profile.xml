@@ -520,7 +520,7 @@
 
         <t>
         	Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> specifies. 
-        <t>
+        </t>
 
         <t>
           <xref target="ex4"/> shows an example of the response sent from the RS to the client.
@@ -620,7 +620,7 @@
       </t>
       
       <t>
-        The use of nonces during the OSCORE Setup <xref target="oscore-setup"/> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot). In fact, by using random nonces as ID Context, the POST /auth-info request results in a new different Security Context in both Client and RS, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.
+        The use of nonces during the OSCORE Setup <xref target="oscore-setup"/> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot). In fact, by using random nonces as ID Context, the POST /auth-info request results in a new different Security Context in both Client and RS, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.
       </t>
     
     </section> <!-- ends from line 518-->
