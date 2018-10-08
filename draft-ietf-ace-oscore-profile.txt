@@ -1415,9 +1415,6 @@ Authors' Addresses
 
    Francesca Palombini
    Ericsson AB
-   Farogatan 6
-   Kista  SE-16480 Stockholm
-   Sweden
 
    Email: francesca.palombini@ericsson.com
 
@@ -1433,11 +1430,14 @@ Authors' Addresses
 
    Goeran Selander
    Ericsson AB
-   Farogatan 6
-   Kista  SE-16480 Stockholm
-   Sweden
 
    Email: goran.selander@ericsson.com
+
+
+
+
+
+
 
 
 
