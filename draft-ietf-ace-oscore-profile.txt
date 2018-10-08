@@ -5,10 +5,11 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: April 11, 2019                                    M. Gunnarsson
-                                                            RISE SICS AB
+Expires: April 11, 2019                                     RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
+                                                           M. Gunnarsson
+                                                            RISE SICS AB
                                                          October 8, 2018
 
 
@@ -49,7 +50,6 @@ Copyright Notice
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (https://trustee.ietf.org/license-info) in effect on the date of
 
 
 
@@ -58,6 +58,7 @@ Palombini, et al.        Expires April 11, 2019                 [Page 1]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -104,8 +105,7 @@ Table of Contents
    Object Security for Constrained RESTful Environments (OSCORE)
    [I-D.ietf-core-object-security].
 
-   OSCORE specifies how to use CBOR Object Signing and Encryption (COSE)
-   [RFC8152] to secure CoAP messages.  Note that OSCORE can be used to
+
 
 
 
@@ -114,6 +114,8 @@ Palombini, et al.        Expires April 11, 2019                 [Page 2]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   OSCORE specifies how to use CBOR Object Signing and Encryption (COSE)
+   [RFC8152] to secure CoAP messages.  Note that OSCORE can be used to
    secure CoAP messages, as well as HTTP and combinations of HTTP and
    CoAP; a profile of ACE similar to the one described in this document,
    with the difference of using HTTP instead of CoAP as communication
@@ -160,8 +162,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
    profile RECOMMENDS the use of OSCORE between client and AS, but TLS
    or DTLS MAY be used additionally or instead.
 
-   Once the client has retrieved the access token, it posts it to the RS
-   using the authz-info resource and mechanisms specified in section 5.8
 
 
 
@@ -170,6 +170,8 @@ Palombini, et al.        Expires April 11, 2019                 [Page 3]
 Internet-Draft            OSCORE Profile of ACE             October 2018
 
 
+   Once the client has retrieved the access token, it posts it to the RS
+   using the authz-info resource and mechanisms specified in section 5.8
    of [I-D.ietf-ace-oauth-authz].  If the access token is valid, the RS
    replies to this request with a 2.01 (Created) response, which
    contains a nonce N1.
@@ -195,8 +197,6 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
-
-
 
 
 
@@ -1419,6 +1419,12 @@ Authors' Addresses
    Email: ludwig.seitz@ri.se
 
 
+   Goeran Selander
+   Ericsson AB
+
+   Email: goran.selander@ericsson.com
+
+
    Martin Gunnarsson
    RISE SICS AB
    Scheelevagen 17
@@ -1426,12 +1432,6 @@ Authors' Addresses
    Sweden
 
    Email: martin.gunnarsson@ri.se
-
-
-   Goeran Selander
-   Ericsson AB
-
-   Email: goran.selander@ericsson.com
 
 
 
