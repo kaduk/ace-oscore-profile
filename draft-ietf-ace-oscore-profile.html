@@ -645,7 +645,6 @@ ul.toc li {
           </pre>
 <p class="figure">Figure 6: Example CWT with OSCORE parameters.</p>
 <p id="rfc.section.3.2.p.14">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier in the 'kid' field in the 'cnf' parameter of the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.  </p>
-<p id="rfc.section.3.2.p.15">Note that the following applies for this profile: when updating the access rights, only the latest access information received by the client and the latest authorization information in the token received by the RS are valid. That is, when receiving an authorization information from the AS, the client MUST overwrite the previous authorization information; analogously, when receiving an updated access token with updated authorization information from the client, the RS MUST overwrite the previous token. This allows to minimize storage and processing, e.g. keeping track of several authorization information at the same time.  </p>
 <p><a href="#ex5" class="xref">Figure 7</a> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.7"></div>
 <div id="ex5"></div>
@@ -689,6 +688,7 @@ ul.toc li {
 <p id="rfc.section.4.1.p.1">The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token to the RS.  </p>
 <p id="rfc.section.4.1.p.2">The authz-info resource is not protected, nor are the responses from this resource.  </p>
 <p id="rfc.section.4.1.p.3">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
+<p id="rfc.section.4.1.p.4">Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.  </p>
 <p><a href="#ex3" class="xref">Figure 9</a> shows an example of the request sent from the client to the RS.  </p>
 <div id="rfc.figure.9"></div>
 <div id="ex3"></div>
@@ -708,7 +708,7 @@ ul.toc li {
 </h1>
 <p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info resource.  </p>
 <p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of 64 bits. The RS MUST store this nonce as long as the access token related to it is still valid.  </p>
-<p id="rfc.section.4.2.p.3">Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> specifies.  </p>
+<p id="rfc.section.4.2.p.3">Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> allows.  </p>
 <p><a href="#ex4" class="xref">Figure 10</a> shows an example of the response sent from the RS to the client.  </p>
 <div id="rfc.figure.10"></div>
 <div id="ex4"></div>
@@ -720,7 +720,8 @@ ul.toc li {
   
           </pre>
 <p class="figure">Figure 10: Example RS-to-C 2.01 (Created) response</p>
-<p id="rfc.section.4.2.p.5">As specified in section 5.8.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.  </p>
+<p id="rfc.section.4.2.p.5">When receiving an updated access token with updated authorization information from the client (see section <a href="#c-as" class="xref">Section 3.1</a>), it is RECOMMENDED that the RS overwrites the previous token, that is only the latest authorization information in the token received by the RS is valid. This simplifies for the RS to keep track of authorization information for a given client.  </p>
+<p id="rfc.section.4.2.p.6">As specified in section 5.8.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.  </p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#oscore-setup" id="oscore-setup">OSCORE Setup</a>
 </h1>
@@ -743,11 +744,14 @@ ul.toc li {
 <p id="rfc.section.6.p.1">This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  Thus the general security considerations from the framework also apply to this profile.  </p>
 <p id="rfc.section.6.p.2">Furthermore the general security considerations of OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> also apply to this specific use of the OSCORE protocol.  </p>
 <p id="rfc.section.6.p.3">OSCORE is designed to secure point-to-point communication, providing a secure binding between the request and the response(s).  Thus the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g. multicast, publish-subscribe).  Implementers of this profile should make sure that their usecase corresponds to the expected use of OSCORE, to prevent weakening the security assurances provided by OSCORE.  </p>
-<p id="rfc.section.6.p.4">The use of nonces during the OSCORE Setup <a href="#oscore-setup" class="xref">Section 4.3</a> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot). In fact, by using random nonces as ID Context, the POST /auth-info request results in a new different Security Context in both Client and RS, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.  </p>
+<p id="rfc.section.6.p.4">The use of nonces during the OSCORE Setup <a href="#oscore-setup" class="xref">Section 4.3</a> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot) and receives a replayed access token. In fact, by using random nonces as ID Context, the POST /auth-info request results in a different Security Context, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.  </p>
+<p id="rfc.section.6.p.5">This profiles recommends that the RS maintains a single access token for a client. The use of multiple access tokens for a single client increases the strain on the resource server as it must consider every access token and calculate the actual permissions of the client. Also, tokens may contradict each other which may lead the server to enforce wrong permissions. If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers should avoid using multiple access tokens for a client.  </p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> Privacy Considerations</h1>
 <p id="rfc.section.7.p.1">This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  Thus the general privacy considerations from the framework also apply to this profile.  </p>
 <p id="rfc.section.7.p.2">As this document uses OSCORE, thus the privacy considerations from <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> apply here as well.  </p>
+<p id="rfc.section.7.p.3">An unprotected response to an unauthorized request may disclose information about the resource server and/or its existing relationship with the client. It is advisable to include as little information as possible in an unencrypted response. When an OSCORE Security Context already exists between the client and the resource server, more detailed information may be included.  </p>
+<p id="rfc.section.7.p.4">Note that some information might still leak after OSCORE is established, due to observable message sizes, the source, and the destination addresses.  </p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a>  IANA Considerations </h1>
 <p id="rfc.section.8.p.1">Note to RFC Editor: Please replace all occurrences of "[[this specification]]" with the RFC number of this specification and delete this paragraph.</p>
@@ -910,7 +914,7 @@ ul.toc li {
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.4">How these parameters are communicated depends on the type of key (asymmetric or symmetric).  Moreover, the AS MUST signal the use of OSCORE + EDHOC with the 'profile' parameter set to "coap_oscore_edhoc" and follow  <a href="#oscore-edhoc" class="xref">Appendix B</a> to derive the security context to run OSCORE.  </p>
+<p id="rfc.section.B.p.4">How these parameters are communicated depends on the type of key (asymmetric or symmetric).  Moreover, the AS MUST signal the use of OSCORE + EDHOC with the 'profile' parameter set to "coap_oscore_edhoc".  </p>
 <p id="rfc.section.B.p.5">Note that in the case described in this section, the 'expires_in' parameter, defined in Section 4.2.2. of <a href="#RFC6749" class="xref">[RFC6749]</a> defines the lifetime in seconds of both the access token and the shared secret. After expiration, C MUST acquire a new access token from the AS, and run EDHOC again, as specified in this section </p>
 <h1 id="rfc.appendix.B.1">
 <a href="#rfc.appendix.B.1">B.1.</a> <a href="#edhoc-asym" id="edhoc-asym">Using Asymmetric Keys</a>
