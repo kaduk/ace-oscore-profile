@@ -414,6 +414,10 @@
         </t>
         
         <t>
+          Note that the following applies for this profile: when updating the access rights, only the latest authorization information received from the client and the RS contain the full access rights. That is, when receiving an authorization information from the AS, the client MUST overwrite the previous authorization information; analogously, when receiving an updated access token with updated authorization information from the client, the RS MUST overwrite the previous token. This allows to minimize storage and processing, e.g. keeping track of several authorization information at the same time.
+        </t>
+
+        <t>
           <xref target="ex5"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
