@@ -620,20 +620,8 @@
       </t>
       
       <t>
-        TODO: explain the rationale for the nonces construction, and the security
-        implications for Man-in-the-Middle attacks.
+        The use of nonces during the OSCORE Setup <xref target="oscore-setup"/> prevents the reuse of AEAD nonces in the RS Security Context, in case the RS loses the Security Context associated with a client (e.g. in case of unplanned reboot). In fact, by using random nonces as ID Context, the POST /auth-info request results in a new different Security Context in both Client and RS, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Moreover, the client echoes the nonce created by the RS, which verifies it before deriving the Security Context, and this protects against an adversary acting as a Man-in-the-Middle and substituting the nonce in transit from client to RS to provoke the creation of different Security Contexts in the client and RS.
       </t>
-
-      <!--
-        TODO: The construction with the nonces is to avoid the case where a 
-        RS would lose its Security Context (e.g. because of reboot); the profile
-        describes that the Client will resend the token, which can lead to 
-        reuse of the IV on the RS. With the nonces as ID Context,
-        the POST /auth-info will result in a new Security Context in both Client
-        and RS. Replaying the RS nonce by the client also protects against
-        an adversary substituting the nonce and provoking the creation of a different Security
-        Context in the RS.
-      --> 
     
     </section> <!-- ends from line 518-->
 
