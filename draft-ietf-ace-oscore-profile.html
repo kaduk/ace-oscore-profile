@@ -1008,13 +1008,13 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
 
   Figure 6: Example CWT with EDHOC+OSCORE, symmetric case.
 </pre>
-<p id="rfc.section.B.2.p.5">All other parameters defining OSCORE security context are derived from EDHOC message exchange, including the master secret (see Appendix C.2 of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>).  </p>
+<p id="rfc.section.B.2.p.5">All other parameters defining OSCORE security context are derived from EDHOC message exchange, including the master secret (see Appendix D.2 of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>).  </p>
 <h1 id="rfc.appendix.B.3">
 <a href="#rfc.appendix.B.3">B.3.</a> <a href="#edhoc-proc" id="edhoc-proc">Processing</a>
 </h1>
-<p id="rfc.section.B.3.p.1">To provide forward secrecy and mutual authentication in the case of pre-shared keys, pre-established raw public keys or with X.509 certificates it is RECOMMENDED to use EDHOC <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a> to generate the keying material.  EDHOC MUST be used as defined in Appendix C of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>, with the following additions and modifications.  </p>
+<p id="rfc.section.B.3.p.1">To provide forward secrecy and mutual authentication in the case of pre-shared keys, pre-established raw public keys or with X.509 certificates it is RECOMMENDED to use EDHOC <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a> to generate the keying material.  EDHOC MUST be used as defined in Appendix D of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>, with the following additions and modifications.  </p>
 <p id="rfc.section.B.3.p.2">The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in Section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>).  </p>
-<p id="rfc.section.B.3.p.3">Before the RS continues with the EDHOC protocol and responds to this token submission request, additional verifications on the access token are done: the RS SHALL process the access token according to <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  If the token is valid then the RS continues processing EDHOC following Appendix C of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>, otherwise it discontinues EDHOC and responds with the error code as specified in <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.B.3.p.3">Before the RS continues with the EDHOC protocol and responds to this token submission request, additional verifications on the access token are done: the RS SHALL process the access token according to <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  If the token is valid then the RS continues processing EDHOC following Appendix D of <a href="#I-D.selander-ace-cose-ecdhe" class="xref">[I-D.selander-ace-cose-ecdhe]</a>, otherwise it discontinues EDHOC and responds with the error code as specified in <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p></p>
 
 <ul>
@@ -1069,7 +1069,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
 Figure 7: Access token and key establishment with EDHOC
 </pre>
 <h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
-<p id="rfc.section.C.p.1">The authors wish to thank Jim Schaad and Marco Tiloca for the input on this memo.  The error responses specified in <a href="#edhoc-proc" class="xref">Appendix B.3</a> were originally specified by Gerdes et al. in <a href="#I-D.gerdes-ace-dcaf-authorize" class="xref">[I-D.gerdes-ace-dcaf-authorize]</a>.  </p>
+<p id="rfc.section.C.p.1">The authors wish to thank Jim Schaad and Marco Tiloca for the input on this memo.  </p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

@@ -1280,7 +1280,7 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 
    All other parameters defining OSCORE security context are derived
    from EDHOC message exchange, including the master secret (see
-   Appendix C.2 of [I-D.selander-ace-cose-ecdhe]).
+   Appendix D.2 of [I-D.selander-ace-cose-ecdhe]).
 
 
 
@@ -1296,7 +1296,7 @@ B.3.  Processing
    pre-shared keys, pre-established raw public keys or with X.509
    certificates it is RECOMMENDED to use EDHOC
    [I-D.selander-ace-cose-ecdhe] to generate the keying material.  EDHOC
-   MUST be used as defined in Appendix C of
+   MUST be used as defined in Appendix D of
    [I-D.selander-ace-cose-ecdhe], with the following additions and
    modifications.
 
@@ -1309,7 +1309,7 @@ B.3.  Processing
    token submission request, additional verifications on the access
    token are done: the RS SHALL process the access token according to
    [I-D.ietf-ace-oauth-authz].  If the token is valid then the RS
-   continues processing EDHOC following Appendix C of
+   continues processing EDHOC following Appendix D of
    [I-D.selander-ace-cose-ecdhe], otherwise it discontinues EDHOC and
    responds with the error code as specified in
    [I-D.ietf-ace-oauth-authz].
@@ -1389,9 +1389,9 @@ Internet-Draft            OSCORE Profile of ACE             October 2018
 Acknowledgments
 
    The authors wish to thank Jim Schaad and Marco Tiloca for the input
-   on this memo.  The error responses specified in Appendix B.3 were
-   originally specified by Gerdes et al. in
-   [I-D.gerdes-ace-dcaf-authorize].
+   on this memo.
+
+
 
 
 
