@@ -775,6 +775,7 @@
 
     </section>
 
+<!--
     <section anchor= "oscore-edhoc" title="Using the pop-key with EDHOC (EDHOC+OSCORE)" >
 
       <t>
@@ -783,7 +784,7 @@
 
       <t>
         If EDHOC is used together with OSCORE, and the pop-key (symmetric or asymmetric) is used to authenticate the messages in EDHOC, then the AS MUST provision the following data, in response to the access token request:
-      <!-- Jim: Again the symmetric key is not a POP key. -->
+      <!- - Jim: Again the symmetric key is not a POP key. - ->
       </t>
 
       <t>
@@ -805,7 +806,7 @@
         
         <t>
           In case of an asymmetric key, C MUST communicate its own asymmetric key to the AS in the 'req_cnf' parameter of the access token request, as specified in Section 3.1 of <xref target="I-D.ietf-ace-oauth-params"/>; the AS MUST communicate the RS's public key to C in the response, in the 'rs_cnf' parameter, as specified in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>. Note that the RS's public key MUST include a 'kid' parameter, and that the value of the 'kid' MUST be included in the access token, to let the RS know which of its public keys C used.  If the access token is a CWT <xref target="RFC8392"/>, the key identifier MUST be placed directly in the 'cnf' structure (if the key is only referenced).
-        <!-- TODO: check that the rs_cnf is used correctly -->
+        <!- - TODO: check that the rs_cnf is used correctly - ->
         </t>
 
         <t>
@@ -861,7 +862,7 @@ Figure 3: Example access token request (OSCORE+EDHOC, asymmetric).
 Figure 4: Example AS response (EDHOC+OSCORE, asymmetric).
 ]]></artwork></figure>
 
-      </section> <!-- ends for line 299-->
+      </section> <!- - ends for line 299- ->
 
       <section anchor="edhoc-sym" title="Using Symmetric Keys">
         
@@ -922,7 +923,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
           All other parameters defining OSCORE security context are derived from EDHOC message exchange, including the master secret (see Appendix D.2 of <xref target="I-D.selander-ace-cose-ecdhe"/>).
         </t>
 
-      </section> <!-- ends for line 361-->
+      </section> <!- - ends for line 361- ->
 
       <section anchor="edhoc-proc" title="Processing">
         
@@ -964,36 +965,36 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         Client    Server
         |          |
         |          |
-        +--------->| Header: POST (Code=0.02)
+        +- - - - - - - - ->| Header: POST (Code=0.02)
         | POST     | Uri-Path:"authz-info"
         |          | Content-Type: application/cbor
         |          | Payload: access token
         |          |
         |          |
-        +--------->| Header: POST (Code=0.02)
+        +- - - - - - - - ->| Header: POST (Code=0.02)
         |   POST   | Uri-Path: "/.well-known/edhoc"
         |          | Content-Type: application/edhoc
         |          | Payload: EDHOC message_1
         |          |
-        |<---------+ Header: 2.04 Changed
+        |<- - - - - - - - -+ Header: 2.04 Changed
         |   2.04   | Content-Type: application/edhoc
         |          | Payload: EDHOC message_2
         |          |
-        +--------->| Header: POST (Code=0.02)
+        +- - - - - - - - ->| Header: POST (Code=0.02)
         |   POST   | Uri-Path: "/.well-known/edhoc"
         |          | Content-Type: application/edhoc
         |          | Payload: EDHOC message_3
         |          |
-        |<---------+ Header: 2.04 Changed
+        |<- - - - - - - - -+ Header: 2.04 Changed
         |   2.04   |
         |          |
  start of protected communication
         |          |
-        +--------->| CoAP request +
+        +- - - - - - - - ->| CoAP request +
         |  OSCORE  | Object-Security option
         | request  | 
         |          |
-        |<---------+ CoAP response +
+        |<- - - - - - - - -+ CoAP response +
         |  OSCORE  | Object-Security option
         | response | 
         |          |  
@@ -1001,14 +1002,15 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
 Figure 7: Access token and key establishment with EDHOC
 ]]></artwork></figure>
 
-<!--
+<!- -
 Jim: in the section above: Is there a reason for not supporting multiple edhoc negotiations w/ the same secret - it seemed to be an original mode that was supported.
 
-where does it say that? -->
+where does it say that? - ->
 
-      </section> <!-- ends for line 422-->
+      </section> <!- - ends for line 422- ->
 
     </section>
+-->
 
     <section title="Acknowledgments" numbered='no'> 
 
