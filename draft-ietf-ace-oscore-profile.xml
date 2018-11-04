@@ -590,6 +590,18 @@
 
     </section>
 
+     <section anchor="sec-ctx-discard" title="Discarding the Security Context">
+
+      <t>
+        There are a number of scenarios where a client or resource server need to discard the OSCORE security context.
+      </t>
+
+      <t>
+        TODO
+      </t>
+
+    </section>
+
     <section title="Security Considerations">
 
       <t>
