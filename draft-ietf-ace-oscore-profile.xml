@@ -121,7 +121,7 @@
         </t>
 
         <!-- <t>
-          Note that the term "endpoint" is used here following its OAuth definition, which is to denote resources such as /token and /introspect at the AS and /authz-info at the RS.  The CoAP <xref target="RFC7252"/> definition, which is "An entity participating in the CoAP protocol" is not used in this memo.
+          Note that the term "endpoint" is used here following its OAuth definition, which is to denote resources such as /token and /introspect at the AS and authz-info at the RS.  The CoAP <xref target="RFC7252"/> definition, which is "An entity participating in the CoAP protocol" is not used in this memo.
         </t> DONE: changed the above to "resource" in the whole doc-->
 
       </section> <!-- ends from line 117-->
@@ -449,7 +449,7 @@
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        The following subsections describe the details of the POST /authz-info request and response between client and RS. The client posts the token that includes the materials provisioned by the AS to the RS, which can then use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and a set of other parameters, established between client and server.
+        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client posts the token that includes the materials provisioned by the AS to the RS, which can then use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and a set of other parameters, established between client and server.
       </t>
 
       <t>
@@ -461,7 +461,7 @@
       </t>
 
 
-      <section anchor="c-rs" title="C-to-RS: POST /authz-info">
+      <section anchor="c-rs" title="C-to-RS: POST to authz-info endpoint">
 
         <t>
           The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
@@ -484,7 +484,7 @@
           <xref target="ex3"/> shows an example of the request sent from the client to the RS.
         </t>
 
-        <figure anchor="ex3" title="Example C-to-RS POST /authz-info request using CWT">
+        <figure anchor="ex3" title="Example C-to-RS POST to authz-info endpoint request using CWT">
           <artwork><![CDATA[
       Header: POST (Code=0.02)
       Uri-Host: "rs.example.com"
@@ -540,7 +540,7 @@
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST /authz-info request, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
@@ -765,9 +765,9 @@
           </t>
           <t>how the client talks to the AS for requesting a token: HTTP/CoAP (+ TLS/DTLS/OSCORE)
           </t>
-          <t>how/if the /authz-info endpoint is protected: Security protocol above
+          <t>how/if the authz-info endpoint is protected: Security protocol above
           </t>
-          <t>(Optional)other methods of token transport than the /authz-info endpoint: no
+          <t>(Optional)other methods of token transport than the authz-info endpoint: no
           </t>
         </list>
       </t>
@@ -930,7 +930,7 @@ Figure 5: Example AS response (EDHOC+OSCORE, symmetric).
         </t>
         
         <t>
-          The first EDHOC message is sent after the access token is posted to the /authz-info resource of the RS as specified in Section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
+          The first EDHOC message is sent after the access token is posted to the authz-info resource of the RS as specified in Section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>. Then the EDHOC message_1 is sent and the EDHOC protocol is initiated <xref target="I-D.selander-ace-cose-ecdhe"/>).
         </t>
         
         <t>
