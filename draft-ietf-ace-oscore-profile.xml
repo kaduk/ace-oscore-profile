@@ -484,7 +484,7 @@
           <xref target="ex3"/> shows an example of the request sent from the client to the RS.
         </t>
 
-        <figure anchor="ex3" title="Example C-to-RS POST to authz-info endpoint request using CWT">
+        <figure anchor="ex3" title="Example C-to-RS POST /authz-info request using CWT">
           <artwork><![CDATA[
       Header: POST (Code=0.02)
       Uri-Host: "rs.example.com"
