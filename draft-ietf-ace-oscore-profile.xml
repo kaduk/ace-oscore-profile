@@ -297,18 +297,19 @@
         </t>
 
         <t>
-          The master secret MUST be communicated as COSE_Key in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.  The AEAD
-      	  algorithm MAY be included as the 'alg' parameter in the COSE_Key; the HKDF algorithm MAY be included
-      	  as the 'hkdf' parameter of the COSE_Key and the salt MAY be included as the 'slt' parameter of the
-      	  COSE_Key as defined in <xref target="tab1"/>.
+          The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
+          The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
+          The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included
+      	  as the 'hkdf' parameter of the OSCORE_Security_Context, the salt MAY be included as the 'salt' parameter of the
+      	  COSCORE_Security_Context and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 	      
         <t>
-        	  The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same COSE_Key structure defined above MUST be placed in the 'cnf' claim of this token. 
+        	The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token. 
 	      </t>
 
         <t>
-          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique  in the set of all RS for any given client.  Moreover, these MUST be included in the COSE_Key as header parameters, as defined in <xref target="tab1"/>.
+          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique  in the set of all RS for any given client.  Moreover, these MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
@@ -319,35 +320,6 @@
         <t>
           Note that in <xref target="oscore-setup"/> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.
         </t>
-
-        <figure anchor="tab1" title="Additional COSE_Key Common Parameters">
-          <artwork><![CDATA[
-+----------+-------+--------------+------------+-------------------+
-| name     | label | CBOR type    | registry   | description       |
-+----------+-------+--------------+------------+-------------------+
-| clientId | TBD1  | bstr         |            | Identifies the    |
-|          |       |              |            | client in an      |
-|          |       |              |            | OSCORE context    |
-|          |       |              |            | using this key    |
-|          |       |              |            |                   |
-| serverId | TBD2  | bstr         |            | Identifies the    |
-|          |       |              |            | server in an      |
-|          |       |              |            | OSCORE context    |
-|          |       |              |            | using this key    |
-|          |       |              |            |                   |
-| hkdf     | TBD3  | bstr         |            | Identifies the    |
-|          |       |              |            | KDF algorithm in  |
-|          |       |              |            | an OSCORE context |
-|          |       |              |            | using this key    |
-|          |       |              |            |                   |
-| slt      | TBD4  | bstr         |            | Identifies the    |
-|          |       |              |            | master salt in    |
-|          |       |              |            | an OSCORE context |
-|          |       |              |            | using this key    |
-+----------+-------+--------------+------------+-------------------+
-]]>
-          </artwork>
-        </figure>
 
         <t>
           <xref target="ex1"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
@@ -364,7 +336,7 @@
       "profile" : "coap_oscore",
       "expires_in" : "3600",
       "cnf" : {
-        "COSE_Key" : {
+        "OSCORE_Security_Context" : {
           "kty" : "Symmetric",
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'qA',
@@ -389,7 +361,7 @@
     "exp" : "1360289224",
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
-      "COSE_Key" : {
+      "OSCORE_Security_Context" : {
         "kty" : "Symmetric",
         "alg" : "AES-CCM-16-64-128",
         "clientId" : b64'Qg',
@@ -442,6 +414,89 @@
 ]]>
           </artwork>
         </figure>
+
+        <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
+
+          <t>
+            A OSCORE_Security_Context is a CBOR map object.  The set of common parameters that can appear in a OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <xref target="sec-ctx-params-reg"/>).
+          </t>
+
+          <t>
+            The CDDL grammar describing OSCORE_Security_Context is:
+          </t>
+
+          <figure><artwork type="CDDL"><![CDATA[
+OSCORE_Security_Context = {
+    ? 1 => bstr,              ; ms
+    ? 2 => bstr,              ; clientId
+    ? 3 => bstr,              ; serverId
+    ? 4 => tstr / int,        ; hkdf
+    ? 5 => tstr / int,        ; alg
+    ? 6 => bstr,              ; salt
+    ? 7 => bstr / tstr        ; rpl
+}
+]]></artwork></figure>
+
+          <t>
+            This document defines a set of parameters for an OSCORE_Security_Context object.
+            <xref target="table-key-labels"/> provides a summary of the parameters defined in this section.
+          </t>
+
+          <texttable title="OSCORE_Security_Context Map Labels" anchor="table-key-labels">
+            <ttcol align='left'>name</ttcol>
+            <ttcol align='left'>label</ttcol>
+            <ttcol align='left' width="14em">CBOR type</ttcol>
+            <ttcol align='left'>registry</ttcol>
+            <ttcol align='left'>description</ttcol>
+            
+            <c>ms</c>        <c>1</c>        <c>bstr</c>  <c></c>        <c>OSCORE Master Secret value</c>
+            <c>clientId</c>        <c>2</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the client, OSCORE Recipient ID value of the server</c>
+            <c>serverId</c>        <c>3</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the server, OSCORE Recipient ID value of the client</c>
+            <c>hkdf</c>        <c>4</c>        <c>bstr / int</c>        <c>COSE Algorithm Values (HMAC-based)</c>        <c>OSCORE HKDF value</c>
+            <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
+            <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
+            <c>rpl</c>    <c>7</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
+          </texttable>
+
+          <t>
+            <list style="hanging">
+              <t hangText="ms:">
+                This parameter is used to carry the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+              </t>
+
+              <t hangText="clientId:">
+                This parameter is used to carry a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+              </t>
+
+              <t hangText="serverId:">
+                This parameter is used to carry a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+              </t>
+              
+              <t hangText="hkdf:">
+                This parameter is used to carry the OSCORE HKDF Algorithm, which can be an integer or a text string.
+                The int value MUST be taken and can only encode an alg from the set of HMAC-based KDF algorithms in the COSE Algorithms registry.
+                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+              </t>
+
+              <t hangText="alg:">
+                This parameter is used to carry the OSCORE AEAD Algorithm, which can be an integer or a text string.
+                The int value MUST be taken and can only encode an alg from the set of AEAD algorithms in the COSE Algorithms registry. 
+                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+              </t>
+
+              <t hangText="salt:">
+                This parameter is used to carry the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+              </t>
+
+              <t hangText="repl:">
+                This parameter is used to carry the OSCORE Replay Window Size and Type value, encoded as a bstr.
+                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+              </t>
+              
+            </list>
+          </t>
+
+        </section>
 
       </section> <!-- ends for line 266-->
     
@@ -678,66 +733,111 @@
 
        <t>Note to RFC Editor: Please replace all occurrences of "&SELF;"
       with the RFC number of this specification and delete this paragraph.</t>
-      
-      <t>The following registration is done for the ACE OAuth Profile
-      Registry following the procedure specified in section 8.7 of <xref
-      target="I-D.ietf-ace-oauth-authz"/>:</t>
+   
+      <section title="ACE OAuth Profile Registry">
 
-      <t><?rfc subcompact="yes"?><list style='symbols'>
-        <t>Profile name: coap_oscore</t>
+        <t>The following registration is done for the ACE OAuth Profile
+        Registry following the procedure specified in section 8.7 of <xref
+        target="I-D.ietf-ace-oauth-authz"/>:</t>
 
-	<t>Profile Description: Profile for using OSCORE to secure communication
-	between constrained nodes using the Authentication and Authorization
-	for Constrained Environments framework.</t>
+        <t><?rfc subcompact="yes"?><list style='symbols'>
+          <t>Profile name: coap_oscore</t>
 
-	<t>Profile ID: TBD (value between 1 and 255)</t>
+      	  <t>Profile Description: Profile for using OSCORE to secure communication
+      	between constrained nodes using the Authentication and Authorization
+      	for Constrained Environments framework.</t>
+
+      	  <t>Profile ID: TBD (value between 1 and 255)</t>
+      	
+      	  <t>Change Controller: IESG</t>
+
+      	  <t>Specification Document(s): &SELF;</t>
+        </list></t>
+
+      </section>
+
+      <section anchor="sec-ctx-params-reg" title="OSCORE Security Context Parameters Registry">
 	
-	<t>Change Controller: IESG</t>
+      <t>
+          It is requested that IANA create a new registry entitled "OSCORE Security Context Parameters" registry.
+          The registry is to be created as Expert Review Required.
+          Guidelines for the experts is provided <xref target="review"/>.
+          It should be noted that in additional to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.
+        </t>
 
-	<t>Specification Document(s): &SELF;</t>
-      </list></t>
-	
-      <t>The following registrations are done for the COSE Key Common Parameter
-      Registry specified in section 16.5 of <xref target="RFC8152"/>:</t>
+        <t>
+          The columns of the registry are:
+        </t>
 
-       <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: clientId</t>
-	 <t>Label: TBD1 (value between 1 and 255)</t>
-	 <t>CBOR Type: bstr</t>
-	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the client in an OSCORE context</t>
-	 <t>Reference: &SELF;</t>
-       </list></t>
+        <t>
+          <list style="hanging">
+            <t hangText='name'>
+              This is a descriptive name that enables easier reference to the item.  It is not used in the encoding.
+            </t>
+            <t hangText='label'>
+              The value to be used to identify this algorithm.
+              Key map labels MUST be unique.
+              The label can be a positive integer, a negative integer or a string.
+              Integer values between 0 and 255 and strings of length 1 are designated as Standards Track Document required.
+              Integer values from 256 to 65535 and strings of length 2 are designated as Specification Required.
+              Integer values of greater than 65535 and strings of length greater than 2 are designated as expert review.
+              Integer values less than -65536 are marked as private use.
+            </t>
+            <t hangText='CBOR Type'>
+              This field contains the CBOR type for the field.
+            </t>
+            <t hangText='registry'>
+              This field denotes the registry that values may come from, if one exists.
+            </t>
+            <t hangText='description'>
+              This field contains a brief description for the field.
+            </t>
+            <t hangText='specification'>
+              This contains a pointer to the public specification for the field if one exists
+            </t>
+          </list>
+        </t>
 
-       <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: serverId</t>
-	 <t>Label: TBD2 (value between 1 and 255)</t>
-	 <t>Value Type: bstr</t>
-	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the server in an OSCORE context</t>
-	 <t>Reference: &SELF;</t>
-       </list></t>
-       
-       <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: hkdf</t>
-	 <t>Label: TBD3 (value between 1 and 255)</t>
-	 <t>Value Type: bstr</t>
-	 <t>Value Registry: COSE Algorithms registry</t>
-	 <t>Description: Identifies the KDF algorithm to be used in an
-    OSCORE context</t>
-	 <t>Reference: &SELF;</t>
-       </list></t>
+        <t>
+          This registry will be initially populated by the values in <xref target="table-key-labels"/>.
+          The specification column for all of these entries will be this document.
+        </t>
 
-       <t><?rfc subcompact="yes"?><list style='symbols'>
-         <t>Name: slt</t>
-	 <t>Label: TBD4 (value between 1 and 255)</t>
-	 <t>Value Type: bstr</t>
-	 <t>Value Registry: N/A</t>
-	 <t>Description: Identifies the master salt of to be used in an
-    OSCORE context</t>
-	 <t>Reference: &SELF;</t>
-       </list></t>
-      
+      </section>
+
+      <section title="Expert Review Instructions" anchor="review">
+        <t>
+          The IANA registry established in this document is defined as expert review.
+          This section gives some general guidelines for what the experts should be looking for, but they are being designated as experts for a reason so they should be given substantial latitude.
+        </t>
+
+        <t>
+          Expert reviewers should take into consideration the following points:
+
+          <list style="symbols">
+            <t>
+              Point squatting should be discouraged.
+              Reviewers are encouraged to get sufficient information for registration requests to ensure that the usage is not going to duplicate one that is already registered and that the point is likely to be used in deployments.
+              The zones tagged as private use are intended for testing purposes and closed environments, code points in other ranges should not be assigned for testing.
+            </t>
+
+            <t>
+              Specifications are required for the standards track range of point assignment.
+              Specifications should exist for specification required ranges, but early assignment before a specification is available is considered to be permissible.
+              Specifications are needed for the first-come, first-serve range if they are expected to be used outside of closed environments in an interoperable way.
+              When specifications are not provided, the description provided needs to have sufficient information to identify what the point is being used for.
+            </t>
+
+            <t>
+              Experts should take into account the expected usage of fields when approving point assignment.
+              The fact that there is a range for standards track documents does not mean that a standards track document cannot have points assigned outside of that range.
+              The length of the encoded value should be weighed against how many code points of that length are left, the size of device it will be used on, and the number of code points left that encode to that size.
+            </t>
+
+          </list>
+        </t>
+          
+      </section>
 
     </section> <!-- ends from line 547-->
 
