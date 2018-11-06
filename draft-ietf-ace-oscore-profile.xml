@@ -461,16 +461,16 @@
               </t>
               
               <t hangText="hkdf:">
-                This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>                
-                The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only HMAC-based HKDF algorithms MUST be used.
-                In JSON, the "hkdf" value is a case-sensitive ASCII string.
+                This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>. 
+                The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be HMAC-based HKDF algorithms. The value can either be the integer value or the text string name of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.
+                In JSON, the "hkdf" value is a case-sensitive ASCII string or an integer.
                 In CBOR, the "hkdf" type is tstr or int, and has label 4.
               </t>
 
               <t hangText="alg:">
                 This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
-                The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only AEAD algorithms MUST be used.
-                In JSON, the "alg" value is a case-sensitive ASCII string.
+                The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be AEAD algorithms. The value can either be the integer value or the text string name of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.
+                In JSON, the "alg" value is a case-sensitive ASCII string or an integer.
                 In CBOR, the "alg" type is tstr or int, and has label 5.
               </t>
 
