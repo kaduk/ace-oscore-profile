@@ -7,6 +7,8 @@
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
 <!ENTITY I-D.ietf-ace-oauth-params SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-params.xml">
 <!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">
+<!ENTITY I-D.ietf-ace-cwt-proof-of-possession SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-cwt-proof-of-possession">
+<!ENTITY RFC7800 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7800.xml"> 
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
 <!ENTITY RFC8152 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8152.xml">
@@ -807,7 +809,7 @@ OSCORE_Security_Context = {
 
       <section title="CWT Confirmation Methods Registry">
 
-        <t>The following registration is done for the CWT Confirmation Methods Registry following the procedure specified in section 7.2.1 of <xref target="I-D.ietf-ace-oauth-authz"/>:</t>
+        <t>The following registration is done for the CWT Confirmation Methods Registry following the procedure specified in section 7.2.1 of <xref target="I-D.ietf-ace-cwt-proof-of-possession"/>:</t>
 
         <t><?rfc subcompact="yes"?><list style='symbols'>
           <t>Confirmation Method Name: "OSCORE_Security_Context"</t>
@@ -817,6 +819,23 @@ OSCORE_Security_Context = {
           <t>Confirmation Key: TBD (value between 4 and 255)</t>
 
           <t>Confirmation Value Type(s): map</t>
+        
+          <t>Change Controller: IESG</t>
+
+          <t>Specification Document(s): <xref target="oscore-sec-ctx"/> of &SELF;</t>
+        </list></t>
+
+      </section>
+
+
+      <section title="JWT Confirmation Methods Registry">
+
+        <t>The following registration is done for the JWT Confirmation Methods Registry following the procedure specified in section 6.2.1 of <xref target="RFC7800"/>:</t>
+
+        <t><?rfc subcompact="yes"?><list style='symbols'>
+          <t>Confirmation Method Value: "osc"</t>
+
+          <t>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</t>
         
           <t>Change Controller: IESG</t>
 
@@ -881,7 +900,9 @@ OSCORE_Security_Context = {
     <references title='Informative References'>
       
       &I-D.gerdes-ace-dcaf-authorize;
-      &I-D.selander-ace-cose-ecdhe;
+      <!--&I-D.selander-ace-cose-ecdhe;-->
+      &I-D.ietf-ace-cwt-proof-of-possession;
+      &RFC7800;
       &RFC4949;
       &RFC6749;
       &RFC7049;
