@@ -339,11 +339,10 @@
       "expires_in" : "3600",
       "cnf" : {
         "OSCORE_Security_Context" : {
-          "kty" : "Symmetric",
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'qA',
           "serverId" : b64'Qg',
-          "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+          "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
         }
       }
     }
@@ -364,11 +363,10 @@
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
       "OSCORE_Security_Context" : {
-        "kty" : "Symmetric",
         "alg" : "AES-CCM-16-64-128",
         "clientId" : b64'Qg',
         "serverId" : b64'qA',
-        "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
+        "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
     }
   }
 ]]>
@@ -420,33 +418,14 @@
         <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
 
           <t>
-            A OSCORE_Security_Context is a CBOR map object.  The set of common parameters that can appear in a OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <xref target="sec-ctx-params-reg"/>).
+            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="I-D.ietf-core-object-security"/>).  The OSCORE_Security_Context object can either be encoded as JSON or as CBOR. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <xref target="sec-ctx-params-reg"/>) and is defined below.
+            All parameters are optional.
+            <xref target="table-key-labels"/> provides a summary of the OSCORE_Security_Context parameters defined in this section.
           </t>
 
-          <t>
-            The CDDL grammar describing OSCORE_Security_Context is:
-          </t>
-
-          <figure><artwork type="CDDL"><![CDATA[
-OSCORE_Security_Context = {
-    ? 1 => bstr,              ; ms
-    ? 2 => bstr,              ; clientId
-    ? 3 => bstr,              ; serverId
-    ? 4 => tstr / int,        ; hkdf
-    ? 5 => tstr / int,        ; alg
-    ? 6 => bstr,              ; salt
-    ? 7 => bstr / tstr        ; rpl
-}
-]]></artwork></figure>
-
-          <t>
-            This document defines a set of parameters for an OSCORE_Security_Context object.
-            <xref target="table-key-labels"/> provides a summary of the parameters defined in this section.
-          </t>
-
-          <texttable title="OSCORE_Security_Context Map Labels" anchor="table-key-labels">
+          <texttable title="OSCORE_Security_Context Parameters" anchor="table-key-labels">
             <ttcol align='left'>name</ttcol>
-            <ttcol align='left'>label</ttcol>
+            <ttcol align='left'>CBOR label</ttcol>
             <ttcol align='left' width="14em">CBOR type</ttcol>
             <ttcol align='left'>registry</ttcol>
             <ttcol align='left'>description</ttcol>
@@ -460,43 +439,88 @@ OSCORE_Security_Context = {
             <c>rpl</c>    <c>7</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
           </texttable>
 
+
           <t>
             <list style="hanging">
               <t hangText="ms:">
-                This parameter is used to carry the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "ms" value is a Base64 encoded byte string.
+                In CBOR, the "ms" type is bstr, and has label 1.
               </t>
 
               <t hangText="clientId:">
-                This parameter is used to carry a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "clientID" value is a Base64 encoded byte string.
+                In CBOR, the "clientID" type is bstr, and has label 2.
               </t>
 
               <t hangText="serverId:">
-                This parameter is used to carry a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "serverID" value is a Base64 encoded byte string.
+                In CBOR, the "serverID" type is bstr, and has label 3.
               </t>
               
               <t hangText="hkdf:">
-                This parameter is used to carry the OSCORE HKDF Algorithm, which can be an integer or a text string.
-                The int value MUST be taken and can only encode an alg from the set of HMAC-based KDF algorithms in the COSE Algorithms registry.
-                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+                This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>                
+                The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only HMAC-based HKDF algorithms MUST be used.
+                In JSON, the "hkdf" value is a case-sensitive ASCII string.
+                In CBOR, the "hkdf" type is tstr or int, and has label 4.
               </t>
 
               <t hangText="alg:">
-                This parameter is used to carry the OSCORE AEAD Algorithm, which can be an integer or a text string.
-                The int value MUST be taken and can only encode an alg from the set of AEAD algorithms in the COSE Algorithms registry. 
-                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+                This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+                The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only AEAD algorithms MUST be used.
+                In JSON, the "alg" value is a case-sensitive ASCII string.
+                In CBOR, the "alg" type is tstr or int, and has label 5.
               </t>
 
               <t hangText="salt:">
-                This parameter is used to carry the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "salt" value is a Base64 encoded byte string.
+                In CBOR, the "salt" type is bstr, and has label 6.
               </t>
 
               <t hangText="repl:">
-                This parameter is used to carry the OSCORE Replay Window Size and Type value, encoded as a bstr.
-                For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter is used to carry the OSCORE value, encoded as a bstr.
+                This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "repl" value is a Base64 encoded byte string.
+                In CBOR, the "repl" type is bstr, and has label 7.
               </t>
               
             </list>
           </t>
+
+          <t>
+            An example of JSON OSCORE_Security_Context is given in <xref target="JSON-osc"/>.
+          </t>
+
+          <figure anchor="JSON-osc" title="Example JSON OSCORE_Security_Context object">
+            <artwork><![CDATA[
+        "OSCORE_Security_Context" : {
+          "alg" : "AES-CCM-16-64-128",
+          "clientId" : b64'qA',
+          "serverId" : b64'Qg',
+          "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+        }
+  ]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The CDDL grammar describing the CBOR OSCORE_Security_Context object is:
+          </t>
+
+          <figure><artwork type="CDDL"><![CDATA[
+OSCORE_Security_Context = {
+    ? 1 => bstr,              ; ms
+    ? 2 => bstr,              ; clientId
+    ? 3 => bstr,              ; serverId
+    ? 4 => tstr / int,        ; hkdf
+    ? 5 => tstr / int,        ; alg
+    ? 6 => bstr,              ; salt
+    ? 7 => bstr / tstr        ; rpl
+}
+]]></artwork></figure>
 
         </section>
 
