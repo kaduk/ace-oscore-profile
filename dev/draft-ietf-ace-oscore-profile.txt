@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: May 9, 2019                                        RISE SICS AB
+Expires: May 10, 2019                                       RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                        November 5, 2018
+                                                        November 6, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 9, 2019.
+   This Internet-Draft will expire on May 10, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 1]
+Palombini, et al.         Expires May 10, 2019                  [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -72,7 +72,7 @@ Table of Contents
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Client-AS Communication . . . . . . . . . . . . . . . . . . .   5
-     3.1.  C-to-AS: POST to token endpoint . . . . . . . . . . . . .   5
+     3.1.  C-to-AS: POST to token endpoint . . . . . . . . . . . . .   6
      3.2.  AS-to-C: Access Token . . . . . . . . . . . . . . . . . .   7
        3.2.1.  OSCORE_Security_Context Object  . . . . . . . . . . .  10
    4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  13
@@ -87,11 +87,13 @@ Table of Contents
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
      9.1.  ACE OAuth Profile Registry  . . . . . . . . . . . . . . .  19
      9.2.  OSCORE Security Context Parameters Registry . . . . . . .  19
-     9.3.  Expert Review Instructions  . . . . . . . . . . . . . . .  20
+     9.3.  CWT Confirmation Methods Registry . . . . . . . . . . . .  20
+     9.4.  JWT Confirmation Methods Registry . . . . . . . . . . . .  20
+     9.5.  Expert Review Instructions  . . . . . . . . . . . . . . .  20
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  21
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  21
-   Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  22
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  22
+   Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  23
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  23
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
@@ -103,16 +105,17 @@ Table of Contents
    token, bound to a key (the proof-of-possession key) to authorize its
    access to the resource server.  In order to provide communication
    security, proof of possession, and server authentication they use
-   Object Security for Constrained RESTful Environments (OSCORE)
-   [I-D.ietf-core-object-security].
 
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 2]
+Palombini, et al.         Expires May 10, 2019                  [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
+
+   Object Security for Constrained RESTful Environments (OSCORE)
+   [I-D.ietf-core-object-security].
 
    OSCORE specifies how to use CBOR Object Signing and Encryption (COSE)
    [RFC8152] to secure CoAP messages.  Note that OSCORE can be used to
@@ -159,17 +162,17 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    This profile requires a client to retrieve an access token from the
    AS for the resource it wants to access on a RS, using the token
    endpoint, as specified in section 5.6 of [I-D.ietf-ace-oauth-authz].
-   To determine the AS in charge of a resource hosted at the RS, the
-   client C MAY send an initial Unauthorized Resource Request message to
-   the RS.  The RS then denies the request and sends the address of its
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 3]
+Palombini, et al.         Expires May 10, 2019                  [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
+   To determine the AS in charge of a resource hosted at the RS, the
+   client C MAY send an initial Unauthorized Resource Request message to
+   the RS.  The RS then denies the request and sends the address of its
    AS back to the client C as specified in section 5.1 of
    [I-D.ietf-ace-oauth-authz].  The access token request and response
    MUST be confidentiality-protected and ensure authenticity.  This
@@ -215,16 +218,16 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    attackers provoking the creation of OSCORE messages using old AEAD
    keys and nonces.
 
-   An overview of the profile flow for the OSCORE profile is given in
-   Figure 1.
 
 
 
-
-Palombini, et al.          Expires May 9, 2019                  [Page 4]
+Palombini, et al.         Expires May 10, 2019                  [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
+
+   An overview of the profile flow for the OSCORE profile is given in
+   Figure 1.
 
       C                            RS                   AS
       | [-- Resource Request --->] |                     |
@@ -267,20 +270,22 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    (pop-key) provisioned from the AS MUST be used as master secret in
    OSCORE.
 
+
+
+
+
+
+
+
+Palombini, et al.         Expires May 10, 2019                  [Page 5]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
+
 3.1.  C-to-AS: POST to token endpoint
 
    The client-to-AS request is specified in Section 5.6.1 of
    [I-D.ietf-ace-oauth-authz].
-
-
-
-
-
-
-Palombini, et al.          Expires May 9, 2019                  [Page 5]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
 
    The client MUST send this POST request to the token endpoint over a
    secure channel that guarantees authentication, message integrity and
@@ -328,12 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-
-
-
-
-
-Palombini, et al.          Expires May 9, 2019                  [Page 6]
+Palombini, et al.         Expires May 10, 2019                  [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 7]
+Palombini, et al.         Expires May 10, 2019                  [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 8]
+Palombini, et al.         Expires May 10, 2019                  [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                  [Page 9]
+Palombini, et al.         Expires May 10, 2019                  [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 10]
+Palombini, et al.         Expires May 10, 2019                 [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 11]
+Palombini, et al.         Expires May 10, 2019                 [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 12]
+Palombini, et al.         Expires May 10, 2019                 [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 13]
+Palombini, et al.         Expires May 10, 2019                 [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 14]
+Palombini, et al.         Expires May 10, 2019                 [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 15]
+Palombini, et al.         Expires May 10, 2019                 [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 16]
+Palombini, et al.         Expires May 10, 2019                 [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 17]
+Palombini, et al.         Expires May 10, 2019                 [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 18]
+Palombini, et al.         Expires May 10, 2019                 [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1046,7 +1046,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    It is requested that IANA create a new registry entitled "OSCORE
    Security Context Parameters" registry.  The registry is to be created
    as Expert Review Required.  Guidelines for the experts is provided
-   Section 9.3.  It should be noted that in additional to the expert
+   Section 9.5.  It should be noted that in additional to the expert
    review, some portions of the registry require a specification,
    potentially on standards track, be supplied as well.
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 19]
+Palombini, et al.         Expires May 10, 2019                 [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1082,12 +1082,45 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    The specification column for all of these entries will be this
    document.
 
-9.3.  Expert Review Instructions
+9.3.  CWT Confirmation Methods Registry
+
+   The following registration is done for the CWT Confirmation Methods
+   Registry following the procedure specified in section 7.2.1 of
+   [I-D.ietf-ace-cwt-proof-of-possession]:
+
+   o  Confirmation Method Name: "OSCORE_Security_Context"
+   o  Confirmation Method Description: OSCORE_Security_Context carrying
+      the OSCORE Security Context parameters
+   o  Confirmation Key: TBD (value between 4 and 255)
+   o  Confirmation Value Type(s): map
+   o  Change Controller: IESG
+   o  Specification Document(s): Section 3.2.1 of [[this specification]]
+
+9.4.  JWT Confirmation Methods Registry
+
+   The following registration is done for the JWT Confirmation Methods
+   Registry following the procedure specified in section 6.2.1 of
+   [RFC7800]:
+
+   o  Confirmation Method Value: "osc"
+   o  Confirmation Method Description: OSCORE_Security_Context carrying
+      the OSCORE Security Context parameters
+   o  Change Controller: IESG
+   o  Specification Document(s): Section 3.2.1 of [[this specification]]
+
+9.5.  Expert Review Instructions
 
    The IANA registry established in this document is defined as expert
    review.  This section gives some general guidelines for what the
    experts should be looking for, but they are being designated as
    experts for a reason so they should be given substantial latitude.
+
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 20]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
 
    Expert reviewers should take into consideration the following points:
 
@@ -1113,15 +1146,6 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
       document cannot have points assigned outside of that range.  The
       length of the encoded value should be weighed against how many
       code points of that length are left, the size of device it will be
-
-
-
-
-Palombini, et al.          Expires May 9, 2019                 [Page 20]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
       used on, and the number of code points left that encode to that
       size.
 
@@ -1147,6 +1171,13 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               (OSCORE)", draft-ietf-core-object-security-15 (work in
               progress), August 2018.
 
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 21]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1167,27 +1198,17 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 10.2.  Informative References
 
-
-
-
-
-
-
-Palombini, et al.          Expires May 9, 2019                 [Page 21]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
    [I-D.gerdes-ace-dcaf-authorize]
               Gerdes, S., Bergmann, O., and C. Bormann, "Delegated CoAP
               Authentication and Authorization Framework (DCAF)", draft-
               gerdes-ace-dcaf-authorize-04 (work in progress), October
               2015.
 
-   [I-D.selander-ace-cose-ecdhe]
-              Selander, G., Mattsson, J., and F. Palombini, "Ephemeral
-              Diffie-Hellman Over COSE (EDHOC)", draft-selander-ace-
-              cose-ecdhe-10 (work in progress), September 2018.
+   [I-D.ietf-ace-cwt-proof-of-possession]
+              Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
+              Tschofenig, "Proof-of-Possession Key Semantics for CBOR
+              Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
+              possession-03 (work in progress), June 2018.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1205,6 +1226,18 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
+
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 22]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
+
+   [RFC7800]  Jones, M., Bradley, J., and H. Tschofenig, "Proof-of-
+              Possession Key Semantics for JSON Web Tokens (JWTs)",
+              RFC 7800, DOI 10.17487/RFC7800, April 2016,
+              <https://www.rfc-editor.org/info/rfc7800>.
 
 Appendix A.  Profile Requirements
 
@@ -1225,15 +1258,6 @@ Appendix A.  Profile Requirements
    o  profile identifier: coap_oscore
    o  (Optional) how the RS talks to the AS for introspection: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
-
-
-
-
-Palombini, et al.          Expires May 9, 2019                 [Page 22]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
    o  how the client talks to the AS for requesting a token: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
    o  how/if the authz-info endpoint is protected: Security protocol
@@ -1252,6 +1276,18 @@ Authors' Addresses
    Ericsson AB
 
    Email: francesca.palombini@ericsson.com
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 23]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
    Ludwig Seitz
@@ -1285,4 +1321,24 @@ Authors' Addresses
 
 
 
-Palombini, et al.          Expires May 9, 2019                 [Page 23]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 24]
