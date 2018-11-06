@@ -594,11 +594,10 @@ ul.toc li {
       "expires_in" : "3600",
       "cnf" : {
         "OSCORE_Security_Context" : {
-          "kty" : "Symmetric",
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'qA',
           "serverId" : b64'Qg',
-          "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+          "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
         }
       }
     }
@@ -616,11 +615,10 @@ ul.toc li {
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
       "OSCORE_Security_Context" : {
-        "kty" : "Symmetric",
         "alg" : "AES-CCM-16-64-128",
         "clientId" : b64'Qg',
         "serverId" : b64'qA',
-        "k" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
+        "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
     }
   }
 
@@ -662,27 +660,14 @@ ul.toc li {
 <h1 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#oscore-sec-ctx" id="oscore-sec-ctx">OSCORE_Security_Context Object</a>
 </h1>
-<p id="rfc.section.3.2.1.p.1">A OSCORE_Security_Context is a CBOR map object.  The set of common parameters that can appear in a OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <a href="#sec-ctx-params-reg" class="xref">Section 9.2</a>).  </p>
-<p id="rfc.section.3.2.1.p.2">The CDDL grammar describing OSCORE_Security_Context is: </p>
-<pre>
-OSCORE_Security_Context = {
-    ? 1 =&gt; bstr,              ; ms
-    ? 2 =&gt; bstr,              ; clientId
-    ? 3 =&gt; bstr,              ; serverId
-    ? 4 =&gt; tstr / int,        ; hkdf
-    ? 5 =&gt; tstr / int,        ; alg
-    ? 6 =&gt; bstr,              ; salt
-    ? 7 =&gt; bstr / tstr        ; rpl
-}
-</pre>
-<p id="rfc.section.3.2.1.p.3">This document defines a set of parameters for an OSCORE_Security_Context object.  <a href="#table-key-labels" class="xref">Table 1</a> provides a summary of the parameters defined in this section.  </p>
+<p id="rfc.section.3.2.1.p.1">An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>).  The OSCORE_Security_Context object can either be encoded as JSON or as CBOR. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <a href="#sec-ctx-params-reg" class="xref">Section 9.2</a>) and is defined below.  All parameters are optional.  <a href="#table-key-labels" class="xref">Table 1</a> provides a summary of the OSCORE_Security_Context parameters defined in this section.  </p>
 <div id="rfc.table.1"></div>
 <div id="table-key-labels"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
-<caption>OSCORE_Security_Context Map Labels</caption>
+<caption>OSCORE_Security_Context Parameters</caption>
 <thead><tr>
 <th class="left">name</th>
-<th class="left">label</th>
+<th class="left">CBOR label</th>
 <th class="left">CBOR type</th>
 <th class="left">registry</th>
 <th class="left">description</th>
@@ -743,22 +728,47 @@ OSCORE_Security_Context = {
 
 <dl>
 <dt>ms:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "ms" value is a Base64 encoded byte string.  In CBOR, the "ms" type is bstr, and has label 1.  </dd>
 <dt>clientId:</dt>
-<dd style="margin-left: 8">This parameter is used to carry a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </dd>
+<dd style="margin-left: 8">This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "clientID" value is a Base64 encoded byte string.  In CBOR, the "clientID" type is bstr, and has label 2.  </dd>
 <dt>serverId:</dt>
-<dd style="margin-left: 8">This parameter is used to carry a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </dd>
+<dd style="margin-left: 8">This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "serverID" value is a Base64 encoded byte string.  In CBOR, the "serverID" type is bstr, and has label 3.  </dd>
 <dt>hkdf:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE HKDF Algorithm, which can be an integer or a text string.  The int value MUST be taken and can only encode an alg from the set of HMAC-based KDF algorithms in the COSE Algorithms registry.  For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only HMAC-based HKDF algorithms MUST be used.  In JSON, the "hkdf" value is a case-sensitive ASCII string.  In CBOR, the "hkdf" type is tstr or int, and has label 4.  </dd>
 <dt>alg:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE AEAD Algorithm, which can be an integer or a text string.  The int value MUST be taken and can only encode an alg from the set of AEAD algorithms in the COSE Algorithms registry.  For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> The values used should either be registered in the IANA "COSE Algorithms" registry, or be a value that contains a name allocated in a way that is highly unlikely to collide with other names. From the "COSE Algorithms" registry, only AEAD algorithms MUST be used.  In JSON, the "alg" value is a case-sensitive ASCII string.  In CBOR, the "alg" type is tstr or int, and has label 5.  </dd>
 <dt>salt:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "salt" value is a Base64 encoded byte string.  In CBOR, the "salt" type is bstr, and has label 6.  </dd>
 <dt>repl:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE Replay Window Size and Type value, encoded as a bstr.  For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  </dd>
+<dd style="margin-left: 8">This parameter is used to carry the OSCORE value, encoded as a bstr.  This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "repl" value is a Base64 encoded byte string.  In CBOR, the "repl" type is bstr, and has label 7.  </dd>
 </dl>
 
 <p> </p>
+<p id="rfc.section.3.2.1.p.3">An example of JSON OSCORE_Security_Context is given in <a href="#JSON-osc" class="xref">Figure 8</a>.  </p>
+<div id="rfc.figure.8"></div>
+<div id="JSON-osc"></div>
+<pre>
+        "OSCORE_Security_Context" : {
+          "alg" : "AES-CCM-16-64-128",
+          "clientId" : b64'qA',
+          "serverId" : b64'Qg',
+          "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+        }
+  
+            </pre>
+<p class="figure">Figure 8: Example JSON OSCORE_Security_Context object</p>
+<p id="rfc.section.3.2.1.p.4">The CDDL grammar describing the CBOR OSCORE_Security_Context object is: </p>
+<pre>
+OSCORE_Security_Context = {
+    ? 1 =&gt; bstr,              ; ms
+    ? 2 =&gt; bstr,              ; clientId
+    ? 3 =&gt; bstr,              ; serverId
+    ? 4 =&gt; tstr / int,        ; hkdf
+    ? 5 =&gt; tstr / int,        ; alg
+    ? 6 =&gt; bstr,              ; salt
+    ? 7 =&gt; bstr / tstr        ; rpl
+}
+</pre>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#c-rs1" id="c-rs1">Client-RS Communication</a>
 </h1>
@@ -771,8 +781,8 @@ OSCORE_Security_Context = {
 <p id="rfc.section.4.1.p.2">The authz-info endpoint is not protected, nor are the responses from this resource.  </p>
 <p id="rfc.section.4.1.p.3">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
 <p id="rfc.section.4.1.p.4">Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.  </p>
-<p><a href="#ex3" class="xref">Figure 8</a> shows an example of the request sent from the client to the RS.  </p>
-<div id="rfc.figure.8"></div>
+<p><a href="#ex3" class="xref">Figure 9</a> shows an example of the request sent from the client to the RS.  </p>
+<div id="rfc.figure.9"></div>
 <div id="ex3"></div>
 <pre>
       Header: POST (Code=0.02)
@@ -784,15 +794,15 @@ OSCORE_Security_Context = {
          (remainder of access token omitted for brevity)',
   
           </pre>
-<p class="figure">Figure 8: Example C-to-RS POST /authz-info request using CWT</p>
+<p class="figure">Figure 9: Example C-to-RS POST /authz-info request using CWT</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#rs-c" id="rs-c">RS-to-C: 2.01 (Created)</a>
 </h1>
 <p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
 <p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of 64 bits. The RS MUST store this nonce as long as the access token related to it is still valid.  </p>
 <p id="rfc.section.4.2.p.3">Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> allows.  </p>
-<p><a href="#ex4" class="xref">Figure 9</a> shows an example of the response sent from the RS to the client.  </p>
-<div id="rfc.figure.9"></div>
+<p><a href="#ex4" class="xref">Figure 10</a> shows an example of the response sent from the RS to the client.  </p>
+<div id="rfc.figure.10"></div>
 <div id="ex4"></div>
 <pre>
       Header: Created (Code=2.01)
@@ -801,7 +811,7 @@ OSCORE_Security_Context = {
        h'018a278f7faab55a',
   
           </pre>
-<p class="figure">Figure 9: Example RS-to-C 2.01 (Created) response</p>
+<p class="figure">Figure 10: Example RS-to-C 2.01 (Created) response</p>
 <p id="rfc.section.4.2.p.5">When receiving an updated access token with updated authorization information from the client (see section <a href="#c-as" class="xref">Section 3.1</a>), it is RECOMMENDED that the RS overwrites the previous token, that is only the latest authorization information in the token received by the RS is valid. This simplifies for the RS to keep track of authorization information for a given client.  </p>
 <p id="rfc.section.4.2.p.6">As specified in section 5.8.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, the RS MUST notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.  </p>
 <h1 id="rfc.section.4.3">

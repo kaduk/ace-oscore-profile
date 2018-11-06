@@ -76,7 +76,7 @@ Table of Contents
      3.2.  AS-to-C: Access Token . . . . . . . . . . . . . . . . . .   7
        3.2.1.  OSCORE_Security_Context Object  . . . . . . . . . . .  10
    4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  13
-     4.1.  C-to-RS: POST to authz-info endpoint  . . . . . . . . . .  14
+     4.1.  C-to-RS: POST to authz-info endpoint  . . . . . . . . . .  13
      4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  14
      4.3.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . .  15
      4.4.  Access rights verification  . . . . . . . . . . . . . . .  16
@@ -460,11 +460,10 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
          "expires_in" : "3600",
          "cnf" : {
            "OSCORE_Security_Context" : {
-             "kty" : "Symmetric",
              "alg" : "AES-CCM-16-64-128",
              "clientId" : b64'qA',
              "serverId" : b64'Qg',
-             "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+             "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
            }
          }
        }
@@ -483,11 +482,10 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
        "scope" :  "temperature_g firmware_p",
        "cnf" : {
          "OSCORE_Security_Context" : {
-           "kty" : "Symmetric",
            "alg" : "AES-CCM-16-64-128",
            "clientId" : b64'Qg',
            "serverId" : b64'qA',
-           "k" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+           "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
        }
      }
 
@@ -498,6 +496,8 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    same OSCORE Security Context, which is valid and authorized, the AS
    MUST omit the 'cnf' parameter in the response, and MUST carry the
    client identifier in the 'kid' field in the 'cnf' parameter of the
+   token.  The client identifier needs to be provisioned, in order for
+   the RS to identify the previously generated Security Context.
 
 
 
@@ -505,9 +505,6 @@ Palombini, et al.         Expires May 10, 2019                  [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
-
-   token.  The client identifier needs to be provisioned, in order for
-   the RS to identify the previously generated Security Context.
 
    Figure 6 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
@@ -546,12 +543,15 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 3.2.1.  OSCORE_Security_Context Object
 
-   A OSCORE_Security_Context is a CBOR map object.  The set of common
-   parameters that can appear in a OSCORE_Security_Context object can be
-   found in the IANA "OSCORE Security Context Parameters" registry
-   (Section Section 9.2).
-
-   The CDDL grammar describing OSCORE_Security_Context is:
+   An OSCORE_Security_Context is an object that represents part or all
+   of an OSCORE Security Context (Section 3.1 of
+   [I-D.ietf-core-object-security]).  The OSCORE_Security_Context object
+   can either be encoded as JSON or as CBOR.  In both cases, the set of
+   common parameters that can appear in an OSCORE_Security_Context
+   object can be found in the IANA "OSCORE Security Context Parameters"
+   registry (Section Section 9.2) and is defined below.  All parameters
+   are optional.  Table 1 provides a summary of the
+   OSCORE_Security_Context parameters defined in this section.
 
 
 
@@ -562,64 +562,9 @@ Palombini, et al.         Expires May 10, 2019                 [Page 10]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-   OSCORE_Security_Context = {
-       ? 1 => bstr,              ; ms
-       ? 2 => bstr,              ; clientId
-       ? 3 => bstr,              ; serverId
-       ? 4 => tstr / int,        ; hkdf
-       ? 5 => tstr / int,        ; alg
-       ? 6 => bstr,              ; salt
-       ? 7 => bstr / tstr        ; rpl
-   }
-
-   This document defines a set of parameters for an
-   OSCORE_Security_Context object.  Table 1 provides a summary of the
-   parameters defined in this section.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Palombini, et al.         Expires May 10, 2019                 [Page 11]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
    +----------+-------+----------------+--------------+----------------+
-   | name     | label | CBOR type      | registry     | description    |
+   | name     | CBOR  | CBOR type      | registry     | description    |
+   |          | label |                |              |                |
    +----------+-------+----------------+--------------+----------------+
    | ms       | 1     | bstr           |              | OSCORE Master  |
    |          |       |                |              | Secret value   |
@@ -658,14 +603,69 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    |          |       |                |              | and Size       |
    +----------+-------+----------------+--------------+----------------+
 
-                Table 1: OSCORE_Security_Context Map Labels
+                Table 1: OSCORE_Security_Context Parameters
 
-   ms:  This parameter is used to carry the OSCORE Master Secret value,
+   ms:  This parameter identifies the OSCORE Master Secret value, which
+      is a byte string.  For more information about this field, see
+      section 3.1 of [I-D.ietf-core-object-security].  In JSON, the "ms"
+      value is a Base64 encoded byte string.  In CBOR, the "ms" type is
+      bstr, and has label 1.
+
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 11]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
+
+   clientId:  This parameter identifies a client identifier as a byte
+      string.  This identifier is used as OSCORE Sender ID in the client
+      and OSCORE Recipient ID in the server.  For more information about
+      this field, see section 3.1 of [I-D.ietf-core-object-security].
+      In JSON, the "clientID" value is a Base64 encoded byte string.  In
+      CBOR, the "clientID" type is bstr, and has label 2.
+
+   serverId:  This parameter identifies a server identifier as a byte
+      string.  This identifier is used as OSCORE Sender ID in the client
+      and OSCORE Recipient ID in the server.  For more information about
+      this field, see section 3.1 of [I-D.ietf-core-object-security].
+      In JSON, the "serverID" value is a Base64 encoded byte string.  In
+      CBOR, the "serverID" type is bstr, and has label 3.
+
+   hkdf:  This parameter identifies the OSCORE HKDF Algorithm.  For more
+      information about this field, see section 3.1 of
+      [I-D.ietf-core-object-security] The values used should either be
+      registered in the IANA "COSE Algorithms" registry, or be a value
+      that contains a name allocated in a way that is highly unlikely to
+      collide with other names.  From the "COSE Algorithms" registry,
+      only HMAC-based HKDF algorithms MUST be used.  In JSON, the "hkdf"
+      value is a case-sensitive ASCII string.  In CBOR, the "hkdf" type
+      is tstr or int, and has label 4.
+
+   alg:  This parameter identifies the OSCORE AEAD Algorithm.  For more
+      information about this field, see section 3.1 of
+      [I-D.ietf-core-object-security] The values used should either be
+      registered in the IANA "COSE Algorithms" registry, or be a value
+      that contains a name allocated in a way that is highly unlikely to
+      collide with other names.  From the "COSE Algorithms" registry,
+      only AEAD algorithms MUST be used.  In JSON, the "alg" value is a
+      case-sensitive ASCII string.  In CBOR, the "alg" type is tstr or
+      int, and has label 5.
+
+   salt:  This parameter identifies the OSCORE Master Secret value,
       which is a byte string.  For more information about this field,
-      see section 3.1 of [I-D.ietf-core-object-security].
+      see section 3.1 of [I-D.ietf-core-object-security].  In JSON, the
+      "salt" value is a Base64 encoded byte string.  In CBOR, the "salt"
+      type is bstr, and has label 6.
 
-   clientId:  This parameter is used to carry a client identifier as a
-      byte string.  This identifier is used as OSCORE Sender ID in the
+   repl:  This parameter is used to carry the OSCORE value, encoded as a
+      bstr.  This parameter identifies the OSCORE Replay Window Size and
+      Type value, which is a byte string.  For more information about
+      this field, see section 3.1 of [I-D.ietf-core-object-security].
+      In JSON, the "repl" value is a Base64 encoded byte string.  In
+      CBOR, the "repl" type is bstr, and has label 7.
+
+   An example of JSON OSCORE_Security_Context is given in Figure 8.
 
 
 
@@ -674,36 +674,28 @@ Palombini, et al.         Expires May 10, 2019                 [Page 12]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-      client and OSCORE Recipient ID in the server.  For more
-      information about this field, see section 3.1 of
-      [I-D.ietf-core-object-security].
+           "OSCORE_Security_Context" : {
+             "alg" : "AES-CCM-16-64-128",
+             "clientId" : b64'qA',
+             "serverId" : b64'Qg',
+             "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
+           }
 
-   serverId:  This parameter is used to carry a server identifier as a
-      byte string.  This identifier is used as OSCORE Sender ID in the
-      client and OSCORE Recipient ID in the server.  For more
-      information about this field, see section 3.1 of
-      [I-D.ietf-core-object-security].
 
-   hkdf:  This parameter is used to carry the OSCORE HKDF Algorithm,
-      which can be an integer or a text string.  The int value MUST be
-      taken and can only encode an alg from the set of HMAC-based KDF
-      algorithms in the COSE Algorithms registry.  For more information
-      about this field, see section 3.1 of
-      [I-D.ietf-core-object-security]
+           Figure 8: Example JSON OSCORE_Security_Context object
 
-   alg:  This parameter is used to carry the OSCORE AEAD Algorithm,
-      which can be an integer or a text string.  The int value MUST be
-      taken and can only encode an alg from the set of AEAD algorithms
-      in the COSE Algorithms registry.  For more information about this
-      field, see section 3.1 of [I-D.ietf-core-object-security]
+   The CDDL grammar describing the CBOR OSCORE_Security_Context object
+   is:
 
-   salt:  This parameter is used to carry the OSCORE Master Salt value,
-      which is a byte string.  For more information about this field,
-      see section 3.1 of [I-D.ietf-core-object-security].
-
-   repl:  This parameter is used to carry the OSCORE Replay Window Size
-      and Type value, encoded as a bstr.  For more information about
-      this field, see section 3.1 of [I-D.ietf-core-object-security].
+   OSCORE_Security_Context = {
+       ? 1 => bstr,              ; ms
+       ? 2 => bstr,              ; clientId
+       ? 3 => bstr,              ; serverId
+       ? 4 => tstr / int,        ; hkdf
+       ? 5 => tstr / int,        ; alg
+       ? 6 => bstr,              ; salt
+       ? 7 => bstr / tstr        ; rpl
+   }
 
 4.  Client-RS Communication
 
@@ -722,14 +714,6 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    generate a valid OSCORE context and thus not be able to prove
    possession of the pop-key.
 
-
-
-
-Palombini, et al.         Expires May 10, 2019                 [Page 13]
-
-Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
 4.1.  C-to-RS: POST to authz-info endpoint
 
    The client MUST use CoAP and the Authorization Information resource
@@ -739,13 +723,20 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    The authz-info endpoint is not protected, nor are the responses from
    this resource.
 
+
+
+Palombini, et al.         Expires May 10, 2019                 [Page 13]
+
+Internet-Draft            OSCORE Profile of ACE            November 2018
+
+
    The access token MUST be encrypted, since it is transferred from the
    client to the RS over an unprotected channel.
 
    Note that a client may be required to re-POST the access token, since
    an RS may delete a stored access token, due to lack of memory.
 
-   Figure 8 shows an example of the request sent from the client to the
+   Figure 9 shows an example of the request sent from the client to the
    RS.
 
          Header: POST (Code=0.02)
@@ -757,7 +748,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
             (remainder of access token omitted for brevity)',
 
 
-       Figure 8: Example C-to-RS POST /authz-info request using CWT
+       Figure 9: Example C-to-RS POST /authz-info request using CWT
 
 4.2.  RS-to-C: 2.01 (Created)
 
@@ -779,6 +770,15 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    nonce of 64 bits.  The RS MUST store this nonce as long as the access
    token related to it is still valid.
 
+   Note that, when using this profile, an identifier of the token (e.g.,
+   the cti for a CWT) is not transported in the payload of this request,
+   as section 5.8.1 of [I-D.ietf-ace-oauth-authz] allows.
+
+   Figure 10 shows an example of the response sent from the RS to the
+   client.
+
+
+
 
 
 Palombini, et al.         Expires May 10, 2019                 [Page 14]
@@ -786,20 +786,13 @@ Palombini, et al.         Expires May 10, 2019                 [Page 14]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-   Note that, when using this profile, an identifier of the token (e.g.,
-   the cti for a CWT) is not transported in the payload of this request,
-   as section 5.8.1 of [I-D.ietf-ace-oauth-authz] allows.
-
-   Figure 9 shows an example of the response sent from the RS to the
-   client.
-
          Header: Created (Code=2.01)
          Content-Format: "application/cbor"
          Payload:
           h'018a278f7faab55a',
 
 
-             Figure 9: Example RS-to-C 2.01 (Created) response
+            Figure 10: Example RS-to-C 2.01 (Created) response
 
    When receiving an updated access token with updated authorization
    information from the client (see section Section 3.1), it is
@@ -835,6 +828,13 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    use this Security Context to communicate with the RS when accessing
    the resources as specified by the authorization information.
 
+   The client then uses this Security Context to send requests to RS
+   using OSCORE.  In the first request sent to the RS, the client MUST
+   include the kid context, with value ID Context, i.e. N1 concatenated
+   with N2.  The client needs to make sure the RS receives the kid
+   context, possibly adding the kid context to later requests, until it
+
+
 
 
 Palombini, et al.         Expires May 10, 2019                 [Page 15]
@@ -842,11 +842,6 @@ Palombini, et al.         Expires May 10, 2019                 [Page 15]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-   The client then uses this Security Context to send requests to RS
-   using OSCORE.  In the first request sent to the RS, the client MUST
-   include the kid context, with value ID Context, i.e. N1 concatenated
-   with N2.  The client needs to make sure the RS receives the kid
-   context, possibly adding the kid context to later requests, until it
    receives a valid OSCORE response from the RS using the same Security
    Context.
 
@@ -890,6 +885,11 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
    The response code MUST be 4.01 (Unauthorized) in case the client has
    not used the Security Context associated with the access token, or if
+   RS has no valid access token for the client.  If RS has an access
+   token for the client but not for the resource that was requested, RS
+   MUST reject the request with a 4.03 (Forbidden).  If RS has an access
+   token for the client but it does not cover the action that was
+
 
 
 
@@ -898,10 +898,6 @@ Palombini, et al.         Expires May 10, 2019                 [Page 16]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-   RS has no valid access token for the client.  If RS has an access
-   token for the client but not for the resource that was requested, RS
-   MUST reject the request with a 4.03 (Forbidden).  If RS has an access
-   token for the client but it does not cover the action that was
    requested on the resource, RS MUST reject the request with a 4.05
    (Method Not Allowed).
 
@@ -946,6 +942,10 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    The RS MUST discard the current security context associated with a
    client when:
 
+   o  Sequence Number space ends.
+
+   o  Access token associated with the context expires.
+
 
 
 
@@ -953,10 +953,6 @@ Palombini, et al.         Expires May 10, 2019                 [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
-
-   o  Sequence Number space ends.
-
-   o  Access token associated with the context expires.
 
 7.  Security Considerations
 
@@ -1003,6 +999,10 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    As this document uses OSCORE, thus the privacy considerations from
    [I-D.ietf-core-object-security] apply here as well.
 
+   An unprotected response to an unauthorized request may disclose
+   information about the resource server and/or its existing
+   relationship with the client.  It is advisable to include as little
+
 
 
 Palombini, et al.         Expires May 10, 2019                 [Page 18]
@@ -1010,9 +1010,6 @@ Palombini, et al.         Expires May 10, 2019                 [Page 18]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-   An unprotected response to an unauthorized request may disclose
-   information about the resource server and/or its existing
-   relationship with the client.  It is advisable to include as little
    information as possible in an unencrypted response.  When an OSCORE
    Security Context already exists between the client and the resource
    server, more detailed information may be included.
@@ -1058,6 +1055,9 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
       labels MUST be unique.  The label can be a positive integer, a
       negative integer or a string.  Integer values between 0 and 255
       and strings of length 1 are designated as Standards Track Document
+      required.  Integer values from 256 to 65535 and strings of length
+      2 are designated as Specification Required.  Integer values of
+      greater than 65535 and strings of length greater than 2 are
 
 
 
@@ -1066,9 +1066,6 @@ Palombini, et al.         Expires May 10, 2019                 [Page 19]
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
-      required.  Integer values from 256 to 65535 and strings of length
-      2 are designated as Specification Required.  Integer values of
-      greater than 65535 and strings of length greater than 2 are
       designated as expert review.  Integer values less than -65536 are
       marked as private use.
    CBOR Type  This field contains the CBOR type for the field.
@@ -1115,14 +1112,15 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    experts should be looking for, but they are being designated as
    experts for a reason so they should be given substantial latitude.
 
+   Expert reviewers should take into consideration the following points:
+
+
 
 
 Palombini, et al.         Expires May 10, 2019                 [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
-
-   Expert reviewers should take into consideration the following points:
 
    o  Point squatting should be discouraged.  Reviewers are encouraged
       to get sufficient information for registration requests to ensure
@@ -1170,6 +1168,8 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               "Object Security for Constrained RESTful Environments
               (OSCORE)", draft-ietf-core-object-security-15 (work in
               progress), August 2018.
+
+
 
 
 
