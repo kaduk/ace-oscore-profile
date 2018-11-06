@@ -805,6 +805,27 @@ OSCORE_Security_Context = {
 
       </section>
 
+      <section title="CWT Confirmation Methods Registry">
+
+        <t>The following registration is done for the CWT Confirmation Methods Registry following the procedure specified in section 7.2.1 of <xref target="I-D.ietf-ace-oauth-authz"/>:</t>
+
+        <t><?rfc subcompact="yes"?><list style='symbols'>
+          <t>Confirmation Method Name: "OSCORE_Security_Context"</t>
+
+          <t>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</t>
+
+          <t>Confirmation Key: TBD (value between 4 and 255)</t>
+
+          <t>Confirmation Value Type(s): map</t>
+        
+          <t>Change Controller: IESG</t>
+
+          <t>Specification Document(s): <xref target="oscore-sec-ctx"/> of &SELF;</t>
+        </list></t>
+
+      </section>
+
+
       <section title="Expert Review Instructions" anchor="review">
         <t>
           The IANA registry established in this document is defined as expert review.
