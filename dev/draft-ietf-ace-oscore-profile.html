@@ -316,7 +316,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Palombini, F., Seitz, L., Selander, G., and M. Gunnarsson" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-oscore-profile-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07" />
   <meta name="dct.abstract" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
   <meta name="description" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
 
@@ -340,7 +340,7 @@ ul.toc li {
 <td class="right">L. Seitz</td>
 </tr>
 <tr>
-<td class="left">Expires: May 10, 2019</td>
+<td class="left">Expires: May 11, 2019</td>
 <td class="right">RISE SICS AB</td>
 </tr>
 <tr>
@@ -361,7 +361,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">November 6, 2018</td>
+<td class="right">November 7, 2018</td>
 </tr>
 
     	
@@ -377,7 +377,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 10, 2019.</p>
+<p>This Internet-Draft will expire on May 11, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -734,9 +734,9 @@ ul.toc li {
 <dt>serverId:</dt>
 <dd style="margin-left: 8">This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "serverID" value is a Base64 encoded byte string.  In CBOR, the "serverID" type is bstr, and has label 3.  </dd>
 <dt>hkdf:</dt>
-<dd style="margin-left: 8">This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be HMAC-based HKDF algorithms. The value can either be the integer value or the text string name of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.  In JSON, the "hkdf" value is a case-sensitive ASCII string or an integer.  In CBOR, the "hkdf" type is tstr or int, and has label 4.  </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be HMAC-based HKDF algorithms. The value can either be the integer or the text string value of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.  In JSON, the "hkdf" value is a case-sensitive ASCII string or an integer.  In CBOR, the "hkdf" type is tstr or int, and has label 4.  </dd>
 <dt>alg:</dt>
-<dd style="margin-left: 8">This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be AEAD algorithms. The value can either be the integer value or the text string name of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.  In JSON, the "alg" value is a case-sensitive ASCII string or an integer.  In CBOR, the "alg" type is tstr or int, and has label 5.  </dd>
+<dd style="margin-left: 8">This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be AEAD algorithms. The value can either be the integer or the text string value of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.  In JSON, the "alg" value is a case-sensitive ASCII string or an integer.  In CBOR, the "alg" type is tstr or int, and has label 5.  </dd>
 <dt>salt:</dt>
 <dd style="margin-left: 8">This parameter identifies the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "salt" value is a Base64 encoded byte string.  In CBOR, the "salt" type is bstr, and has label 6.  </dd>
 <dt>repl:</dt>
@@ -994,7 +994,7 @@ OSCORE_Security_Context = {
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-cwt-proof-of-possession">[I-D.ietf-ace-cwt-proof-of-possession]</b></td>
 <td class="top">
-<a>Jones, M.</a>, <a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-cwt-proof-of-possession-03">Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)</a>", Internet-Draft draft-ietf-ace-cwt-proof-of-possession-03, June 2018.</td>
+<a>Jones, M.</a>, <a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-cwt-proof-of-possession-04">Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)</a>", Internet-Draft draft-ietf-ace-cwt-proof-of-possession-04, November 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC4949">[RFC4949]</b></td>
