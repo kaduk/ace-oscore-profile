@@ -6,7 +6,7 @@
 <!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
 <!ENTITY I-D.ietf-ace-oauth-params SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-params.xml">
-<!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">
+<!--<!ENTITY I-D.gerdes-ace-dcaf-authorize SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.gerdes-ace-dcaf-authorize.xml">-->
 <!ENTITY I-D.ietf-ace-cwt-proof-of-possession SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-cwt-proof-of-possession">
 <!ENTITY RFC7800 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7800.xml"> 
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
@@ -14,7 +14,7 @@
 <!ENTITY RFC8152 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8152.xml">
 <!ENTITY RFC4949 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4949.xml">
 <!ENTITY RFC6749 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
-<!ENTITY RFC7049 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7049.xml">
+<!--<!ENTITY RFC7049 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7049.xml">-->
 <!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC8392 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8392.xml">
 ]>
@@ -923,13 +923,13 @@ OSCORE_Security_Context = {
 
     <references title='Informative References'>
       
-      &I-D.gerdes-ace-dcaf-authorize;
+      <!--&I-D.gerdes-ace-dcaf-authorize;-->
       <!--&I-D.selander-ace-cose-ecdhe;-->
       &I-D.ietf-ace-cwt-proof-of-possession;
       &RFC7800;
       &RFC4949;
       &RFC6749;
-      &RFC7049;
+      <!--&RFC7049;-->
       &RFC7231;
 
     </references>
