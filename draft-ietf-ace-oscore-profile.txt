@@ -1198,12 +1198,6 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 10.2.  Informative References
 
-   [I-D.gerdes-ace-dcaf-authorize]
-              Gerdes, S., Bergmann, O., and C. Bormann, "Delegated CoAP
-              Authentication and Authorization Framework (DCAF)", draft-
-              gerdes-ace-dcaf-authorize-04 (work in progress), October
-              2015.
-
    [I-D.ietf-ace-cwt-proof-of-possession]
               Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
@@ -1218,14 +1212,20 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
 
-   [RFC7049]  Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", RFC 7049, DOI 10.17487/RFC7049,
-              October 2013, <https://www.rfc-editor.org/info/rfc7049>.
-
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
+
+   [RFC7800]  Jones, M., Bradley, J., and H. Tschofenig, "Proof-of-
+              Possession Key Semantics for JSON Web Tokens (JWTs)",
+              RFC 7800, DOI 10.17487/RFC7800, April 2016,
+              <https://www.rfc-editor.org/info/rfc7800>.
+
+
+
+
+
 
 
 
@@ -1233,11 +1233,6 @@ Palombini, et al.         Expires May 11, 2019                 [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
-
-   [RFC7800]  Jones, M., Bradley, J., and H. Tschofenig, "Proof-of-
-              Possession Key Semantics for JSON Web Tokens (JWTs)",
-              RFC 7800, DOI 10.17487/RFC7800, April 2016,
-              <https://www.rfc-editor.org/info/rfc7800>.
 
 Appendix A.  Profile Requirements
 
@@ -1278,8 +1273,13 @@ Authors' Addresses
    Email: francesca.palombini@ericsson.com
 
 
+   Ludwig Seitz
+   RISE SICS AB
+   Scheelevagen 17
+   Lund  22370
+   Sweden
 
-
+   Email: ludwig.seitz@ri.se
 
 
 
@@ -1288,15 +1288,6 @@ Authors' Addresses
 Palombini, et al.         Expires May 11, 2019                 [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
-
-
-   Ludwig Seitz
-   RISE SICS AB
-   Scheelevagen 17
-   Lund  22370
-   Sweden
-
-   Email: ludwig.seitz@ri.se
 
 
    Goeran Selander
@@ -1312,6 +1303,15 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
    Sweden
 
    Email: martin.gunnarsson@ri.se
+
+
+
+
+
+
+
+
+
 
 
 
