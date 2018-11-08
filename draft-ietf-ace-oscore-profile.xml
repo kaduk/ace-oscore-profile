@@ -141,15 +141,19 @@
       </t>
 
       <t>
-        Once the client has retrieved the access token, it posts it to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/>. If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N1.
+        Once the client has retrieved the access token, it generates a nonce N1 and posts both the token an N1 to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/> and Content-Format = application/ace+cbor.
       </t>
 
       <t>
-        After receiving the nonce N1, the client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The client then derives the complete Security Context from the ID Context plus the parameters received from the AS.
+        If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N2. Moreover, the server concatenates N1 with N2 and sets the ID Context in the Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
       </t>
 
       <t>
-        Finally, the client sends a request protected with OSCORE to the RS. This message contains the ID Context value. When receiving this request after the 2.01 (Created) response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. Once the client receives a valid response, it does not continue to include the ID Context value in further requests.
+        After receiving the nonce N2, the client concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The client then derives the complete Security Context from the ID Context plus the parameters received from the AS.
+      </t>
+
+      <t>
+        Finally, the client sends a request protected with OSCORE to the RS. This message may contain the ID Context value. If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. This Security Context is discarded if the same token is re-used to successfully derive a new Security Context. Once the client receives a valid response, it does not continue to include the ID Context value in further requests.
       </t>
 
       <t>
@@ -173,15 +177,15 @@
    | <---------------------------- Access Token ----- |
    |                               + RS Information   |
    | ---- POST /authz-info ---> |                     |
+   |     (access_token, N1)     |                     |
    |                            |                     |
-   | <--- 2.01 Created (N1) --- |                     |
+   | <--- 2.01 Created (N2) --- |                     |
    |                            |                     |
- /Sec Context Derivation/       |                     |
+ /Sec Context             /Sec Context                |
+   Derivation/              Derivation/               |
    |                            |                     |
    | ---- OSCORE Request -----> |                     |
-   |         (N1, N2)           |                     |
-   |                            |                     |
-   |               /Sec Context Derivation/           |
+   |         ?(N1, N2)          |                     |
    |                            |                     |
    | <--- OSCORE Response ----- |                     |
    |                            |                     |
