@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: May 12, 2019                                       RISE SICS AB
+Expires: June 3, 2019                                       RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                        November 8, 2018
+                                                       November 30, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 12, 2019.
+   This Internet-Draft will expire on June 3, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 1]
+Palombini, et al.         Expires June 3, 2019                  [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 2]
+Palombini, et al.         Expires June 3, 2019                  [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 3]
+Palombini, et al.         Expires June 3, 2019                  [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 4]
+Palombini, et al.         Expires June 3, 2019                  [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 5]
+Palombini, et al.         Expires June 3, 2019                  [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 6]
+Palombini, et al.         Expires June 3, 2019                  [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 7]
+Palombini, et al.         Expires June 3, 2019                  [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 8]
+Palombini, et al.         Expires June 3, 2019                  [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                  [Page 9]
+Palombini, et al.         Expires June 3, 2019                  [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 10]
+Palombini, et al.         Expires June 3, 2019                 [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 11]
+Palombini, et al.         Expires June 3, 2019                 [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 12]
+Palombini, et al.         Expires June 3, 2019                 [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 13]
+Palombini, et al.         Expires June 3, 2019                 [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 14]
+Palombini, et al.         Expires June 3, 2019                 [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 15]
+Palombini, et al.         Expires June 3, 2019                 [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 16]
+Palombini, et al.         Expires June 3, 2019                 [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 17]
+Palombini, et al.         Expires June 3, 2019                 [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 18]
+Palombini, et al.         Expires June 3, 2019                 [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 19]
+Palombini, et al.         Expires June 3, 2019                 [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 20]
+Palombini, et al.         Expires June 3, 2019                 [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1155,13 +1155,13 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-16
-              (work in progress), October 2018.
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-17
+              (work in progress), November 2018.
 
    [I-D.ietf-ace-oauth-params]
               Seitz, L., "Additional OAuth Parameters for Authorization
               in Constrained Environments (ACE)", draft-ietf-ace-oauth-
-              params-00 (work in progress), September 2018.
+              params-01 (work in progress), November 2018.
 
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 21]
+Palombini, et al.         Expires June 3, 2019                 [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1202,7 +1202,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
               Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
               Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
-              possession-04 (work in progress), November 2018.
+              possession-05 (work in progress), November 2018.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 22]
+Palombini, et al.         Expires June 3, 2019                 [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1285,7 +1285,7 @@ Authors' Addresses
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 23]
+Palombini, et al.         Expires June 3, 2019                 [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            November 2018
 
@@ -1341,4 +1341,4 @@ Internet-Draft            OSCORE Profile of ACE            November 2018
 
 
 
-Palombini, et al.         Expires May 12, 2019                 [Page 24]
+Palombini, et al.         Expires June 3, 2019                 [Page 24]
