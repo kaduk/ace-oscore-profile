@@ -430,7 +430,7 @@ A5                                      # map(5)
         <figure anchor="ex5" title="Example AS-to-C Access Token response with OSCORE profile, for update of access rights.">
           <artwork><![CDATA[
     Header: Created (Code=2.01)
-    Content-Type: "application/cose+cbor"
+    Content-Type: "application/ace+cbor"
     Payload:
     {
       "access_token" : h'a5037674656d7053656e73 ...'
@@ -1003,7 +1003,7 @@ OSCORE_Security_Context = {
           </t>
           <t>how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context
           </t>
-          <t>Content-format of the protocol messages: "application/cose+cbor"
+          <t>Content-format of the protocol messages: "application/ace+cbor"
           </t>
           <t>proof-of-possession protocol(s) and how to select one; which key types (e.g. symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
           </t>
