@@ -482,8 +482,9 @@ A5                                      # map(5)
             <c>hkdf</c>        <c>4</c>        <c>bstr / int</c>        <c>COSE Algorithm Values (HMAC-based)</c>        <c>OSCORE HKDF value</c>
             <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
-            <c>rpl</c>    <c>7</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
-            <c>exp</c>    <c>8</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c>
+            <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
+            <c>rpl</c>    <c>8</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
+            <c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c>
           </texttable>
 
 
@@ -527,11 +528,17 @@ A5                                      # map(5)
                 In CBOR, the "salt" type is bstr, and has label 6.
               </t>
 
+              <t hangText="contextId:">
+                This parameter identifies the security context as a byte string. This identifier is used as OSCORE ID Context. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "contextID" value is a Base64 encoded byte string.
+                In CBOR, the "contextID" type is bstr, and has label 7.
+              </t>
+
               <t hangText="repl:">
                 This parameter is used to carry the OSCORE value, encoded as a bstr.
                 This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
                 In JSON, the "repl" value is a Base64 encoded byte string.
-                In CBOR, the "repl" type is bstr, and has label 7.
+                In CBOR, the "repl" type is bstr, and has label 8.
               </t>
 
               <t hangText="exp:">
@@ -539,6 +546,8 @@ A5                                      # map(5)
                 This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.
                 The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.
                 Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew. 
+                In JSON, the "exp" value is a NumericDate value, as defined in {{RFC8392}}.
+                In CBOR, the "exp" type is int or float, and has label 9.
               </t>
               
             </list>
