@@ -573,7 +573,8 @@ OSCORE_Security_Context = {
     ? 5 => tstr / int,        ; alg
     ? 6 => bstr,              ; salt
     ? 7 => bstr / tstr,       ; rpl
-    ? 8 => int / float        ; exp
+    ? 8 => int / float,       ; exp
+    * int / tstr => any
 }
 ]]></artwork></figure>
 
@@ -850,7 +851,7 @@ OSCORE_Security_Context = {
           It is requested that IANA create a new registry entitled "OSCORE Security Context Parameters" registry.
           The registry is to be created as Expert Review Required.
           Guidelines for the experts is provided <xref target="review"/>.
-          It should be noted that in additional to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.
+          It should be noted that in addition to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.
         </t>
 
         <t>
