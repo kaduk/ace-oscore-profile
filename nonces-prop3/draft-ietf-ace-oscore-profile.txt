@@ -75,7 +75,7 @@ Table of Contents
      3.1.  C-to-AS: POST to token endpoint . . . . . . . . . . . . .   6
      3.2.  AS-to-C: Access Token . . . . . . . . . . . . . . . . . .   7
        3.2.1.  OSCORE_Security_Context Object  . . . . . . . . . . .  11
-   4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  14
+   4.  Client-RS Communication . . . . . . . . . . . . . . . . . . .  15
      4.1.  C-to-RS: POST to authz-info endpoint  . . . . . . . . . .  15
      4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  16
      4.3.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . .  17
@@ -606,10 +606,10 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    are optional.  Table 1 provides a summary of the
    OSCORE_Security_Context parameters defined in this section.
 
-
-
-
-
+   +-----------+-------+----------------+--------------+---------------+
+   | name      | CBOR  | CBOR type      | registry     | description   |
+   |           | label |                |              |               |
+   +-----------+-------+----------------+--------------+---------------+
 
 
 
@@ -618,54 +618,54 @@ Palombini, et al.         Expires June 6, 2019                 [Page 11]
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
-   +----------+-------+----------------+--------------+----------------+
-   | name     | CBOR  | CBOR type      | registry     | description    |
-   |          | label |                |              |                |
-   +----------+-------+----------------+--------------+----------------+
-   | ms       | 1     | bstr           |              | OSCORE Master  |
-   |          |       |                |              | Secret value   |
-   |          |       |                |              |                |
-   | clientId | 2     | bstr           |              | OSCORE Sender  |
-   |          |       |                |              | ID value of    |
-   |          |       |                |              | the client,    |
-   |          |       |                |              | OSCORE         |
-   |          |       |                |              | Recipient ID   |
-   |          |       |                |              | value of the   |
-   |          |       |                |              | server         |
-   |          |       |                |              |                |
-   | serverId | 3     | bstr           |              | OSCORE Sender  |
-   |          |       |                |              | ID value of    |
-   |          |       |                |              | the server,    |
-   |          |       |                |              | OSCORE         |
-   |          |       |                |              | Recipient ID   |
-   |          |       |                |              | value of the   |
-   |          |       |                |              | client         |
-   |          |       |                |              |                |
-   | hkdf     | 4     | bstr / int     | COSE         | OSCORE HKDF    |
-   |          |       |                | Algorithm    | value          |
-   |          |       |                | Values       |                |
-   |          |       |                | (HMAC-based) |                |
-   |          |       |                |              |                |
-   | alg      | 5     | tstr / int     | COSE         | OSCORE AEAD    |
-   |          |       |                | Algorithm    | Algorithm      |
-   |          |       |                | Values       | value          |
-   |          |       |                | (AEAD)       |                |
-   |          |       |                |              |                |
-   | salt     | 6     | bstr           |              | OSCORE Master  |
-   |          |       |                |              | Salt value     |
-   |          |       |                |              |                |
-   | rpl      | 7     | bstr / int     |              | OSCORE Replay  |
-   |          |       |                |              | Window Type    |
-   |          |       |                |              | and Size       |
-   |          |       |                |              |                |
-   | exp      | 8     | int / float    |              | OSCORE         |
-   |          |       |                |              | Security       |
-   |          |       |                |              | Context        |
-   |          |       |                |              | Expiration     |
-   |          |       |                |              | Time           |
-   +----------+-------+----------------+--------------+----------------+
+   | ms        | 1     | bstr           |              | OSCORE Master |
+   |           |       |                |              | Secret value  |
+   |           |       |                |              |               |
+   | clientId  | 2     | bstr           |              | OSCORE Sender |
+   |           |       |                |              | ID value of   |
+   |           |       |                |              | the client,   |
+   |           |       |                |              | OSCORE        |
+   |           |       |                |              | Recipient ID  |
+   |           |       |                |              | value of the  |
+   |           |       |                |              | server        |
+   |           |       |                |              |               |
+   | serverId  | 3     | bstr           |              | OSCORE Sender |
+   |           |       |                |              | ID value of   |
+   |           |       |                |              | the server,   |
+   |           |       |                |              | OSCORE        |
+   |           |       |                |              | Recipient ID  |
+   |           |       |                |              | value of the  |
+   |           |       |                |              | client        |
+   |           |       |                |              |               |
+   | hkdf      | 4     | bstr / int     | COSE         | OSCORE HKDF   |
+   |           |       |                | Algorithm    | value         |
+   |           |       |                | Values       |               |
+   |           |       |                | (HMAC-based) |               |
+   |           |       |                |              |               |
+   | alg       | 5     | tstr / int     | COSE         | OSCORE AEAD   |
+   |           |       |                | Algorithm    | Algorithm     |
+   |           |       |                | Values       | value         |
+   |           |       |                | (AEAD)       |               |
+   |           |       |                |              |               |
+   | salt      | 6     | bstr           |              | OSCORE Master |
+   |           |       |                |              | Salt value    |
+   |           |       |                |              |               |
+   | contextId | 7     | bstr           |              | OSCORE ID     |
+   |           |       |                |              | Context value |
+   |           |       |                |              |               |
+   | rpl       | 8     | bstr / int     |              | OSCORE Replay |
+   |           |       |                |              | Window Type   |
+   |           |       |                |              | and Size      |
+   |           |       |                |              |               |
+   | exp       | 9     | int / float    |              | OSCORE        |
+   |           |       |                |              | Security      |
+   |           |       |                |              | Context       |
+   |           |       |                |              | Expiration    |
+   |           |       |                |              | Time          |
+   +-----------+-------+----------------+--------------+---------------+
 
                 Table 1: OSCORE_Security_Context Parameters
+
 
 
 
@@ -720,8 +720,8 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       "salt" value is a Base64 encoded byte string.  In CBOR, the "salt"
       type is bstr, and has label 6.
 
-   repl:  This parameter is used to carry the OSCORE value, encoded as a
-      bstr.  This parameter identifies the OSCORE Replay Window Size and
+   contextId:  This parameter identifies the security context as a byte
+      string.  This identifier is used as OSCORE ID Context.  For more
 
 
 
@@ -730,10 +730,17 @@ Palombini, et al.         Expires June 6, 2019                 [Page 13]
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
+      information about this field, see section 3.1 of
+      [I-D.ietf-core-object-security].  In JSON, the "contextID" value
+      is a Base64 encoded byte string.  In CBOR, the "contextID" type is
+      bstr, and has label 7.
+
+   repl:  This parameter is used to carry the OSCORE value, encoded as a
+      bstr.  This parameter identifies the OSCORE Replay Window Size and
       Type value, which is a byte string.  For more information about
       this field, see section 3.1 of [I-D.ietf-core-object-security].
       In JSON, the "repl" value is a Base64 encoded byte string.  In
-      CBOR, the "repl" type is bstr, and has label 7.
+      CBOR, the "repl" type is bstr, and has label 8.
 
    exp:  This parameter is used to carry the expiration time, encoded as
       an integer or floating-point number.  This parameter, when used,
@@ -742,7 +749,9 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       requires that the current date/time MUST be before the expiration
       date/time listed in the "exp" parameter.  Implementers MAY provide
       for some small leeway, usually no more than a few minutes, to
-      account for clock skew.
+      account for clock skew.  In JSON, the "exp" value is a NumericDate
+      value, as defined in {{RFC8392}}.  In CBOR, the "exp" type is int
+      or float, and has label 9.
 
    An example of JSON OSCORE_Security_Context is given in Figure 9.
 
@@ -758,6 +767,24 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
    The CDDL grammar describing the CBOR OSCORE_Security_Context object
    is:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires June 6, 2019                 [Page 14]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
 
    OSCORE_Security_Context = {
        ? 1 => bstr,              ; ms
@@ -778,14 +805,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    client generates a nonce N1 and posts it together with the token that
    includes the materials provisioned by the AS to the RS.  The RS then
    derives a nonce N2 and use Section 3.2 of
-
-
-
-Palombini, et al.         Expires June 6, 2019                 [Page 14]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
    [I-D.ietf-core-object-security] to derive a security context based on
    a shared master secret and the two nonces, established between client
    and server.
@@ -815,6 +834,14 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    The authz-info endpoint is not protected, nor are the responses from
    this resource.
 
+
+
+
+Palombini, et al.         Expires June 6, 2019                 [Page 15]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    The access token MUST be encrypted, since it is transferred from the
    client to the RS over an unprotected channel.
 
@@ -824,23 +851,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    Figure 10 shows an example of the request sent from the client to the
    RS, in CBOR diagnostic notation without the tag and value
    abbreviations.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Palombini, et al.         Expires June 6, 2019                 [Page 15]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
          Header: POST (Code=0.02)
          Uri-Host: "rs.example.com"
@@ -879,16 +889,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    "application/ace+cbor" defined in section 8.14 of
    [I-D.ietf-ace-oauth-authz].
 
-   Figure 11 shows an example of the response sent from the RS to the
-   client, in CBOR diagnostic notation without the tag and value
-   abbreviations.
-
-
-
-
-
-
-
 
 
 
@@ -897,6 +897,10 @@ Palombini, et al.         Expires June 6, 2019                 [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   Figure 11 shows an example of the response sent from the RS to the
+   client, in CBOR diagnostic notation without the tag and value
+   abbreviations.
 
          Header: Created (Code=2.01)
          Content-Format: "application/ace+cbor"
@@ -941,10 +945,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    accessing the resources as specified by the authorization
    information.
 
-   The client then uses this Security Context to send requests to RS
-   using OSCORE.  In the first request sent to the RS, the client MAY
-   include the kid context, with value ID Context, i.e. N1 concatenated
-   with N2.
 
 
 
@@ -953,6 +953,11 @@ Palombini, et al.         Expires June 6, 2019                 [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   The client then uses this Security Context to send requests to RS
+   using OSCORE.  In the first request sent to the RS, the client MAY
+   include the kid context, with value ID Context, i.e. N1 concatenated
+   with N2.
 
    After sending the 2.01 (Created) response, the RS MUST set the ID
    Context of the Security Context created to communicate with the
@@ -997,11 +1002,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    token for the client but not for the resource that was requested, RS
    MUST reject the request with a 4.03 (Forbidden).  If RS has an access
    token for the client but it does not cover the action that was
-   requested on the resource, RS MUST reject the request with a 4.05
-   (Method Not Allowed).
-
-
-
 
 
 
@@ -1009,6 +1009,9 @@ Palombini, et al.         Expires June 6, 2019                 [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   requested on the resource, RS MUST reject the request with a 4.05
+   (Method Not Allowed).
 
 5.  Secure Communication with AS
 
@@ -1055,9 +1058,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    o  Sequence Number space ends.
 
    o  Access token associated with the context expires.
-
-
-
 
 
 

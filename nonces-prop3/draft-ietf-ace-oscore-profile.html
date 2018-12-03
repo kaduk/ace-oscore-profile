@@ -751,15 +751,22 @@ A5                                      # map(5)
 <td class="left">OSCORE Master Salt value</td>
 </tr>
 <tr>
-<td class="left">rpl</td>
+<td class="left">contextId</td>
 <td class="left">7</td>
+<td class="left">bstr</td>
+<td class="left"></td>
+<td class="left">OSCORE ID Context value</td>
+</tr>
+<tr>
+<td class="left">rpl</td>
+<td class="left">8</td>
 <td class="left">bstr / int</td>
 <td class="left"></td>
 <td class="left">OSCORE Replay Window Type and Size</td>
 </tr>
 <tr>
 <td class="left">exp</td>
-<td class="left">8</td>
+<td class="left">9</td>
 <td class="left">int / float</td>
 <td class="left"></td>
 <td class="left">OSCORE Security Context Expiration Time</td>
@@ -781,10 +788,12 @@ A5                                      # map(5)
 <dd style="margin-left: 8">This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be AEAD algorithms. The value can either be the integer or the text string value of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.  In JSON, the "alg" value is a case-sensitive ASCII string or an integer.  In CBOR, the "alg" type is tstr or int, and has label 5.  </dd>
 <dt>salt:</dt>
 <dd style="margin-left: 8">This parameter identifies the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "salt" value is a Base64 encoded byte string.  In CBOR, the "salt" type is bstr, and has label 6.  </dd>
+<dt>contextId:</dt>
+<dd style="margin-left: 8">This parameter identifies the security context as a byte string. This identifier is used as OSCORE ID Context. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "contextID" value is a Base64 encoded byte string.  In CBOR, the "contextID" type is bstr, and has label 7.  </dd>
 <dt>repl:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the OSCORE value, encoded as a bstr.  This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "repl" value is a Base64 encoded byte string.  In CBOR, the "repl" type is bstr, and has label 7.  </dd>
+<dd style="margin-left: 8">This parameter is used to carry the OSCORE value, encoded as a bstr.  This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "repl" value is a Base64 encoded byte string.  In CBOR, the "repl" type is bstr, and has label 8.  </dd>
 <dt>exp:</dt>
-<dd style="margin-left: 8">This parameter is used to carry the expiration time, encoded as an integer or floating-point number.  This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.  The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.  Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew.  </dd>
+<dd style="margin-left: 8">This parameter is used to carry the expiration time, encoded as an integer or floating-point number.  This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.  The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.  Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew.  In JSON, the "exp" value is a NumericDate value, as defined in {{RFC8392}}.  In CBOR, the "exp" type is int or float, and has label 9.  </dd>
 </dl>
 
 <p> </p>
