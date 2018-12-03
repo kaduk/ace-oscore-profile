@@ -334,7 +334,7 @@
         <figure anchor="ex1" title="Example AS-to-C Access Token response with OSCORE profile.">
           <artwork><![CDATA[
     Header: Created (Code=2.01)
-    Content-Type: "application/cose+cbor"
+    Content-Type: "application/ace+cbor"
     Payload:
     {
       "access_token" : h'a5037674656d7053656e73 ...'
@@ -653,7 +653,7 @@ OSCORE_Security_Context = {
         <figure anchor="ex4" title="Example RS-to-C 2.01 (Created) response">
           <artwork><![CDATA[
       Header: Created (Code=2.01)
-      Content-Format: "application/cbor"
+      Content-Format: "application/ace+cbor"
       Payload:
         {
           "nonce": h'25a8991cd700ac01'
