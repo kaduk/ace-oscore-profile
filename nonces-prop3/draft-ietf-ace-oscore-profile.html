@@ -757,6 +757,13 @@ A5                                      # map(5)
 <td class="left"></td>
 <td class="left">OSCORE Replay Window Type and Size</td>
 </tr>
+<tr>
+<td class="left">exp</td>
+<td class="left">8</td>
+<td class="left">int / float</td>
+<td class="left"></td>
+<td class="left">OSCORE Security Context Expiration Time</td>
+</tr>
 </tbody>
 </table>
 <p></p>
@@ -776,6 +783,8 @@ A5                                      # map(5)
 <dd style="margin-left: 8">This parameter identifies the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "salt" value is a Base64 encoded byte string.  In CBOR, the "salt" type is bstr, and has label 6.  </dd>
 <dt>repl:</dt>
 <dd style="margin-left: 8">This parameter is used to carry the OSCORE value, encoded as a bstr.  This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  In JSON, the "repl" value is a Base64 encoded byte string.  In CBOR, the "repl" type is bstr, and has label 7.  </dd>
+<dt>exp:</dt>
+<dd style="margin-left: 8">This parameter is used to carry the expiration time, encoded as an integer or floating-point number.  This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.  The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.  Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew.  </dd>
 </dl>
 
 <p> </p>
@@ -801,7 +810,8 @@ OSCORE_Security_Context = {
     ? 4 =&gt; tstr / int,        ; hkdf
     ? 5 =&gt; tstr / int,        ; alg
     ? 6 =&gt; bstr,              ; salt
-    ? 7 =&gt; bstr / tstr        ; rpl
+    ? 7 =&gt; bstr / tstr,       ; rpl
+    ? 8 =&gt; int / float        ; exp
 }
 </pre>
 <h1 id="rfc.section.4">
