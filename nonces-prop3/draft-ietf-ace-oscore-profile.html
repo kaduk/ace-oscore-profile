@@ -811,7 +811,8 @@ OSCORE_Security_Context = {
     ? 5 =&gt; tstr / int,        ; alg
     ? 6 =&gt; bstr,              ; salt
     ? 7 =&gt; bstr / tstr,       ; rpl
-    ? 8 =&gt; int / float        ; exp
+    ? 8 =&gt; int / float,       ; exp
+    * int / tstr =&gt; any
 }
 </pre>
 <h1 id="rfc.section.4">
@@ -933,7 +934,7 @@ OSCORE_Security_Context = {
 <h1 id="rfc.section.9.2">
 <a href="#rfc.section.9.2">9.2.</a> <a href="#sec-ctx-params-reg" id="sec-ctx-params-reg">OSCORE Security Context Parameters Registry</a>
 </h1>
-<p id="rfc.section.9.2.p.1">It is requested that IANA create a new registry entitled "OSCORE Security Context Parameters" registry.  The registry is to be created as Expert Review Required.  Guidelines for the experts is provided <a href="#review" class="xref">Section 9.5</a>.  It should be noted that in additional to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.  </p>
+<p id="rfc.section.9.2.p.1">It is requested that IANA create a new registry entitled "OSCORE Security Context Parameters" registry.  The registry is to be created as Expert Review Required.  Guidelines for the experts is provided <a href="#review" class="xref">Section 9.5</a>.  It should be noted that in addition to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.  </p>
 <p id="rfc.section.9.2.p.2">The columns of the registry are: </p>
 <p></p>
 
