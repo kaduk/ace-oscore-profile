@@ -563,7 +563,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
        Header: Created (Code=2.01)
-       Content-Type: "application/cose+cbor"
+       Content-Type: "application/ace+cbor"
        Payload:
        {
          "access_token" : h'a5037674656d7053656e73 ...'
@@ -1316,7 +1316,7 @@ Appendix A.  Profile Requirements
    o  security protocol the client and RS must use: OSCORE
    o  how the client and the RS mutually authenticate: Implicitly by
       possession of a common OSCORE security context
-   o  Content-format of the protocol messages: "application/cose+cbor"
+   o  Content-format of the protocol messages: "application/ace+cbor"
    o  proof-of-possession protocol(s) and how to select one; which key
       types (e.g. symmetric/asymmetric) supported: OSCORE algorithms;
       pre-established symmetric keys
