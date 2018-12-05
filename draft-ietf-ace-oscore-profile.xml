@@ -298,6 +298,7 @@
             <t>an AEAD algorithm</t>
             <t>an HKDF algorithm</t>
             <t>a salt</t>
+            <t>a context identifier</t>
             <t>a replay window type and size</t>
           </list>
         </t>
@@ -307,7 +308,7 @@
           The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
           The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included
       	  as the 'hkdf' parameter of the OSCORE_Security_Context, the salt MAY be included as the 'salt' parameter of the
-      	  COSCORE_Security_Context and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+      	  COSCORE_Security_Context, the context identifier MAY be included as the 'contextId' parameter of the OSCORE_Security_Context, and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 	      
         <t>
@@ -484,7 +485,7 @@ A5                                      # map(5)
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
             <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
             <c>rpl</c>    <c>8</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
-            <c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c>
+            <!--<c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c> -->
           </texttable>
 
 
@@ -541,14 +542,14 @@ A5                                      # map(5)
                 In CBOR, the "repl" type is bstr, and has label 8.
               </t>
 
-              <t hangText="exp:">
+              <!--<t hangText="exp:">
                 This parameter is used to carry the expiration time, encoded as an integer or floating-point number.
                 This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.
                 The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.
                 Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew. 
                 In JSON, the "exp" value is a NumericDate value, as defined in {{RFC8392}}.
                 In CBOR, the "exp" type is int or float, and has label 9.
-              </t>
+              </t>-->
               
             </list>
           </t>
@@ -581,8 +582,8 @@ OSCORE_Security_Context = {
     ? 4 => tstr / int,        ; hkdf
     ? 5 => tstr / int,        ; alg
     ? 6 => bstr,              ; salt
-    ? 7 => bstr / tstr,       ; rpl
-    ? 8 => int / float,       ; exp
+    ? 7 => bstr,              ; contextId
+    ? 8 => bstr / tstr,       ; rpl
     * int / tstr => any
 }
 ]]></artwork></figure>
@@ -694,7 +695,7 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N1 from the 'nonce' parameter in the CBOR map in the payload of the response.  Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N1 from the 'nonce' parameter in the CBOR map in the payload of the response.  Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF, ID Context and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
@@ -702,7 +703,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          After sending the 2.01 (Created) response, the RS MUST set the ID Context of the Security Context created to communicate with the client to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. 
+          After sending the 2.01 (Created) response, the RS MUST set the ID Context of the Security Context created to communicate with the client to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF, ID Context and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. 
         </t>
 
         <t>
