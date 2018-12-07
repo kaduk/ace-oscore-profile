@@ -796,13 +796,13 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 4.1.  C-to-RS: POST to authz-info endpoint
 
    The client MUST generate a nonce N1 with a good amount of randomness.
-   This profile RECOMMENDS to use a nonce of 64 bits.  The client MUST
-   store this nonce as long as the response from the RS is not received
-   and the access token related to it is still valid.  The client MUST
-   use CoAP and the Authorization Information resource as described in
-   section 5.8.1 of [I-D.ietf-ace-oauth-authz] to transport the token
-   and N1 to the RS.  The client MUST use the Content-Format
-   "application/ace+cbor" defined in section 8.14 of
+   This profile RECOMMENDS to use a 16-bit long unpredictable counter as
+   nonce.  The client MUST store this nonce as long as the response from
+   the RS is not received and the access token related to it is still
+   valid.  The client MUST use CoAP and the Authorization Information
+   resource as described in section 5.8.1 of [I-D.ietf-ace-oauth-authz]
+   to transport the token and N1 to the RS.  The client MUST use the
+   Content-Format "application/ace+cbor" defined in section 8.14 of
    [I-D.ietf-ace-oauth-authz].  The client MUST include the access token
    using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and
    N1 using the 'nonce' parameter defined in section 5.1.2 of
@@ -861,9 +861,9 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    payload of the 2.01 (Created) response MUST be a CBOR map containing
    the 'nonce' parameter defined in section 5.1.2 of
    [I-D.ietf-ace-oauth-authz], set to N2.  This profile RECOMMENDS to
-   use a nonce of 64 bits.  The client MUST use the Content-Format
-   "application/ace+cbor" defined in section 8.14 of
-   [I-D.ietf-ace-oauth-authz].
+   use a 16-bit long unpredictable counter as nonce.  The client MUST
+   use the Content-Format "application/ace+cbor" defined in section 8.14
+   of [I-D.ietf-ace-oauth-authz].
 
    Figure 11 shows an example of the response sent from the RS to the
    client, in CBOR diagnostic notation without the tag and value
@@ -902,7 +902,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
    Once receiving the 2.01 (Created) response from the RS, following the
    POST request to authz-info endpoint, the client MUST extract the
-   nonce N1 from the 'nonce' parameter in the CBOR map in the payload of
+   nonce N2 from the 'nonce' parameter in the CBOR map in the payload of
    the response.  Then, the client MUST set the ID Context of the
    Security Context created to communicate with the RS to the
    concatenation of N1 and N2, in this order: ID Context = N1 | N2,
