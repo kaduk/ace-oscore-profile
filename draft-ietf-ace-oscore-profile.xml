@@ -870,7 +870,11 @@ OSCORE_Security_Context = {
         <t>
           <list style="hanging">
             <t hangText='name'>
-              This is a descriptive name that enables easier reference to the item.  It is not used in the CBOR encoding.
+              The JSON name requested (e.g., "ms").
+              Because a core goal of this specification is for the resulting representations to be compact, it is RECOMMENDED that the name be short.
+              This name is case sensitive.
+              Names may not match other registered names in a case-insensitive manner unless the Designated Experts state that there is a compelling reason to allow an exception.
+              The name is not used in the CBOR encoding.
             </t>
             <t hangText='CBOR label'>
               The value to be used to identify this algorithm.
