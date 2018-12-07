@@ -145,7 +145,7 @@
       </t>
 
       <t>
-        If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N2. Moreover, the server concatenates N1 with N2 and sets the ID Context in the Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+        If the access token is valid, the RS replies to this request with a 2.01 (Created) response with Content-Format = application/ace+cbor, which contains a nonce N2 in a CBOR map. Moreover, the server concatenates N1 with N2 and sets the ID Context in the Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
       </t>
 
       <t>
