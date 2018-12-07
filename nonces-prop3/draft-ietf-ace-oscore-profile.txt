@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: June 8, 2019                                       RISE SICS AB
+Expires: June 10, 2019                                      RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                        December 5, 2018
+                                                        December 7, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 8, 2019.
+   This Internet-Draft will expire on June 10, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 1]
+Palombini, et al.         Expires June 10, 2019                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 2]
+Palombini, et al.         Expires June 10, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 3]
+Palombini, et al.         Expires June 10, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -185,11 +185,12 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    [I-D.ietf-ace-oauth-authz] and Content-Format = application/ace+cbor.
 
    If the access token is valid, the RS replies to this request with a
-   2.01 (Created) response, which contains a nonce N2.  Moreover, the
-   server concatenates N1 with N2 and sets the ID Context in the
-   Security Context (see section 3 of [I-D.ietf-core-object-security])
-   to N1 concatenated with N2.  The RS then derives the complete
-   Security Context associated with the received token from it plus the
+   2.01 (Created) response with Content-Format = application/ace+cbor,
+   which contains a nonce N2 in a CBOR map.  Moreover, the server
+   concatenates N1 with N2 and sets the ID Context in the Security
+   Context (see section 3 of [I-D.ietf-core-object-security]) to N1
+   concatenated with N2.  The RS then derives the complete Security
+   Context associated with the received token from it plus the
    parameters received in the AS, following section 3.2 of
    [I-D.ietf-core-object-security].
 
@@ -217,15 +218,15 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    token results in a different Security Context, since Master Secret,
    Sender ID and Recipient ID are the same but ID Context is different.
    Therefore, the main requirement for the nonces is that they have a
-   good amount of randomness.  If random nonces were not used, a node
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 4]
+Palombini, et al.         Expires June 10, 2019                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
+   good amount of randomness.  If random nonces were not used, a node
    re-using a non-expired old token would be susceptible to on-path
    attackers provoking the creation of OSCORE messages using old AEAD
    keys and nonces.
@@ -276,8 +277,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-
-Palombini, et al.         Expires June 8, 2019                  [Page 5]
+Palombini, et al.         Expires June 10, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 6]
+Palombini, et al.         Expires June 10, 2019                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -389,14 +389,12 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 7]
+Palombini, et al.         Expires June 10, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
    o  a salt
-
-   o  a context identifier
 
    o  a replay window type and size
 
@@ -408,10 +406,9 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be
    included as the 'hkdf' parameter of the OSCORE_Security_Context, the
    salt MAY be included as the 'salt' parameter of the
-   COSCORE_Security_Context, the context identifier MAY be included as
-   the 'contextId' parameter of the OSCORE_Security_Context, and the
-   replay window type and size MAY be included as the 'rpl' of the
-   OSCORE_Security_Context, as defined in Section 3.2.1.
+   COSCORE_Security_Context, and the replay window type and size MAY be
+   included as the 'rpl' of the OSCORE_Security_Context, as defined in
+   Section 3.2.1.
 
    The same parameters MUST be included as metadata of the access token.
    This profile RECOMMENDS the use of CBOR web token (CWT) as specified
@@ -445,7 +442,10 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 8]
+
+
+
+Palombini, et al.         Expires June 10, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                  [Page 9]
+Palombini, et al.         Expires June 10, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -557,7 +557,7 @@ A5                                      # map(5)
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 10]
+Palombini, et al.         Expires June 10, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 11]
+Palombini, et al.         Expires June 10, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 12]
+Palombini, et al.         Expires June 10, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 13]
+Palombini, et al.         Expires June 10, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 14]
+Palombini, et al.         Expires June 10, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 15]
+Palombini, et al.         Expires June 10, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 16]
+Palombini, et al.         Expires June 10, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -909,14 +909,14 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    where | denotes byte string concatenation.  The client MUST set the
    Master Secret, Sender ID and Recipient ID from the parameters
    received from the AS in Section 3.2.  The client MUST set the AEAD
-   Algorithm, Master Salt, HKDF, ID Context and Replay Window from the
-   parameters received from the AS in Section 3.2, if present.  In case
-   these parameters are omitted, the default values are used as
-   described in section 3.2 of [I-D.ietf-core-object-security].  After
-   that, the client MUST derive the complete Security Context following
-   section 3.2.1 of [I-D.ietf-core-object-security].  From this point
-   on, the client MUST use this Security Context to communicate with the
-   RS when accessing the resources as specified by the authorization
+   Algorithm, Master Salt, HKDF, and Replay Window from the parameters
+   received from the AS in Section 3.2, if present.  In case these
+   parameters are omitted, the default values are used as described in
+   section 3.2 of [I-D.ietf-core-object-security].  After that, the
+   client MUST derive the complete Security Context following section
+   3.2.1 of [I-D.ietf-core-object-security].  From this point on, the
+   client MUST use this Security Context to communicate with the RS when
+   accessing the resources as specified by the authorization
    information.
 
    The client then uses this Security Context to send requests to RS
@@ -931,8 +931,8 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    the Master Secret, Sender ID and Recipient ID from the parameters,
    received from the client in the access token in Section 4.1 after
    validation of the token as specified in Section 4.2.  The RS MUST set
-   the AEAD Algorithm, Master Salt, HKDF, ID Context and Replay Window
-   from the parameters received from the client in the access token in
+   the AEAD Algorithm, Master Salt, HKDF, and Replay Window from the
+   parameters received from the client in the access token in
    Section 4.1 after validation of the token as specified in
    Section 4.2, if present.  In case these parameters are omitted, the
    default values are used as described in section 3.2 of
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 17]
+Palombini, et al.         Expires June 10, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 18]
+Palombini, et al.         Expires June 10, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 19]
+Palombini, et al.         Expires June 10, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 20]
+Palombini, et al.         Expires June 10, 2019                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 21]
+Palombini, et al.         Expires June 10, 2019                [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 22]
+Palombini, et al.         Expires June 10, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 23]
+Palombini, et al.         Expires June 10, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1341,7 +1341,7 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 24]
+Palombini, et al.         Expires June 10, 2019                [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1397,4 +1397,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.         Expires June 8, 2019                 [Page 25]
+Palombini, et al.         Expires June 10, 2019                [Page 25]
