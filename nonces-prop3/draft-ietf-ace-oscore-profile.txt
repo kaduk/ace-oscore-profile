@@ -92,7 +92,7 @@ Table of Contents
      9.5.  Expert Review Instructions  . . . . . . . . . . . . . . .  22
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  23
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  24
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  25
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
@@ -1136,8 +1136,13 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
    The columns of the registry are:
 
-   name  This is a descriptive name that enables easier reference to the
-      item.  It is not used in the CBOR encoding.
+   name  The JSON name requested (e.g., "ms").  Because a core goal of
+      this specification is for the resulting representations to be
+      compact, it is RECOMMENDED that the name be short.  This name is
+      case sensitive.  Names may not match other registered names in a
+      case-insensitive manner unless the Designated Experts state that
+      there is a compelling reason to allow an exception.  The name is
+      not used in the CBOR encoding.
    CBOR label  The value to be used to identify this algorithm.  Key map
       labels MUST be unique.  The label can be a positive integer, a
       negative integer or a string.  Integer values between 0 and 255
@@ -1165,11 +1170,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    [I-D.ietf-ace-cwt-proof-of-possession]:
 
    o  Confirmation Method Name: "OSCORE_Security_Context"
-   o  Confirmation Method Description: OSCORE_Security_Context carrying
-      the OSCORE Security Context parameters
-   o  Confirmation Key: TBD (value between 4 and 255)
-   o  Confirmation Value Type(s): map
-   o  Change Controller: IESG
 
 
 
@@ -1178,6 +1178,11 @@ Palombini, et al.         Expires June 10, 2019                [Page 21]
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
+   o  Confirmation Method Description: OSCORE_Security_Context carrying
+      the OSCORE Security Context parameters
+   o  Confirmation Key: TBD (value between 4 and 255)
+   o  Confirmation Value Type(s): map
+   o  Change Controller: IESG
    o  Specification Document(s): Section 3.2.1 of [[this specification]]
 
 9.4.  JWT Confirmation Methods Registry
@@ -1221,11 +1226,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       approving point assignment.  The fact that there is a range for
       standards track documents does not mean that a standards track
       document cannot have points assigned outside of that range.  The
-      length of the encoded value should be weighed against how many
-      code points of that length are left, the size of device it will be
-      used on, and the number of code points left that encode to that
-      size.
-
 
 
 
@@ -1233,6 +1233,11 @@ Palombini, et al.         Expires June 10, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+      length of the encoded value should be weighed against how many
+      code points of that length are left, the size of device it will be
+      used on, and the number of code points left that encode to that
+      size.
 
 10.  References
 
@@ -1274,13 +1279,8 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
 
-10.2.  Informative References
 
-   [I-D.ietf-ace-cwt-proof-of-possession]
-              Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
-              Tschofenig, "Proof-of-Possession Key Semantics for CBOR
-              Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
-              possession-05 (work in progress), November 2018.
+
 
 
 
@@ -1289,6 +1289,14 @@ Palombini, et al.         Expires June 10, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+10.2.  Informative References
+
+   [I-D.ietf-ace-cwt-proof-of-possession]
+              Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
+              Tschofenig, "Proof-of-Possession Key Semantics for CBOR
+              Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
+              possession-05 (work in progress), November 2018.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1329,14 +1337,6 @@ Appendix A.  Profile Requirements
       (+ TLS/DTLS/OSCORE)
    o  how the client talks to the AS for requesting a token: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
-   o  how/if the authz-info endpoint is protected: Security protocol
-      above
-   o  (Optional)other methods of token transport than the authz-info
-      endpoint: no
-
-
-
-
 
 
 
@@ -1345,6 +1345,11 @@ Palombini, et al.         Expires June 10, 2019                [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   o  how/if the authz-info endpoint is protected: Security protocol
+      above
+   o  (Optional)other methods of token transport than the authz-info
+      endpoint: no
 
 Acknowledgments
 
@@ -1381,11 +1386,6 @@ Authors' Addresses
    Sweden
 
    Email: martin.gunnarsson@ri.se
-
-
-
-
-
 
 
 

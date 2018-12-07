@@ -940,7 +940,7 @@ OSCORE_Security_Context = {
 
 <dl>
 <dt>name</dt>
-<dd style="margin-left: 8">This is a descriptive name that enables easier reference to the item.  It is not used in the CBOR encoding.  </dd>
+<dd style="margin-left: 8">The JSON name requested (e.g., "ms").  Because a core goal of this specification is for the resulting representations to be compact, it is RECOMMENDED that the name be short.  This name is case sensitive.  Names may not match other registered names in a case-insensitive manner unless the Designated Experts state that there is a compelling reason to allow an exception.  The name is not used in the CBOR encoding.  </dd>
 <dt>CBOR label</dt>
 <dd style="margin-left: 8">The value to be used to identify this algorithm.  Key map labels MUST be unique.  The label can be a positive integer, a negative integer or a string.  Integer values between 0 and 255 and strings of length 1 are designated as Standards Track Document required.  Integer values from 256 to 65535 and strings of length 2 are designated as Specification Required.  Integer values of greater than 65535 and strings of length greater than 2 are designated as expert review.  Integer values less than -65536 are marked as private use.  </dd>
 <dt>CBOR Type</dt>
