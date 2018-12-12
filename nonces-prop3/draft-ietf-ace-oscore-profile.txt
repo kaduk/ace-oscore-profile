@@ -83,19 +83,19 @@ Table of Contents
    5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  19
    6.  Discarding the Security Context . . . . . . . . . . . . . . .  19
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
-   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  20
+   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  21
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
      9.1.  ACE OAuth Profile Registry  . . . . . . . . . . . . . . .  21
      9.2.  OSCORE Security Context Parameters Registry . . . . . . .  21
      9.3.  CWT Confirmation Methods Registry . . . . . . . . . . . .  22
-     9.4.  JWT Confirmation Methods Registry . . . . . . . . . . . .  22
+     9.4.  JWT Confirmation Methods Registry . . . . . . . . . . . .  23
      9.5.  Expert Review Instructions  . . . . . . . . . . . . . . .  23
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  24
      10.2.  Informative References . . . . . . . . . . . . . . . . .  24
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  25
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  26
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  26
 
 1.  Introduction
 
@@ -795,18 +795,19 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 4.1.  C-to-RS: POST to authz-info endpoint
 
-   The client MUST generate a nonce N1 with a good amount of randomness.
-   This profile RECOMMENDS to use a 16-bit long unpredictable counter as
-   nonce.  The client MUST store this nonce as long as the response from
-   the RS is not received and the access token related to it is still
-   valid.  The client MUST use CoAP and the Authorization Information
-   resource as described in section 5.8.1 of [I-D.ietf-ace-oauth-authz]
-   to transport the token and N1 to the RS.  The client MUST use the
-   Content-Format "application/ace+cbor" defined in section 8.14 of
-   [I-D.ietf-ace-oauth-authz].  The client MUST include the access token
-   using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and
-   N1 using the 'nonce' parameter defined in section 5.1.2 of
-   [I-D.ietf-ace-oauth-authz].
+   The client MUST generate a nonce N1 unlikely to have been previously
+   used with the same input keying material and that is not highly
+   predictable.  This profile RECOMMENDS to use a 16-bit long
+   unpredictable counter as nonce.  The client MUST store this nonce as
+   long as the response from the RS is not received and the access token
+   related to it is still valid.  The client MUST use CoAP and the
+   Authorization Information resource as described in section 5.8.1 of
+   [I-D.ietf-ace-oauth-authz] to transport the token and N1 to the RS.
+   The client MUST use the Content-Format "application/ace+cbor" defined
+   in section 8.14 of [I-D.ietf-ace-oauth-authz].  The client MUST
+   include the access token using the correct CBOR label (e.g., "cwt"
+   for CWT, "jwt" for JWT) and N1 using the 'nonce' parameter defined in
+   section 5.1.2 of [I-D.ietf-ace-oauth-authz].
 
    The authz-info endpoint is not protected, nor are the responses from
    this resource.
@@ -821,6 +822,26 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    RS, in CBOR diagnostic notation without the tag and value
    abbreviations.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 15]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
          Header: POST (Code=0.02)
          Uri-Host: "rs.example.com"
          Uri-Path: "authz-info"
@@ -834,13 +855,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
        Figure 10: Example C-to-RS POST /authz-info request using CWT
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 15]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
 4.2.  RS-to-C: 2.01 (Created)
 
@@ -858,10 +872,11 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    token before responding to the POST request to the authz-info
    endpoint.
 
-   Additionally, the RS MUST generate a nonce N2 with a good amount of
-   randomness, and send it within the 2.01 (Created) response.  The
-   payload of the 2.01 (Created) response MUST be a CBOR map containing
-   the 'nonce' parameter defined in section 5.1.2 of
+   Additionally, the RS MUST generate a nonce N2 unlikely to have been
+   previously used with the same input keying material and that is not
+   highly predictable, and send it within the 2.01 (Created) response.
+   The payload of the 2.01 (Created) response MUST be a CBOR map
+   containing the 'nonce' parameter defined in section 5.1.2 of
    [I-D.ietf-ace-oauth-authz], set to N2.  This profile RECOMMENDS to
    use a 16-bit long unpredictable counter as nonce.  Moreover, if the
    OSCORE_Security_Context in the token did not contain a 'clientId'
@@ -873,6 +888,15 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    the client identifier.  The RS MUST use the Content-Format
    "application/ace+cbor" defined in section 8.14 of
    [I-D.ietf-ace-oauth-authz].
+
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 16]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
 
    Figure 11 shows an example of the response sent from the RS to the
    client, in CBOR diagnostic notation without the tag and value
@@ -890,14 +914,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
    When receiving an updated access token with updated authorization
    information from the client (see section Section 3.1), it is
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 16]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
    RECOMMENDED that the RS overwrites the previous token, that is only
    the latest authorization information in the token received by the RS
    is valid.  This simplifies for the RS to keep track of authorization
@@ -929,6 +945,15 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    received from the AS in Section 3.2.  After that, the client MUST
    derive the complete Security Context following section 3.2.1 of
    [I-D.ietf-core-object-security].  From this point on, the client MUST
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 17]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    use this Security Context to communicate with the RS when accessing
    the resources as specified by the authorization information.
 
@@ -946,14 +971,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
    After sending the 2.01 (Created) response, the RS MUST set the ID
    Context of the Security Context created to communicate with the
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 17]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
    client to the concatenation of N1 and N2, in this order: ID Context =
    N1 | N2, where | denotes byte string concatenation.  The RS MUST set
    the Master Secret, Sender ID and Recipient ID from the parameters,
@@ -985,6 +1002,14 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    request from a client, then the RS processes it according to
    [I-D.ietf-core-object-security].  If OSCORE verification succeeds,
    and the target resource requires authorization, the RS retrieves the
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 18]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    authorization information from the access token associated to the
    Security Context.  The RS then MUST verify that the authorization
    information covers the resource and the action requested.
@@ -997,18 +1022,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    token for the client but it does not cover the action that was
    requested on the resource, RS MUST reject the request with a 4.05
    (Method Not Allowed).
-
-
-
-
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 18]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
 5.  Secure Communication with AS
 
@@ -1044,6 +1057,15 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       OSCORE requests using the same security context.  The exact number
       needs to be specified by the application.
 
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 19]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    o  the client receives a new nonce in the 2.01 (Created) response
       (see Section 4.2) to a POST request to the authz-info endpoint,
       when re-posting a non-expired token associated to the existing
@@ -1055,16 +1077,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    o  Sequence Number space ends.
 
    o  Access token associated with the context expires.
-
-
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 19]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
 7.  Security Considerations
 
@@ -1086,10 +1098,11 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    provided by OSCORE.
 
    Since the use of nonces in the exchange guarantees uniqueness of AEAD
-   keys and nonces even in case of re-boots, a good amount of randomness
-   is required.  If that is not guaranteed, nodes are still susceptible
-   to re-using nonces and keys, in case the Security Context is lost,
-   and on-path attacker replaying messages.
+   keys and nonces even in case of re-boots, it is required that nonces
+   are not reused with the same input keying material.  If that is not
+   guaranteed, nodes are still susceptible to re-using nonces and keys,
+   in case the Security Context is lost, and on-path attacker replaying
+   messages.
 
    This profiles recommends that the RS maintains a single access token
    for a client.  The use of multiple access tokens for a single client
@@ -1100,6 +1113,14 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    earlier than others, the resulting permissions may offer insufficient
    protection.  Developers should avoid using multiple access tokens for
    a client.
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 20]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
 
 8.  Privacy Considerations
 
@@ -1114,14 +1135,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    An unprotected response to an unauthorized request may disclose
    information about the resource server and/or its existing
    relationship with the client.  It is advisable to include as little
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 20]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
    information as possible in an unencrypted response.  When an OSCORE
    Security Context already exists between the client and the resource
    server, more detailed information may be included.
@@ -1156,6 +1169,15 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    Security Context Parameters" registry.  The registry is to be created
    as Expert Review Required.  Guidelines for the experts is provided
    Section 9.5.  It should be noted that in addition to the expert
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 21]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    review, some portions of the registry require a specification,
    potentially on standards track, be supplied as well.
 
@@ -1170,14 +1192,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       not used in the CBOR encoding.
    CBOR label  The value to be used to identify this algorithm.  Key map
       labels MUST be unique.  The label can be a positive integer, a
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 21]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
       negative integer or a string.  Integer values between 0 and 255
       and strings of length 1 are designated as Standards Track Document
       required.  Integer values from 256 to 65535 and strings of length
@@ -1210,6 +1224,16 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    o  Change Controller: IESG
    o  Specification Document(s): Section 3.2.1 of [[this specification]]
 
+
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 22]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
 9.4.  JWT Confirmation Methods Registry
 
    The following registration is done for the JWT Confirmation Methods
@@ -1221,18 +1245,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       the OSCORE Security Context parameters
    o  Change Controller: IESG
    o  Specification Document(s): Section 3.2.1 of [[this specification]]
-
-
-
-
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 22]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
 9.5.  Expert Review Instructions
 
@@ -1268,6 +1280,16 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       used on, and the number of code points left that encode to that
       size.
 
+
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 23]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
 10.  References
 
 10.1.  Normative References
@@ -1278,17 +1300,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
               Constrained Environments (ACE) using the OAuth 2.0
               Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-17
               (work in progress), November 2018.
-
-
-
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 23]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
    [I-D.ietf-ace-oauth-params]
               Seitz, L., "Additional OAuth Parameters for Authorization
@@ -1327,17 +1338,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
               Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
               possession-05 (work in progress), November 2018.
 
-   [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
-              FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
-              <https://www.rfc-editor.org/info/rfc4949>.
-
-   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
-              RFC 6749, DOI 10.17487/RFC6749, October 2012,
-              <https://www.rfc-editor.org/info/rfc6749>.
-
-
-
-
 
 
 
@@ -1345,6 +1345,14 @@ Palombini, et al.         Expires June 15, 2019                [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
+              FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
+              <https://www.rfc-editor.org/info/rfc4949>.
+
+   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <https://www.rfc-editor.org/info/rfc6749>.
 
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
@@ -1382,6 +1390,18 @@ Appendix A.  Profile Requirements
    o  (Optional)other methods of token transport than the authz-info
       endpoint: no
 
+
+
+
+
+
+
+
+Palombini, et al.         Expires June 15, 2019                [Page 25]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
 Acknowledgments
 
    The authors wish to thank Jim Schaad and Marco Tiloca for the input
@@ -1393,13 +1413,6 @@ Authors' Addresses
    Ericsson AB
 
    Email: francesca.palombini@ericsson.com
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 25]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
    Ludwig Seitz
@@ -1424,19 +1437,6 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    Sweden
 
    Email: martin.gunnarsson@ri.se
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
