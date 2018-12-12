@@ -284,7 +284,6 @@
         <t>
           <list style="symbols">
             <t>a master secret</t>
-            <t>a client identifier</t>
             <t>a server identifier</t>
           </list>
         </t>
@@ -295,6 +294,7 @@
 
         <t>
           <list style="symbols">
+            <t>a client identifier</t>
             <t>an AEAD algorithm</t>
             <t>an HKDF algorithm</t>
             <t>a salt</t>
@@ -315,7 +315,7 @@
 	      </t>
 
         <t>
-          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique  in the set of all RS for any given client.  Moreover, these MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AS MUST also assign an identifier to the RS, and MAY assign an identifier to the client. These identifiers are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique in the set of all RS for any given client.  Moreover, when assigned, these MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
@@ -498,14 +498,14 @@ A5                                      # map(5)
 
               <t hangText="clientId:">
                 This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "clientID" value is a Base64 encoded byte string.
-                In CBOR, the "clientID" type is bstr, and has label 2.
+                In JSON, the "clientId" value is a Base64 encoded byte string.
+                In CBOR, the "clientId" type is bstr, and has label 2.
               </t>
 
               <t hangText="serverId:">
                 This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "serverID" value is a Base64 encoded byte string.
-                In CBOR, the "serverID" type is bstr, and has label 3.
+                In JSON, the "serverId" value is a Base64 encoded byte string.
+                In CBOR, the "serverId" type is bstr, and has label 3.
               </t>
               
               <t hangText="hkdf:">
@@ -652,11 +652,12 @@ OSCORE_Security_Context = {
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong.
+          The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
         <t>
-          Additionally, the RS MUST generate a nonce N2 with a good amount of randomness, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>, set to N2. This profile RECOMMENDS to use a 16-bit long unpredictable counter as nonce. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          Additionally, the RS MUST generate a nonce N2 with a good amount of randomness, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>, set to N2. This profile RECOMMENDS to use a 16-bit long unpredictable counter as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
 <!--     
@@ -694,7 +695,11 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'nonce' parameter in the CBOR map in the payload of the response.  Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'nonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+        </t>
+
+        <t>
+          If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST not derive the Security Context. The client MAY restart the exchange, to get the correct security material.
         </t>
 
         <t>
