@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: June 15, 2019                                      RISE SICS AB
+Expires: June 17, 2019                                      RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                       December 12, 2018
+                                                       December 14, 2018
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 15, 2019.
+   This Internet-Draft will expire on June 17, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 1]
+Palombini, et al.         Expires June 17, 2019                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -86,7 +86,7 @@ Table of Contents
    8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  21
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
      9.1.  ACE OAuth Profile Registry  . . . . . . . . . . . . . . .  21
-     9.2.  OSCORE Security Context Parameters Registry . . . . . . .  21
+     9.2.  OSCORE Security Context Parameters Registry . . . . . . .  22
      9.3.  CWT Confirmation Methods Registry . . . . . . . . . . . .  22
      9.4.  JWT Confirmation Methods Registry . . . . . . . . . . . .  23
      9.5.  Expert Review Instructions  . . . . . . . . . . . . . . .  23
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 2]
+Palombini, et al.         Expires June 17, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 3]
+Palombini, et al.         Expires June 17, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 4]
+Palombini, et al.         Expires June 17, 2019                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 5]
+Palombini, et al.         Expires June 17, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 6]
+Palombini, et al.         Expires June 17, 2019                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 7]
+Palombini, et al.         Expires June 17, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 8]
+Palombini, et al.         Expires June 17, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                 [Page 9]
+Palombini, et al.         Expires June 17, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -557,7 +557,7 @@ A5                                      # map(5)
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 10]
+Palombini, et al.         Expires June 17, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 11]
+Palombini, et al.         Expires June 17, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 12]
+Palombini, et al.         Expires June 17, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 13]
+Palombini, et al.         Expires June 17, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 14]
+Palombini, et al.         Expires June 17, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -795,19 +795,19 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 4.1.  C-to-RS: POST to authz-info endpoint
 
-   The client MUST generate a nonce N1 unlikely to have been previously
-   used with the same input keying material and that is not highly
-   predictable.  This profile RECOMMENDS to use a 16-bit long
-   unpredictable counter as nonce.  The client MUST store this nonce as
-   long as the response from the RS is not received and the access token
-   related to it is still valid.  The client MUST use CoAP and the
-   Authorization Information resource as described in section 5.8.1 of
-   [I-D.ietf-ace-oauth-authz] to transport the token and N1 to the RS.
-   The client MUST use the Content-Format "application/ace+cbor" defined
-   in section 8.14 of [I-D.ietf-ace-oauth-authz].  The client MUST
-   include the access token using the correct CBOR label (e.g., "cwt"
-   for CWT, "jwt" for JWT) and N1 using the 'nonce' parameter defined in
-   section 5.1.2 of [I-D.ietf-ace-oauth-authz].
+   The client MUST generate a nonce N1 very unlikely to have been
+   previously used with the same input keying material.  This profile
+   RECOMMENDS to use a 64-bit long random number as nonce.  The client
+   MUST store this nonce as long as the response from the RS is not
+   received and the access token related to it is still valid.  The
+   client MUST use CoAP and the Authorization Information resource as
+   described in section 5.8.1 of [I-D.ietf-ace-oauth-authz] to transport
+   the token and N1 to the RS.  The client MUST use the Content-Format
+   "application/ace+cbor" defined in section 8.14 of
+   [I-D.ietf-ace-oauth-authz].  The client MUST include the access token
+   using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and
+   N1 using the 'nonce' parameter defined in section 5.1.2 of
+   [I-D.ietf-ace-oauth-authz].
 
    The authz-info endpoint is not protected, nor are the responses from
    this resource.
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 15]
+Palombini, et al.         Expires June 17, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -872,28 +872,28 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    token before responding to the POST request to the authz-info
    endpoint.
 
-   Additionally, the RS MUST generate a nonce N2 unlikely to have been
-   previously used with the same input keying material and that is not
-   highly predictable, and send it within the 2.01 (Created) response.
-   The payload of the 2.01 (Created) response MUST be a CBOR map
-   containing the 'nonce' parameter defined in section 5.1.2 of
-   [I-D.ietf-ace-oauth-authz], set to N2.  This profile RECOMMENDS to
-   use a 16-bit long unpredictable counter as nonce.  Moreover, if the
-   OSCORE_Security_Context in the token did not contain a 'clientId'
-   parameter, the RS MUST generate an identifier, unique in the set of
-   all its existing client identifiers, and send it in a 'clientId'
-   parameter in the CBOR map as a CBOR bstr.  The RS MAY generate and
-   send a 'ClientId' identifier even though the OSCORE_Security_Context
-   contained such a parameter, in order to guarantee the uniqueness of
-   the client identifier.  The RS MUST use the Content-Format
-   "application/ace+cbor" defined in section 8.14 of
+   Additionally, the RS MUST generate a nonce N2 very unlikely to have
+   been previously used with the same input keying material, and send it
+   within the 2.01 (Created) response.  The payload of the 2.01
+   (Created) response MUST be a CBOR map containing the 'nonce'
+   parameter defined in section 5.1.2 of [I-D.ietf-ace-oauth-authz], set
+   to N2.  This profile RECOMMENDS to use a 64-bit long random number as
+   nonce.  Moreover, if the OSCORE_Security_Context in the token did not
+   contain a 'clientId' parameter, the RS MUST generate an identifier,
+   unique in the set of all its existing client identifiers, and send it
+   in a 'clientId' parameter in the CBOR map as a CBOR bstr.  The RS MAY
+   generate and send a 'ClientId' identifier even though the
+   OSCORE_Security_Context contained such a parameter, in order to
+   guarantee the uniqueness of the client identifier.  The RS MUST use
+   the Content-Format "application/ace+cbor" defined in section 8.14 of
    [I-D.ietf-ace-oauth-authz].
 
 
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 16]
+
+Palombini, et al.         Expires June 17, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 17]
+Palombini, et al.         Expires June 17, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 18]
+Palombini, et al.         Expires June 17, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 
 
-Palombini, et al.         Expires June 15, 2019                [Page 19]
+Palombini, et al.         Expires June 17, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
@@ -1098,11 +1098,14 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    provided by OSCORE.
 
    Since the use of nonces in the exchange guarantees uniqueness of AEAD
-   keys and nonces even in case of re-boots, it is required that nonces
-   are not reused with the same input keying material.  If that is not
-   guaranteed, nodes are still susceptible to re-using nonces and keys,
-   in case the Security Context is lost, and on-path attacker replaying
-   messages.
+   keys and nonces, it is REQUIRED that nonces are not reused with the
+   same input keying material even in case of re-boots.  This document
+   RECOMMENDS the use of 64 bit random nonces to guarantee non-reuse; if
+   applications use something else, such as a counter, they need to
+   guarantee that reboot and lost of state on either node does not
+   provoke re-use.  If that is not guaranteed, nodes are still
+   susceptible to re-using AEAD nonces and keys, in case the Security
+   Context is lost, and on-path attacker replay messages.
 
    This profiles recommends that the RS maintains a single access token
    for a client.  The use of multiple access tokens for a single client
@@ -1111,16 +1114,16 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    Also, tokens may contradict each other which may lead the server to
    enforce wrong permissions.  If one of the access tokens expires
    earlier than others, the resulting permissions may offer insufficient
-   protection.  Developers should avoid using multiple access tokens for
-   a client.
 
 
 
-
-Palombini, et al.         Expires June 15, 2019                [Page 20]
+Palombini, et al.         Expires June 17, 2019                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   protection.  Developers should avoid using multiple access tokens for
+   a client.
 
 8.  Privacy Considerations
 
@@ -1163,21 +1166,24 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    o  Change Controller: IESG
    o  Specification Document(s): [[this specification]]
 
+
+
+
+
+
+
+
+Palombini, et al.         Expires June 17, 2019                [Page 21]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
 9.2.  OSCORE Security Context Parameters Registry
 
    It is requested that IANA create a new registry entitled "OSCORE
    Security Context Parameters" registry.  The registry is to be created
    as Expert Review Required.  Guidelines for the experts is provided
    Section 9.5.  It should be noted that in addition to the expert
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 21]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
-
    review, some portions of the registry require a specification,
    potentially on standards track, be supplied as well.
 
@@ -1220,19 +1226,17 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
    o  Confirmation Method Description: OSCORE_Security_Context carrying
       the OSCORE Security Context parameters
    o  Confirmation Key: TBD (value between 4 and 255)
-   o  Confirmation Value Type(s): map
-   o  Change Controller: IESG
-   o  Specification Document(s): Section 3.2.1 of [[this specification]]
 
 
 
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 22]
+Palombini, et al.         Expires June 17, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   o  Confirmation Value Type(s): map
+   o  Change Controller: IESG
+   o  Specification Document(s): Section 3.2.1 of [[this specification]]
 
 9.4.  JWT Confirmation Methods Registry
 
@@ -1277,18 +1281,17 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
       document cannot have points assigned outside of that range.  The
       length of the encoded value should be weighed against how many
       code points of that length are left, the size of device it will be
-      used on, and the number of code points left that encode to that
-      size.
 
 
 
 
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 23]
+Palombini, et al.         Expires June 17, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+      used on, and the number of code points left that encode to that
+      size.
 
 10.  References
 
@@ -1332,19 +1335,22 @@ Internet-Draft            OSCORE Profile of ACE            December 2018
 
 10.2.  Informative References
 
+
+
+
+
+
+
+Palombini, et al.         Expires June 17, 2019                [Page 24]
+
+Internet-Draft            OSCORE Profile of ACE            December 2018
+
+
    [I-D.ietf-ace-cwt-proof-of-possession]
               Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
               Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
               possession-05 (work in progress), November 2018.
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 24]
-
-Internet-Draft            OSCORE Profile of ACE            December 2018
-
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1387,20 +1393,17 @@ Appendix A.  Profile Requirements
       (+ TLS/DTLS/OSCORE)
    o  how/if the authz-info endpoint is protected: Security protocol
       above
-   o  (Optional)other methods of token transport than the authz-info
-      endpoint: no
 
 
 
 
-
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 25]
+Palombini, et al.         Expires June 17, 2019                [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE            December 2018
 
+
+   o  (Optional)other methods of token transport than the authz-info
+      endpoint: no
 
 Acknowledgments
 
@@ -1450,7 +1453,4 @@ Authors' Addresses
 
 
 
-
-
-
-Palombini, et al.         Expires June 15, 2019                [Page 26]
+Palombini, et al.         Expires June 17, 2019                [Page 26]

@@ -83,7 +83,7 @@ table.header td, table#rfc\.headerblock td {
   line-height: 28px;
 }
 
-samp, tt, code, pre {
+samp, tt, code, pre, span.tt {
   font: 13.5px Consolas, monospace;
   font-size-adjust: none;
 }
@@ -316,7 +316,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Palombini, F., Seitz, L., Selander, G., and M. Gunnarsson" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-oscore-profile-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-12" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-14" />
   <meta name="dct.abstract" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
   <meta name="description" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
 
@@ -340,7 +340,7 @@ ul.toc li {
 <td class="right">L. Seitz</td>
 </tr>
 <tr>
-<td class="left">Expires: June 15, 2019</td>
+<td class="left">Expires: June 17, 2019</td>
 <td class="right">RISE SICS AB</td>
 </tr>
 <tr>
@@ -361,7 +361,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">December 12, 2018</td>
+<td class="right">December 14, 2018</td>
 </tr>
 
     	
@@ -377,7 +377,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on June 15, 2019.</p>
+<p>This Internet-Draft will expire on June 17, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -823,7 +823,7 @@ OSCORE_Security_Context = {
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#c-rs" id="c-rs">C-to-RS: POST to authz-info endpoint</a>
 </h1>
-<p id="rfc.section.4.1.p.1">The client MUST generate a nonce N1 unlikely to have been previously used with the same input keying material and that is not highly predictable. This profile RECOMMENDS to use a 16-bit long unpredictable counter as nonce. The client MUST store this nonce as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token and N1 to the RS. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.4.1.p.1">The client MUST generate a nonce N1 very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce. The client MUST store this nonce as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token and N1 to the RS. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p id="rfc.section.4.1.p.2">The authz-info endpoint is not protected, nor are the responses from this resource.  </p>
 <p id="rfc.section.4.1.p.3">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
 <p id="rfc.section.4.1.p.4">Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.  </p>
@@ -848,7 +848,7 @@ OSCORE_Security_Context = {
 <a href="#rfc.section.4.2">4.2.</a> <a href="#rs-c" id="rs-c">RS-to-C: 2.01 (Created)</a>
 </h1>
 <p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong.  The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
-<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 unlikely to have been previously used with the same input keying material and that is not highly predictable, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, set to N2. This profile RECOMMENDS to use a 16-bit long unpredictable counter as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p><a href="#ex4" class="xref">Figure 11</a> shows an example of the response sent from the RS to the client, in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.11"></div>
 <div id="ex4"></div>
@@ -909,7 +909,7 @@ OSCORE_Security_Context = {
 <p id="rfc.section.7.p.1">This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  Thus the general security considerations from the framework also apply to this profile.  </p>
 <p id="rfc.section.7.p.2">Furthermore the general security considerations of OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> also apply to this specific use of the OSCORE protocol.  </p>
 <p id="rfc.section.7.p.3">OSCORE is designed to secure point-to-point communication, providing a secure binding between the request and the response(s).  Thus the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g. multicast, publish-subscribe).  Implementers of this profile should make sure that their usecase corresponds to the expected use of OSCORE, to prevent weakening the security assurances provided by OSCORE.  </p>
-<p id="rfc.section.7.p.4">Since the use of nonces in the exchange guarantees uniqueness of AEAD keys and nonces even in case of re-boots, it is required that nonces are not reused with the same input keying material. If that is not guaranteed, nodes are still susceptible to re-using nonces and keys, in case the Security Context is lost, and on-path attacker replaying messages.  </p>
+<p id="rfc.section.7.p.4">Since the use of nonces in the exchange guarantees uniqueness of AEAD keys and nonces, it is REQUIRED that nonces are not reused with the same input keying material even in case of re-boots. This document RECOMMENDS the use of 64 bit random nonces to guarantee non-reuse; if applications use something else, such as a counter, they need to guarantee that reboot and lost of state on either node does not provoke re-use. If that is not guaranteed, nodes are still susceptible to re-using AEAD nonces and keys, in case the Security Context is lost, and on-path attacker replay messages.  </p>
 <p id="rfc.section.7.p.5">This profiles recommends that the RS maintains a single access token for a client. The use of multiple access tokens for a single client increases the strain on the resource server as it must consider every access token and calculate the actual permissions of the client. Also, tokens may contradict each other which may lead the server to enforce wrong permissions. If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers should avoid using multiple access tokens for a client.  </p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> Privacy Considerations</h1>
