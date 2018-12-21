@@ -270,7 +270,8 @@
         </t>
 
         <t>
-          The AS signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
+          The AS can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
+Usually it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile negotiation can be omitted.	  
         </t>
 
         <t>
