@@ -224,8 +224,6 @@
     Content-Format: "application/ace+cbor"
     Payload:
     {
-      "grant_type" : "client_credentials",
-      "client_id" : "myclient",
       "req_aud" : "tempSensor4711",
       "scope" : "read"
      }
@@ -249,8 +247,6 @@
     Content-Format: "application/ace+cbor"
     Payload:
     {
-      "grant_type" : "client_credentials",
-      "client_id" : "myclient",
       "req_aud" : "tempSensor4711",
       "scope" : "write",
       "req_cnf" : {
@@ -1014,7 +1010,6 @@ Uri-Path: "token"
 Content-Type: "application/cose+cbor"
 Payload:
 {
- "grant_type" : "client_credentials",
  "req_cnf" : {
    "COSE_Key" : {
      "kid" : "client_key"
