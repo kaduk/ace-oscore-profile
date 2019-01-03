@@ -392,14 +392,16 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 A5                                      # map(5)
    03                                   # unsigned(3)
    76                                   # text(22)
-      74656D7053656E736F72496E4C6976696E67526F6F6D # "tempSensorInLivingRoom"
+      74656D7053656E736F72496E4C6976696E67526F6F6D 
+                                        # "tempSensorInLivingRoom"
    06                                   # unsigned(6)
    1A 5112D728                          # unsigned(1360189224)
    04                                   # unsigned(4)
    1A 51145DC8                          # unsigned(1360289224)
    09                                   # unsigned(9)
    78 18                                # text(24)
-      74656D70657261747572655F67206669726D776172655F70 # "temperature_g firmware_p"
+      74656D70657261747572655F67206669726D776172655F70 
+                                        # "temperature_g firmware_p"
    08                                   # unsigned(8)
    A1                                   # map(1)
       04                                # unsigned(4)
@@ -414,7 +416,7 @@ A5                                      # map(5)
             736572766572                # "server"
          01                             # unsigned(1)
          50                             # bytes(16)
-            F9AF838368E353E78888E1426BD94E6F # "\xF9\xAF\x83\x83h\xE3S\xE7\x88\x88\xE1Bk\xD9No"
+            F9AF838368E353E78888E1426BD94E6F
 ]]>
           </artwork>
         </figure>
@@ -700,7 +702,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST not derive the Security Context. The client MAY restart the exchange, to get the correct security material.
+          If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
         </t>
 
         <t>
