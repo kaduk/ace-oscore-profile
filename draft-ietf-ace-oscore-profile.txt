@@ -300,8 +300,6 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
        Content-Format: "application/ace+cbor"
        Payload:
        {
-         "grant_type" : "client_credentials",
-         "client_id" : "myclient",
          "req_aud" : "tempSensor4711",
          "scope" : "read"
         }
@@ -333,6 +331,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
+
+
 Palombini, et al.         Expires July 7, 2019                  [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
@@ -344,8 +344,6 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
        Content-Format: "application/ace+cbor"
        Payload:
        {
-         "grant_type" : "client_credentials",
-         "client_id" : "myclient",
          "req_aud" : "tempSensor4711",
          "scope" : "write",
          "req_cnf" : {
@@ -387,14 +385,14 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
    o  an AEAD algorithm
 
+   o  an HKDF algorithm
+
 
 
 Palombini, et al.         Expires July 7, 2019                  [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
-
-   o  an HKDF algorithm
 
    o  a salt
 
@@ -440,6 +438,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
    Figure 4 shows an example of such an AS response, in CBOR diagnostic
    notation without the tag and value abbreviations.
+
+
 
 
 
