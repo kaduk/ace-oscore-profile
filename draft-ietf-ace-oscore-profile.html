@@ -633,14 +633,16 @@ ul.toc li {
 A5                                      # map(5)
    03                                   # unsigned(3)
    76                                   # text(22)
-      74656D7053656E736F72496E4C6976696E67526F6F6D # "tempSensorInLivingRoom"
+      74656D7053656E736F72496E4C6976696E67526F6F6D 
+                                        # "tempSensorInLivingRoom"
    06                                   # unsigned(6)
    1A 5112D728                          # unsigned(1360189224)
    04                                   # unsigned(4)
    1A 51145DC8                          # unsigned(1360289224)
    09                                   # unsigned(9)
    78 18                                # text(24)
-      74656D70657261747572655F67206669726D776172655F70 # "temperature_g firmware_p"
+      74656D70657261747572655F67206669726D776172655F70 
+                                        # "temperature_g firmware_p"
    08                                   # unsigned(8)
    A1                                   # map(1)
       04                                # unsigned(4)
@@ -655,7 +657,7 @@ A5                                      # map(5)
             736572766572                # "server"
          01                             # unsigned(1)
          50                             # bytes(16)
-            F9AF838368E353E78888E1426BD94E6F # "\xF9\xAF\x83\x83h\xE3S\xE7\x88\x88\xE1Bk\xD9No"
+            F9AF838368E353E78888E1426BD94E6F
 
           </pre>
 <p class="figure">Figure 6: Example CWT with OSCORE parameters.</p>
@@ -868,7 +870,7 @@ OSCORE_Security_Context = {
 <a href="#rfc.section.4.3">4.3.</a> <a href="#oscore-setup" id="oscore-setup">OSCORE Setup</a>
 </h1>
 <p id="rfc.section.4.3.p.1">Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'nonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>. The client MUST set the AEAD Algorithm, Master Salt, HKDF, and Replay Window from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.  </p>
-<p id="rfc.section.4.3.p.2">If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST not derive the Security Context. The client MAY restart the exchange, to get the correct security material.  </p>
+<p id="rfc.section.4.3.p.2">If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.  </p>
 <p id="rfc.section.4.3.p.3">The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MAY include the kid context, with value ID Context, i.e. N1 concatenated with N2.  </p>
 <p id="rfc.section.4.3.p.4">After sending the 2.01 (Created) response, the RS MUST set the ID Context of the Security Context created to communicate with the client to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the client in the access token in <a href="#c-rs" class="xref">Section 4.1</a> after validation of the token as specified in <a href="#rs-c" class="xref">Section 4.2</a>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF, and Replay Window from the parameters received from the client in the access token in <a href="#c-rs" class="xref">Section 4.1</a> after validation of the token as specified in <a href="#rs-c" class="xref">Section 4.2</a>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>, and MUST associate this Security Context with the authorization information from the access token.  </p>
 <p id="rfc.section.4.3.p.5">The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <a href="#tok-ver" class="xref">Section 4.4</a>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.  </p>
