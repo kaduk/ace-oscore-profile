@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: July 7, 2019                                       RISE SICS AB
+Expires: July 8, 2019                                       RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                         January 3, 2019
+                                                         January 4, 2019
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 7, 2019.
+   This Internet-Draft will expire on July 8, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 1]
+Palombini, et al.         Expires July 8, 2019                  [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 2]
+Palombini, et al.         Expires July 8, 2019                  [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 3]
+Palombini, et al.         Expires July 8, 2019                  [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 4]
+Palombini, et al.         Expires July 8, 2019                  [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 5]
+Palombini, et al.         Expires July 8, 2019                  [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 6]
+Palombini, et al.         Expires July 8, 2019                  [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 7]
+Palombini, et al.         Expires July 8, 2019                  [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 8]
+Palombini, et al.         Expires July 8, 2019                  [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                  [Page 9]
+Palombini, et al.         Expires July 8, 2019                  [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 10]
+Palombini, et al.         Expires July 8, 2019                 [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 11]
+Palombini, et al.         Expires July 8, 2019                 [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 12]
+Palombini, et al.         Expires July 8, 2019                 [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 13]
+Palombini, et al.         Expires July 8, 2019                 [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 14]
+Palombini, et al.         Expires July 8, 2019                 [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 15]
+Palombini, et al.         Expires July 8, 2019                 [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 16]
+Palombini, et al.         Expires July 8, 2019                 [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 17]
+Palombini, et al.         Expires July 8, 2019                 [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 18]
+Palombini, et al.         Expires July 8, 2019                 [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 19]
+Palombini, et al.         Expires July 8, 2019                 [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 20]
+Palombini, et al.         Expires July 8, 2019                 [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 21]
+Palombini, et al.         Expires July 8, 2019                 [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 22]
+Palombini, et al.         Expires July 8, 2019                 [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1285,7 +1285,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 23]
+Palombini, et al.         Expires July 8, 2019                 [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1341,7 +1341,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 24]
+Palombini, et al.         Expires July 8, 2019                 [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1397,7 +1397,7 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 25]
+Palombini, et al.         Expires July 8, 2019                 [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1453,4 +1453,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.         Expires July 7, 2019                 [Page 26]
+Palombini, et al.         Expires July 8, 2019                 [Page 26]
