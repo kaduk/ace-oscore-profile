@@ -1,4 +1,4 @@
-#  OSCORE profile of the Authentication and Authorization for Constrained Environments Framework
+#  OSCORE profile of the Authentication and Authorization for Constrained Environments Framework [![Build Status](https://travis-ci.org/ace-wg/ace-oscore-profile.svg?branch=master)](https://travis-ci.org/ace-wg/ace-oscore-profile)
 
 This is the working area for the IETF [ACE Working Group](https://datatracker.ietf.org/wg/ace/documents/) Internet-Draft, " OSCORE profile of the Authentication and Authorization for Constrained Environments Framework".
 
