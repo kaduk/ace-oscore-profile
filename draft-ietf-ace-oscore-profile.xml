@@ -453,7 +453,7 @@ A5                                      # map(5)
     "exp" : "1360289224",
     "scope" :  "temperature_h",
     "cnf" : {
-      "kid" : b64'Qg'
+      "kid" : b64'qA'
     }
   }
 ]]>
@@ -502,7 +502,7 @@ A5                                      # map(5)
               </t>
 
               <t hangText="serverId:">
-                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the server and OSCORE Recipient ID in the client. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
                 In JSON, the "serverId" value is a Base64 encoded byte string.
                 In CBOR, the "serverId" type is bstr, and has label 3.
               </t>
@@ -533,11 +533,11 @@ A5                                      # map(5)
                 In CBOR, the "contextID" type is bstr, and has label 7.
               </t>
 
-              <t hangText="repl:">
+              <t hangText="rpl:">
                 This parameter is used to carry the OSCORE value, encoded as a bstr.
                 This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "repl" value is a Base64 encoded byte string.
-                In CBOR, the "repl" type is bstr, and has label 8.
+                In JSON, the "rpl" value is a Base64 encoded byte string.
+                In CBOR, the "rpl" type is bstr, and has label 8.
               </t>
 
               <!--<t hangText="exp:">
@@ -702,7 +702,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MAY include the kid context, with value ID Context, i.e. N1 concatenated with N2.
+          The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MAY include the kid context if the application needs to, with value ID Context, i.e. N1 concatenated with N2.
         </t>
 
         <t>
@@ -710,7 +710,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
+          The RS then uses this Security Context to verify the request and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
         </t>
 
       </section> <!-- ends from line 481-->
