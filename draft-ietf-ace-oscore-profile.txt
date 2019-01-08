@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: July 11, 2019                                      RISE SICS AB
+Expires: July 12, 2019                                      RISE SICS AB
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                             RISE SICS AB
-                                                         January 7, 2019
+                                                         January 8, 2019
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 11, 2019.
+   This Internet-Draft will expire on July 12, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 1]
+Palombini, et al.         Expires July 12, 2019                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 2]
+Palombini, et al.         Expires July 12, 2019                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 3]
+Palombini, et al.         Expires July 12, 2019                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 4]
+Palombini, et al.         Expires July 12, 2019                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 5]
+Palombini, et al.         Expires July 12, 2019                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 6]
+Palombini, et al.         Expires July 12, 2019                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 7]
+Palombini, et al.         Expires July 12, 2019                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 8]
+Palombini, et al.         Expires July 12, 2019                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                 [Page 9]
+Palombini, et al.         Expires July 12, 2019                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 10]
+Palombini, et al.         Expires July 12, 2019                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -586,7 +586,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
        "exp" : "1360289224",
        "scope" :  "temperature_h",
        "cnf" : {
-         "kid" : b64'Qg'
+         "kid" : b64'qA'
        }
      }
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 11]
+Palombini, et al.         Expires July 12, 2019                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 12]
+Palombini, et al.         Expires July 12, 2019                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -686,8 +686,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
       CBOR, the "clientId" type is bstr, and has label 2.
 
    serverId:  This parameter identifies a server identifier as a byte
-      string.  This identifier is used as OSCORE Sender ID in the client
-      and OSCORE Recipient ID in the server.  For more information about
+      string.  This identifier is used as OSCORE Sender ID in the server
+      and OSCORE Recipient ID in the client.  For more information about
       this field, see section 3.1 of [I-D.ietf-core-object-security].
       In JSON, the "serverId" value is a Base64 encoded byte string.  In
       CBOR, the "serverId" type is bstr, and has label 3.
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 13]
+Palombini, et al.         Expires July 12, 2019                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -733,12 +733,12 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
       is a Base64 encoded byte string.  In CBOR, the "contextID" type is
       bstr, and has label 7.
 
-   repl:  This parameter is used to carry the OSCORE value, encoded as a
+   rpl:  This parameter is used to carry the OSCORE value, encoded as a
       bstr.  This parameter identifies the OSCORE Replay Window Size and
       Type value, which is a byte string.  For more information about
       this field, see section 3.1 of [I-D.ietf-core-object-security].
-      In JSON, the "repl" value is a Base64 encoded byte string.  In
-      CBOR, the "repl" type is bstr, and has label 8.
+      In JSON, the "rpl" value is a Base64 encoded byte string.  In
+      CBOR, the "rpl" type is bstr, and has label 8.
 
    An example of JSON OSCORE_Security_Context is given in Figure 9.
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 14]
+Palombini, et al.         Expires July 12, 2019                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 15]
+Palombini, et al.         Expires July 12, 2019                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 16]
+Palombini, et al.         Expires July 12, 2019                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 17]
+Palombini, et al.         Expires July 12, 2019                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -966,8 +966,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
    The client then uses this Security Context to send requests to RS
    using OSCORE.  In the first request sent to the RS, the client MAY
-   include the kid context, with value ID Context, i.e. N1 concatenated
-   with N2.
+   include the kid context if the application needs to, with value ID
+   Context, i.e. N1 concatenated with N2.
 
    After sending the 2.01 (Created) response, the RS MUST set the ID
    Context of the Security Context created to communicate with the
@@ -987,7 +987,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
    Context with the authorization information from the access token.
 
    The RS then uses this Security Context to verify the request and send
-   responses to RS using OSCORE.  If OSCORE verification fails, error
+   responses to C using OSCORE.  If OSCORE verification fails, error
    responses are used, as specified in section 8 of
    [I-D.ietf-core-object-security].  Additionally, if OSCORE
    verification succeeds, the verification of access rights is performed
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 18]
+Palombini, et al.         Expires July 12, 2019                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 19]
+Palombini, et al.         Expires July 12, 2019                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 20]
+Palombini, et al.         Expires July 12, 2019                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 21]
+Palombini, et al.         Expires July 12, 2019                [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 22]
+Palombini, et al.         Expires July 12, 2019                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1285,7 +1285,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 23]
+Palombini, et al.         Expires July 12, 2019                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1341,7 +1341,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2019
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 24]
+Palombini, et al.         Expires July 12, 2019                [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1397,7 +1397,7 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 25]
+Palombini, et al.         Expires July 12, 2019                [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE             January 2019
 
@@ -1453,4 +1453,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.         Expires July 11, 2019                [Page 26]
+Palombini, et al.         Expires July 12, 2019                [Page 26]
