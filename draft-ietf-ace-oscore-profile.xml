@@ -465,6 +465,12 @@ A5                                      # map(5)
           </artwork>
         </figure>
 
+        <!-- Client rejecting OSCORE_Security_Context if invalid <- This is not done as the client does not verify the token, so it would be easy for an attacker to interrupt ACE by just injecting unexisting fields.
+        <t>
+          When receiving the access token response, the client MUST verify the OSCORE_Security_Context. If any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the client MUST NOT continue processing, and MAY attempt to retrieve a new token from the AS.
+        <t>
+        -->
+
         <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
 
           <t>
@@ -656,7 +662,7 @@ OSCORE_Security_Context = {
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong.
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS MAY provide additional information in the error response, in order to clarify what went wrong.
           The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
