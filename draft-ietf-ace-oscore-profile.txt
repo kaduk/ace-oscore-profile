@@ -406,7 +406,7 @@ Internet-Draft            OSCORE Profile of ACE               March 2019
    parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be
    included as the 'hkdf' parameter of the OSCORE_Security_Context, the
    salt MAY be included as the 'salt' parameter of the
-   COSCORE_Security_Context, and the replay window type and size MAY be
+   OSCORE_Security_Context, and the replay window type and size MAY be
    included as the 'rpl' of the OSCORE_Security_Context, as defined in
    Section 3.2.1.
 
