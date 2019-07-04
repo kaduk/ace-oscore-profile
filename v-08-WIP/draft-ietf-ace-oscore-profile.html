@@ -78,13 +78,14 @@ table.header td, table#rfc\.headerblock td {
   line-height: 100%;
   margin: 10px 0 32px;
 }
-#rfc\.abstract+p, #rfc\.abstract p {
+#rfc\.abstract+p, #rfc\.abstract+p code, #rfc\.abstract+p samp, #rfc\.abstract+p tt {
   font-size: 20px;
   line-height: 28px;
 }
 
 samp, tt, code, pre, span.tt {
-  font: 13.5px Consolas, monospace;
+  font-size: 13.5px;
+  font-family: Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -311,12 +312,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.20.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.23.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Palombini, F., Seitz, L., Selander, G., and M. Gunnarsson" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-oscore-profile-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-27" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-04" />
   <meta name="dct.abstract" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
   <meta name="description" content="This memo specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.  It utilizes Object Security for Constrained RESTful Environments (OSCORE) to provide communication security, server authentication, and proof-of-possession for a key owned by the client and bound to an OAuth 2.0 access token.  " />
 
@@ -340,8 +341,8 @@ ul.toc li {
 <td class="right">L. Seitz</td>
 </tr>
 <tr>
-<td class="left">Expires: August 31, 2019</td>
-<td class="right">RISE SICS AB</td>
+<td class="left">Expires: January 5, 2020</td>
+<td class="right">RISE</td>
 </tr>
 <tr>
 <td class="left"></td>
@@ -361,7 +362,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">February 27, 2019</td>
+<td class="right">July 4, 2019</td>
 </tr>
 
     	
@@ -377,7 +378,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 31, 2019.</p>
+<p>This Internet-Draft will expire on January 5, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -476,12 +477,13 @@ ul.toc li {
    C                            RS                   AS
    | [-- Resource Request ---&gt;] |                     |
    |                            |                     |
-   | [&lt;----- AS Information --] |                     |
+   | [&lt;---- AS Request  ------] |                     |
+   |      Creation Hints        |                     |
    |                            |                     |
    | ----- POST /token  ----------------------------&gt; |
    |                            |                     |
    | &lt;---------------------------- Access Token ----- |
-   |                               + RS Information   |
+   |                           + Access Information   |
    | ---- POST /authz-info ---&gt; |                     |
    |     (access_token, N1)     |                     |
    |                            |                     |
@@ -572,7 +574,7 @@ ul.toc li {
 </ul>
 
 <p> </p>
-<p id="rfc.section.3.2.p.7">The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The OSCORE_Security_Context is a CBOR map object, defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included as the 'hkdf' parameter of the OSCORE_Security_Context, the salt MAY be included as the 'salt' parameter of the COSCORE_Security_Context, and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
+<p id="rfc.section.3.2.p.7">The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The OSCORE_Security_Context is a CBOR map object, defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included as the 'hkdf' parameter of the OSCORE_Security_Context, the salt MAY be included as the 'salt' parameter of the OSCORE_Security_Context, and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
 <p id="rfc.section.3.2.p.8">The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token.  </p>
 <p id="rfc.section.3.2.p.9">The AS MUST also assign an identifier to the RS, and MAY assign an identifier to the client. These identifiers are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique in the set of all RS for any given client.  Moreover, when assigned, these MUST be included in the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible to assume unique identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may appear in the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate their effect.  </p>
@@ -999,17 +1001,17 @@ OSCORE_Security_Context = {
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</b></td>
 <td class="top">
-<a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Wahlstroem, E.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-authz-21">Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)</a>", Internet-Draft draft-ietf-ace-oauth-authz-21, February 2019.</td>
+<a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Wahlstroem, E.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-authz-24">Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)</a>", Internet-Draft draft-ietf-ace-oauth-authz-24, March 2019.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-params">[I-D.ietf-ace-oauth-params]</b></td>
 <td class="top">
-<a>Seitz, L.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-params-04">Additional OAuth Parameters for Authorization in Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-oauth-params-04, February 2019.</td>
+<a>Seitz, L.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-params-05">Additional OAuth Parameters for Authorization in Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-oauth-params-05, March 2019.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
 <td class="top">
-<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-15">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-15, August 2018.</td>
+<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-16">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-16, March 2019.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -1118,7 +1120,7 @@ OSCORE_Security_Context = {
 		<span class="family-name">Seitz</span>
 	  </span>
 	</span>
-	<span class="org vcardline">RISE SICS AB</span>
+	<span class="org vcardline">RISE</span>
 	<span class="adr">
 	  <span class="vcardline">Scheelevagen 17</span>
 
@@ -1179,3 +1181,4 @@ OSCORE_Security_Context = {
 
 </body>
 </html>
+
