@@ -806,7 +806,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    "application/ace+cbor" defined in section 8.14 of
    [I-D.ietf-ace-oauth-authz].  The client MUST include the access token
    using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and
-   N1 using the 'nonce' parameter defined in section 5.1.2 of
+   N1 using the 'cnonce' parameter defined in section 5.1.2 of
    [I-D.ietf-ace-oauth-authz].
 
    The authz-info endpoint is not protected, nor are the responses from
@@ -850,7 +850,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
            {
              "access_token": h'a5037674656d7053656e73 ...'
           (remainder of access token omitted for brevity)',
-             "nonce": h'018a278f7faab55a'
+             "cnonce": h'018a278f7faab55a'
            }
 
 
@@ -876,7 +876,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    Additionally, the RS MUST generate a nonce N2 very unlikely to have
    been previously used with the same input keying material, and send it
    within the 2.01 (Created) response.  The payload of the 2.01
-   (Created) response MUST be a CBOR map containing the 'nonce'
+   (Created) response MUST be a CBOR map containing the 'cnonce'
    parameter defined in section 5.1.2 of [I-D.ietf-ace-oauth-authz], set
    to N2.  This profile RECOMMENDS to use a 64-bit long random number as
    nonce.  Moreover, if the OSCORE_Security_Context in the token did not
@@ -906,7 +906,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
          Content-Format: "application/ace+cbor"
          Payload:
            {
-             "nonce": h'25a8991cd700ac01'
+             "cnonce": h'25a8991cd700ac01'
            }
 
 
@@ -928,7 +928,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
    Once receiving the 2.01 (Created) response from the RS, following the
    POST request to authz-info endpoint, the client MUST extract the
-   nonce N2 from the 'nonce' parameter and the client identifier from
+   nonce N2 from the 'cnonce' parameter and the client identifier from
    the 'clientId' in the CBOR map in the payload of the response.  Then,
    the client MUST set the ID Context of the Security Context created to
    communicate with the RS to the concatenation of N1 and N2, in this
