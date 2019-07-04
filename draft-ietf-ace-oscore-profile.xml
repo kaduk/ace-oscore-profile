@@ -175,12 +175,13 @@
    C                            RS                   AS
    | [-- Resource Request --->] |                     |
    |                            |                     |
-   | [<----- AS Information --] |                     |
+   | [<---- AS Request  ------] |                     |
+   |      Creation Hints        |                     |
    |                            |                     |
    | ----- POST /token  ----------------------------> |
    |                            |                     |
    | <---------------------------- Access Token ----- |
-   |                               + RS Information   |
+   |                           + Access Information   |
    | ---- POST /authz-info ---> |                     |
    |     (access_token, N1)     |                     |
    |                            |                     |
