@@ -804,16 +804,15 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    described in section 5.8.1 of [I-D.ietf-ace-oauth-authz] to transport
    the token and N1 to the RS.
 
-   Note that the use of the payload and of the Content-Format is
-   different from what described in section 5.8.1 of
-   [I-D.ietf-ace-oauth-authz], which only transports the token without
-   any CBOR wrapping.  In this profile, the client MUST wrap the token
-   and N1 in a CBOR map.  The client MUST use the Content-Format
-   "application/ace+cbor" defined in section 8.14 of
-   [I-D.ietf-ace-oauth-authz].  The client MUST include the access token
-   using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and
-   N1 using the 'cnonce' parameter defined in section 5.1.2 of
-   [I-D.ietf-ace-oauth-authz].
+   Note that the use of the payload and the Content-Format is different
+   from what described in section 5.8.1 of [I-D.ietf-ace-oauth-authz],
+   which only transports the token without any CBOR wrapping.  In this
+   profile, the client MUST wrap the token and N1 in a CBOR map.  The
+   client MUST use the Content-Format "application/ace+cbor" defined in
+   section 8.14 of [I-D.ietf-ace-oauth-authz].  The client MUST include
+   the access token using the correct CBOR label (e.g., "cwt" for CWT,
+   "jwt" for JWT) and N1 using the 'cnonce' parameter defined in section
+   5.1.2 of [I-D.ietf-ace-oauth-authz].
 
    The authz-info endpoint is not protected, nor are the responses from
    this resource.
@@ -827,6 +826,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    Figure 10 shows an example of the request sent from the client to the
    RS, in CBOR diagnostic notation without the tag and value
    abbreviations.
+
 
 
 
