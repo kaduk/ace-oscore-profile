@@ -621,7 +621,10 @@ OSCORE_Security_Context = {
       <section anchor="c-rs" title="C-to-RS: POST to authz-info endpoint">
 
         <t>
-          The client MUST generate a nonce N1 very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce. The client MUST store this nonce as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token and N1 to the RS. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          The client MUST generate a nonce N1 very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce. The client MUST store this nonce as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token and N1 to the RS.
+        </t>
+        <t>
+           Note that the use of the payload and of the Content-Format is different from what described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
         <t>
