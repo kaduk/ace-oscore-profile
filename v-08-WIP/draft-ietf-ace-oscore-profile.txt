@@ -435,13 +435,13 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    used as Sender ID, Recipient ID and ID Context in the OSCORE context
    as described in section 3.1 of [I-D.ietf-core-object-security].  The
    couple (client identifier, context identifier) MUST be unique in the
-   set of all clients on a single RS, and the couple (client identifier,
-   RS identifiers) MUST be unique in the set of all RS for any given
-   client.  Moreover, when assigned, these MUST be included in the
+   set of all clients on a single RS.  Moreover, when assigned,
+   serverId, clientId and contextId MUST be included in the
    OSCORE_Security_Context, as defined in Section 3.2.1.
 
    We assume in this document that a resource is associated to one
    single AS, which makes it possible to assume unique identifiers for
+   each client requesting a particular resource to a RS.  If this is not
 
 
 
@@ -450,7 +450,6 @@ Palombini, et al.        Expires January 9, 2020                [Page 8]
 Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
-   each client requesting a particular resource to a RS.  If this is not
    the case, collisions of identifiers may appear in the RS, in which
    case the RS needs to have a mechanism in place to disambiguate
    identifiers or mitigate their effect.
@@ -486,6 +485,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    Figure 6 shows an example CWT, containing the necessary OSCORE
    parameters in the 'cnf' claim, in CBOR diagnostic notation without
    tag and value abbreviations.
+
 
 
 
