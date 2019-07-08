@@ -79,14 +79,14 @@ Table of Contents
      4.1.  C-to-RS: POST to authz-info endpoint  . . . . . . . . . .  16
      4.2.  RS-to-C: 2.01 (Created) . . . . . . . . . . . . . . . . .  17
      4.3.  OSCORE Setup  . . . . . . . . . . . . . . . . . . . . . .  18
-     4.4.  Access rights verification  . . . . . . . . . . . . . . .  19
+     4.4.  Access rights verification  . . . . . . . . . . . . . . .  20
    5.  Secure Communication with AS  . . . . . . . . . . . . . . . .  20
    6.  Discarding the Security Context . . . . . . . . . . . . . . .  20
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
    8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  22
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  22
      9.1.  ACE OAuth Profile Registry  . . . . . . . . . . . . . . .  22
-     9.2.  OSCORE Security Context Parameters Registry . . . . . . .  22
+     9.2.  OSCORE Security Context Parameters Registry . . . . . . .  23
      9.3.  CWT Confirmation Methods Registry . . . . . . . . . . . .  23
      9.4.  JWT Confirmation Methods Registry . . . . . . . . . . . .  24
      9.5.  Expert Review Instructions  . . . . . . . . . . . . . . .  24
@@ -1050,14 +1050,14 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    Security Context after the related token has expired, and MUST
    respond with a unprotected 4.01 (Unauthorized) error message.
 
-4.4.  Access rights verification
+   If the exchange was an update of access rights, i.e. a new Security
+   Context was derived from a client that already had a Security Context
+   in place, the is RECOMMENDED to delete the old Security Context after
+   OSCORE verification and verification of access rights succeed.  The
+   RS MUST delete the Security Context if it deletes the access token
+   associated to it.
 
-   The RS MUST follow the procedures defined in section 5.8.2 of
-   [I-D.ietf-ace-oauth-authz]: if an RS receives an OSCORE-protected
-   request from a client, then the RS processes it according to
-   [I-D.ietf-core-object-security].  If OSCORE verification succeeds,
-   and the target resource requires authorization, the RS retrieves the
-   authorization information from the access token associated to the
+
 
 
 
@@ -1066,6 +1066,14 @@ Palombini, et al.        Expires January 9, 2020               [Page 19]
 Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
+4.4.  Access rights verification
+
+   The RS MUST follow the procedures defined in section 5.8.2 of
+   [I-D.ietf-ace-oauth-authz]: if an RS receives an OSCORE-protected
+   request from a client, then the RS processes it according to
+   [I-D.ietf-core-object-security].  If OSCORE verification succeeds,
+   and the target resource requires authorization, the RS retrieves the
+   authorization information from the access token associated to the
    Security Context.  The RS then MUST verify that the authorization
    information covers the resource and the action requested.
 
@@ -1106,14 +1114,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
    o  the Sequence Number space ends.
 
-   o  the access token associated with the context expires.
-
-   o  the client receives a number of 4.01 Unauthorized responses to
-      OSCORE requests using the same security context.  The exact number
-      needs to be specified by the application.
-
-   o  the client receives a new nonce in the 2.01 (Created) response
-      (see Section 4.2) to a POST request to the authz-info endpoint,
 
 
 
@@ -1122,6 +1122,14 @@ Palombini, et al.        Expires January 9, 2020               [Page 20]
 Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
+   o  the access token associated with the context expires.
+
+   o  the client receives a number of 4.01 Unauthorized responses to
+      OSCORE requests using the same security context.  The exact number
+      needs to be specified by the application.
+
+   o  the client receives a new nonce in the 2.01 (Created) response
+      (see Section 4.2) to a POST request to the authz-info endpoint,
       when re-posting a non-expired token associated to the existing
       context.
 
@@ -1161,6 +1169,15 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    susceptible to re-using AEAD nonces and keys, in case the Security
    Context is lost, and on-path attacker replay messages.
 
+
+
+
+
+Palombini, et al.        Expires January 9, 2020               [Page 21]
+
+Internet-Draft            OSCORE Profile of ACE                July 2019
+
+
    This profiles recommends that the RS maintains a single access token
    for a client.  The use of multiple access tokens for a single client
    increases the strain on the resource server as it must consider every
@@ -1170,13 +1187,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    earlier than others, the resulting permissions may offer insufficient
    protection.  Developers should avoid using multiple access tokens for
    a client.
-
-
-
-Palombini, et al.        Expires January 9, 2020               [Page 21]
-
-Internet-Draft            OSCORE Profile of ACE                July 2019
-
 
 8.  Privacy Considerations
 
@@ -1216,6 +1226,14 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
       communication between constrained nodes using the Authentication
       and Authorization for Constrained Environments framework.
    o  Profile ID: TBD (value between 1 and 255)
+
+
+
+Palombini, et al.        Expires January 9, 2020               [Page 22]
+
+Internet-Draft            OSCORE Profile of ACE                July 2019
+
+
    o  Change Controller: IESG
    o  Specification Document(s): [[this specification]]
 
@@ -1225,15 +1243,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    Security Context Parameters" registry.  The registry is to be created
    as Expert Review Required.  Guidelines for the experts is provided
    Section 9.5.  It should be noted that in addition to the expert
-
-
-
-
-Palombini, et al.        Expires January 9, 2020               [Page 22]
-
-Internet-Draft            OSCORE Profile of ACE                July 2019
-
-
    review, some portions of the registry require a specification,
    potentially on standards track, be supplied as well.
 
@@ -1273,15 +1282,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    [I-D.ietf-ace-cwt-proof-of-possession]:
 
    o  Confirmation Method Name: "OSCORE_Security_Context"
-   o  Confirmation Method Description: OSCORE_Security_Context carrying
-      the OSCORE Security Context parameters
-   o  Confirmation Key: TBD (value between 4 and 255)
-   o  Confirmation Value Type(s): map
-   o  Change Controller: IESG
-   o  Specification Document(s): Section 3.2.1 of [[this specification]]
-
-
-
 
 
 
@@ -1289,6 +1289,13 @@ Palombini, et al.        Expires January 9, 2020               [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE                July 2019
 
+
+   o  Confirmation Method Description: OSCORE_Security_Context carrying
+      the OSCORE Security Context parameters
+   o  Confirmation Key: TBD (value between 4 and 255)
+   o  Confirmation Value Type(s): map
+   o  Change Controller: IESG
+   o  Specification Document(s): Section 3.2.1 of [[this specification]]
 
 9.4.  JWT Confirmation Methods Registry
 
@@ -1331,13 +1338,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
       approving point assignment.  The fact that there is a range for
       standards track documents does not mean that a standards track
       document cannot have points assigned outside of that range.  The
-      length of the encoded value should be weighed against how many
-      code points of that length are left, the size of device it will be
-      used on, and the number of code points left that encode to that
-      size.
-
-
-
 
 
 
@@ -1345,6 +1345,11 @@ Palombini, et al.        Expires January 9, 2020               [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE                July 2019
 
+
+      length of the encoded value should be weighed against how many
+      code points of that length are left, the size of device it will be
+      used on, and the number of code points left that encode to that
+      size.
 
 10.  References
 
@@ -1389,11 +1394,6 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
-
-
-
-
-
 
 
 
