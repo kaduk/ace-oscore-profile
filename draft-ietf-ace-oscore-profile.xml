@@ -742,6 +742,10 @@ OSCORE_Security_Context = {
           The RS then uses this Security Context to verify the request and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
         </t>
 
+        <t>
+          If the exchange was an update of access rights, i.e. a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
+        </t>
+
       </section> <!-- ends from line 481-->
 
       <section anchor="tok-ver" title="Access rights verification">
