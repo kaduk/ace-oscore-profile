@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: January 9, 2020                                            RISE
+Expires: June 20, 2020                                         Combitech
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
-                                                            RISE SICS AB
-                                                            July 8, 2019
+                                                                    RISE
+                                                       December 18, 2019
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 9, 2020.
+   This Internet-Draft will expire on June 20, 2020.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 1]
+Palombini, et al.         Expires June 20, 2020                 [Page 1]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    (https://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 2]
+Palombini, et al.         Expires June 20, 2020                 [Page 2]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    Object Security for Constrained RESTful Environments (OSCORE)
@@ -165,9 +165,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 3]
+Palombini, et al.         Expires June 20, 2020                 [Page 3]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    This profile requires a client to retrieve an access token from the
@@ -221,9 +221,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 4]
+Palombini, et al.         Expires June 20, 2020                 [Page 4]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    different.  Therefore, the main requirement for the nonces is that
@@ -277,9 +277,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 5]
+Palombini, et al.         Expires June 20, 2020                 [Page 5]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    (pop-key) provisioned from the AS MUST be used as master secret in
@@ -333,9 +333,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 6]
+Palombini, et al.         Expires June 20, 2020                 [Page 6]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
        kid = [
@@ -389,9 +389,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 7]
+Palombini, et al.         Expires June 20, 2020                 [Page 7]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    o  a server identifier
@@ -445,9 +445,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 8]
+Palombini, et al.         Expires June 20, 2020                 [Page 8]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    the case, collisions of identifiers may appear in the RS, in which
@@ -501,9 +501,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020                [Page 9]
+Palombini, et al.         Expires June 20, 2020                 [Page 9]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
      {
@@ -557,9 +557,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 10]
+Palombini, et al.         Expires June 20, 2020                [Page 10]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    A5                                      # map(5)
@@ -613,9 +613,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 11]
+Palombini, et al.         Expires June 20, 2020                [Page 11]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
        Header: Created (Code=2.01)
@@ -669,9 +669,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 12]
+Palombini, et al.         Expires June 20, 2020                [Page 12]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    +-----------+-------+----------------+--------------+---------------+
@@ -725,9 +725,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 13]
+Palombini, et al.         Expires June 20, 2020                [Page 13]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
       section 3.1 of [I-D.ietf-core-object-security].  In JSON, the "ms"
@@ -781,9 +781,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 14]
+Palombini, et al.         Expires June 20, 2020                [Page 14]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
       is a Base64 encoded byte string.  In CBOR, the "contextID" type is
@@ -837,9 +837,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 15]
+Palombini, et al.         Expires June 20, 2020                [Page 15]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    Note that the proof-of-possession required to bind the access token
@@ -893,9 +893,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 16]
+Palombini, et al.         Expires June 20, 2020                [Page 16]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
          Header: POST (Code=0.02)
@@ -949,9 +949,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 17]
+Palombini, et al.         Expires June 20, 2020                [Page 17]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    Figure 12 shows an example of the response sent from the RS to the
@@ -1005,9 +1005,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 18]
+Palombini, et al.         Expires June 20, 2020                [Page 18]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    communicate with the RS when accessing the resources as specified by
@@ -1061,9 +1061,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 19]
+Palombini, et al.         Expires June 20, 2020                [Page 19]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
 4.4.  Access rights verification
@@ -1117,9 +1117,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 20]
+Palombini, et al.         Expires June 20, 2020                [Page 20]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    o  the access token associated with the context expires.
@@ -1173,9 +1173,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 21]
+Palombini, et al.         Expires June 20, 2020                [Page 21]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    This profiles recommends that the RS maintains a single access token
@@ -1229,9 +1229,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 22]
+Palombini, et al.         Expires June 20, 2020                [Page 22]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    o  Change Controller: IESG
@@ -1285,9 +1285,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 23]
+Palombini, et al.         Expires June 20, 2020                [Page 23]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    o  Confirmation Method Description: OSCORE_Security_Context carrying
@@ -1341,9 +1341,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 24]
+Palombini, et al.         Expires June 20, 2020                [Page 24]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
       length of the encoded value should be weighed against how many
@@ -1359,13 +1359,13 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-24
-              (work in progress), March 2019.
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-29
+              (work in progress), December 2019.
 
    [I-D.ietf-ace-oauth-params]
               Seitz, L., "Additional OAuth Parameters for Authorization
               in Constrained Environments (ACE)", draft-ietf-ace-oauth-
-              params-05 (work in progress), March 2019.
+              params-07 (work in progress), December 2019.
 
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
@@ -1397,9 +1397,9 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 25]
+Palombini, et al.         Expires June 20, 2020                [Page 25]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
@@ -1414,7 +1414,7 @@ Internet-Draft            OSCORE Profile of ACE                July 2019
               Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
               Web Tokens (CWTs)", draft-ietf-ace-cwt-proof-of-
-              possession-06 (work in progress), February 2019.
+              possession-11 (work in progress), October 2019.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1453,9 +1453,9 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 26]
+Palombini, et al.         Expires June 20, 2020                [Page 26]
 
-Internet-Draft            OSCORE Profile of ACE                July 2019
+Internet-Draft            OSCORE Profile of ACE            December 2019
 
 
    o  profile identifier: coap_oscore
@@ -1482,12 +1482,12 @@ Authors' Addresses
 
 
    Ludwig Seitz
-   RISE
-   Scheelevagen 17
-   Lund  22370
+   Combitech
+   Djaeknegatan 31
+   Malmoe  211 35
    Sweden
 
-   Email: ludwig.seitz@ri.se
+   Email: ludwig.seitz@combitech.se
 
 
    Goeran Selander
@@ -1497,7 +1497,7 @@ Authors' Addresses
 
 
    Martin Gunnarsson
-   RISE SICS AB
+   RISE
    Scheelevagen 17
    Lund  22370
    Sweden
@@ -1509,4 +1509,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.        Expires January 9, 2020               [Page 27]
+Palombini, et al.         Expires June 20, 2020                [Page 27]
