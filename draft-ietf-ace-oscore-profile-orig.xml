@@ -12,11 +12,9 @@
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
 <!ENTITY RFC8152 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8152.xml">
-<!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
 <!ENTITY RFC4949 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4949.xml">
 <!ENTITY RFC6749 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749.xml">
 <!--<!ENTITY RFC7049 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7049.xml">-->
-<!ENTITY RFC8610 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8610.xml">
 <!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC8392 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8392.xml">
 ]>
@@ -39,16 +37,16 @@
       </address>
     </author>
   <author fullname="Ludwig Seitz" initials="L." surname="Seitz">
-      <organization>Combitech</organization>
+      <organization>RISE SICS AB</organization>
       <address>
         <postal>
-          <street>Djäknegatan 31</street>
+          <street>Scheelevagen 17</street>
           <!-- Reorder these if your country does things differently -->
-          <city>Malmö</city>
-          <code>211 35</code>
+          <city>Lund</city>
+          <code>22370</code>
           <country>Sweden</country>
         </postal>
-        <email>ludwig.seitz@combitech.se</email>
+        <email>ludwig.seitz@ri.se</email>
         <!-- uri and facsimile elements may also be added -->
       </address>
     </author>
@@ -60,7 +58,7 @@
       </address>
     </author>
   <author fullname="Martin Gunnarsson" initials="M." surname="Gunnarsson">
-      <organization>RISE</organization>
+      <organization>RISE SICS AB</organization>
       <address>
         <postal>
           <street>Scheelevagen 17</street>
@@ -109,11 +107,7 @@
       <section anchor="terminology" title=" Terminology">
 
         <t>
-          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
-      "MAY", and "OPTIONAL" in this document are to be interpreted as
-      described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they
-      appear in all capitals, as shown here.
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.  These words may also appear in this document in lowercase, absent their normative meanings.
         </t>
 
         <t>
@@ -126,10 +120,6 @@
 
         <t>
           Terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749"/>, such as client (C), resource server (RS), and authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated to a unique AS.
-        </t>
-
-        <t>
-          Concise Data Definition Language (CDDL) <xref target="RFC8610"/> is used in this specification.
         </t>
 
         <t>
@@ -151,23 +141,19 @@
       </t>
 
       <t>
-        Once the client has retrieved the access token, it generates a nonce N1 and posts both the token and N1 to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/> and Content-Format = application/ace+cbor.
+        Once the client has retrieved the access token, it posts it to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/>. If the access token is valid, the RS replies to this request with a 2.01 (Created) response, which contains a nonce N1.
       </t>
 
       <t>
-        If the access token is valid, the RS replies to this request with a 2.01 (Created) response with Content-Format = application/ace+cbor, which contains a nonce N2 in a CBOR map. Moreover, the server concatenates N1 with N2 and appends the result to the Master Salt in the Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>). The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+        After receiving the nonce N1, the client generates a nonce N2, concatenates it with N1 and sets the ID Context in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>) to N1 concatenated with N2. The client then derives the complete Security Context from the ID Context plus the parameters received from the AS.
       </t>
 
       <t>
-        After receiving the nonce N2, the client concatenates it with N1 and appends the result to the Master Salt in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>). The client then derives the complete Security Context from the nonces plus the parameters received from the AS.
+        Finally, the client sends a request protected with OSCORE to the RS. This message contains the ID Context value. When receiving this request after the 2.01 (Created) response, the server extract the ID Context from it, verifies that the first part is equal to the nonce N1 it previously sent, and if so, sets its own ID Context and derives the complete Security Context from it plus the parameters received in the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.  If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. Once the client receives a valid response, it does not continue to include the ID Context value in further requests.
       </t>
 
       <t>
-        Finally, the client sends a request protected with OSCORE to the RS. If the request verifies, then this Security Context is stored in the server, and used in the response, and in further communications with the client, until token expiration. This Security Context is discarded if the same token is re-used to successfully derive a new Security Context. 
-      </t>
-
-      <t>
-        The use of random nonces during the exchange prevents the reuse of AEAD nonces and keys with different messages, in case of re-derivation of the Security Context both for Clients and Resource Servers from an old non-expired access token, e.g. in case of re-boot of either the client or RS. In fact, by using random nonces as part of the Master Salt, the request to the authz-info endpoint posting the same token results in a different Security Context, since Master Secret, Sender ID and Recipient ID are the same but Master Salt is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
+        The use of random nonces during the exchange prevents the reuse of AEAD nonces and keys with different messages, in case of re-derivation of the Security Context both for Clients and Resource Servers from an old non-expired access token, e.g. in case of re-boot of either the client or RS. In fact, by using random nonces as ID Context, the request to the authz-info endpoint posting the same token results in a different Security Context, since Master Secret, Sender ID and Recipient ID are the same but ID Context is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
       </t>
 
       <t>
@@ -180,22 +166,22 @@
    C                            RS                   AS
    | [-- Resource Request --->] |                     |
    |                            |                     |
-   | [<---- AS Request  ------] |                     |
-   |      Creation Hints        |                     |
+   | [<----- AS Information --] |                     |
    |                            |                     |
    | ----- POST /token  ----------------------------> |
    |                            |                     |
    | <---------------------------- Access Token ----- |
-   |                           + Access Information   |
+   |                               + RS Information   |
    | ---- POST /authz-info ---> |                     |
-   |     (access_token, N1)     |                     |
    |                            |                     |
-   | <--- 2.01 Created (N2) --- |                     |
+   | <--- 2.01 Created (N1) --- |                     |
    |                            |                     |
- /Sec Context             /Sec Context                |
-   Derivation/              Derivation/               |
+ /Sec Context Derivation/       |                     |
    |                            |                     |
    | ---- OSCORE Request -----> |                     |
+   |         (N1, N2)           |                     |
+   |                            |                     |
+   |               /Sec Context Derivation/           |
    |                            |                     |
    | <--- OSCORE Response ----- |                     |
    |                            |                     |
@@ -238,6 +224,8 @@
     Content-Format: "application/ace+cbor"
     Payload:
     {
+      "grant_type" : "client_credentials",
+      "client_id" : "myclient",
       "req_aud" : "tempSensor4711",
       "scope" : "read"
      }
@@ -246,18 +234,8 @@
         </figure>
       
         <t>
-          If the client wants to update its access rights without changing an existing OSCORE Security Context, it MUST include in its POST request to the token endpoint a req_cnf object. The req_cnf MUST include a kid field carrying a CBOR array object containing the client's identifier (assigned in section <xref target="as-c"/>) and optionally the context identifier (if assigned in section <xref target="as-c"/>). The CBOR array is defined in <xref target="kid"/>, and follows the notation of <xref target="RFC8610"/>. These identifiers can be used by the AS to determine the shared secret to construct the proof-of-possession token and therefore MUST identify a symmetric key that was previously generated by the AS as a shared secret for the communication between the client and the RS. The AS MUST verify that the received value identifies a proof-of-possession key and token that have previously been issued to the requesting client. If that is not the case, the Client-to-AS request MUST be declined with the error code 'invalid_request' as defined in Section 5.6.3 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          If the client wants to update its access rights without changing an existing OSCORE Security Context, it MUST include in its POST request to the token endpoint a req_cnf object carrying the client's identifier (that was assigned in section <xref target="as-c"/>) in the kid field. This identifier can be used by the AS to determine the shared secret to construct the proof-of-possession token and therefore MUST identify a symmetric key that was previously generated by the AS as a shared secret for the communication between the client and the RS. The AS MUST verify that the received value identifies a proof-of-possession key and token that have previously been issued to the requesting client. If that is not the case, the Client-to-AS request MUST be declined with the error code 'invalid_request' as defined in Section 5.6.3 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
-
-        <figure anchor="kid" title="CDDL Notation of kid for Update of Access Rights">
-          <artwork><![CDATA[
-    kid = [ 
-      clientId, 
-      ?IdContext
-      ]
-]]>
-          </artwork>
-        </figure>
 
         <t>
           An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex7"/>
@@ -271,10 +249,12 @@
     Content-Format: "application/ace+cbor"
     Payload:
     {
+      "grant_type" : "client_credentials",
+      "client_id" : "myclient",
       "req_aud" : "tempSensor4711",
       "scope" : "write",
       "req_cnf" : {
-        "kid" : ["myclient","contextid1"]
+        "kid" : b64'Qg'
      }
 ]]>
           </artwork>
@@ -290,8 +270,7 @@
         </t>
 
         <t>
-          The AS can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
-Usually it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile negotiation can be omitted.	  
+          The AS signals that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <xref target="oscore-setup"/> to derive the security context to run OSCORE.
         </t>
 
         <t>
@@ -301,6 +280,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         <t>
           <list style="symbols">
             <t>a master secret</t>
+            <t>a client identifier</t>
             <t>a server identifier</t>
           </list>
         </t>
@@ -311,8 +291,6 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 
         <t>
           <list style="symbols">
-            <t>a client identifier</t>
-            <t>a context identifier</t>
             <t>an AEAD algorithm</t>
             <t>an HKDF algorithm</t>
             <t>a salt</t>
@@ -321,11 +299,11 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
           The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
+          The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
           The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included
-      	  as the 'hkdf' parameter of the OSCORE_Security_Context, a salt MAY be included as the 'salt' parameter of the
-      	  OSCORE_Security_Context, and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+      	  as the 'hkdf' parameter of the OSCORE_Security_Context, the salt MAY be included as the 'salt' parameter of the
+      	  COSCORE_Security_Context and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 	      
         <t>
@@ -333,7 +311,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 	      </t>
 
         <t>
-          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The couple (client identifier, context identifier) MUST be unique in the set of all clients on a single RS.  Moreover, when assigned, serverId, clientId and contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AS MUST also assign identifiers to both client and RS, which are then used as Sender ID and Recipient ID in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The client identifiers MUST be unique in the set of all clients on a single RS, and RS identifiers MUST be unique  in the set of all RS for any given client.  Moreover, these MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
@@ -352,10 +330,10 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         <figure anchor="ex1" title="Example AS-to-C Access Token response with OSCORE profile.">
           <artwork><![CDATA[
     Header: Created (Code=2.01)
-    Content-Type: "application/ace+cbor"
+    Content-Type: "application/cose+cbor"
     Payload:
     {
-      "access_token" : h'a5037674656d7053656e73 ...'
+      "access_token" : b64'SlAV32hkKG ...
        (remainder of access token omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600",
@@ -364,7 +342,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'qA',
           "serverId" : b64'Qg',
-          "ms" : h'f9af838368e353e78888e1426bd94e6f' 
+          "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
         }
       }
     }
@@ -386,64 +364,17 @@ Usually it is assumed that constrained devices will be pre-configured with the n
     "cnf" : {
       "OSCORE_Security_Context" : {
         "alg" : "AES-CCM-16-64-128",
-        "clientId" : h'636C69656E74',
-        "serverId" : h'736572766572',
-        "ms" : h'f9af838368e353e78888e1426bd94e6f' 
+        "clientId" : b64'Qg',
+        "serverId" : b64'qA',
+        "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw' 
     }
   }
 ]]>
           </artwork>
         </figure>
 
-
         <t>
-          The same CWT token as in <xref target="ex2"/>, using the value abbreviations defined in <xref target="I-D.ietf-ace-oauth-authz"/> and <xref target="I-D.ietf-ace-cwt-proof-of-possession"/> and encoded in CBOR is shown in <xref target="ex2-cbor"/>.
-        </t>
-
-        <t>
-          NOTE TO THE RFC EDITOR: before publishing, it should be checked (and in case fixed) that the values used below (which are not yet registered) are the final values registered in IANA.
-        </t>
-
-        <figure anchor="ex2-cbor" title="Example CWT with OSCORE parameters.">
-          <artwork><![CDATA[
-A5                                      # map(5)
-   03                                   # unsigned(3)
-   76                                   # text(22)
-      74656D7053656E736F72496E4C6976696E67526F6F6D 
-                                        # "tempSensorInLivingRoom"
-   06                                   # unsigned(6)
-   1A 5112D728                          # unsigned(1360189224)
-   04                                   # unsigned(4)
-   1A 51145DC8                          # unsigned(1360289224)
-   09                                   # unsigned(9)
-   78 18                                # text(24)
-      74656D70657261747572655F67206669726D776172655F70 
-                                        # "temperature_g firmware_p"
-   08                                   # unsigned(8)
-   A1                                   # map(1)
-      04                                # unsigned(4)
-      A4                                # map(4)
-         05                             # unsigned(5)
-         0A                             # unsigned(10)
-         02                             # unsigned(2)
-         46                             # bytes(6)
-            636C69656E74                # "client"
-         03                             # unsigned(3)
-         46                             # bytes(6)
-            736572766572                # "server"
-         01                             # unsigned(1)
-         50                             # bytes(16)
-            F9AF838368E353E78888E1426BD94E6F 
-                                        # "\xF9\xAF\x83\x83h\xE3S\xE7
-                                           \x88\x88\xE1Bk\xD9No"
-
-]]>
-          </artwork>
-        </figure>
-
-
-        <t>
-          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <xref target="kid"/>. These identifiers need to be provisioned, in order for the RS to identify the previously generated Security Context.
+          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier in the 'kid' field in the 'cnf' parameter of the token. The client identifier needs to be provisioned, in order for the RS to identify the previously generated Security Context.
         </t>
 
         <t>
@@ -453,10 +384,10 @@ A5                                      # map(5)
         <figure anchor="ex5" title="Example AS-to-C Access Token response with OSCORE profile, for update of access rights.">
           <artwork><![CDATA[
     Header: Created (Code=2.01)
-    Content-Type: "application/ace+cbor"
+    Content-Type: "application/cose+cbor"
     Payload:
     {
-      "access_token" : h'a5037674656d7053656e73 ...'
+      "access_token" : b64'SlAV32hkKG ...
        (remainder of access token omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600"
@@ -477,23 +408,17 @@ A5                                      # map(5)
     "exp" : "1360289224",
     "scope" :  "temperature_h",
     "cnf" : {
-      "kid" : b64'qA'
+      "kid" : b64'Qg'
     }
   }
 ]]>
           </artwork>
         </figure>
 
-        <!-- Client rejecting OSCORE_Security_Context if invalid <- This is not done as the client does not verify the token, so it would be easy for an attacker to interrupt ACE by just injecting unexisting fields.
-        <t>
-          When receiving the access token response, the client MUST verify the OSCORE_Security_Context. If any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the client MUST NOT continue processing, and MAY attempt to retrieve a new token from the AS.
-        <t>
-        -->
-
         <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
 
           <t>
-            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="I-D.ietf-core-object-security"/>).  The OSCORE_Security_Context object can either be encoded as JSON object or as CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <xref target="sec-ctx-params-reg"/>) and is defined below.
+            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="I-D.ietf-core-object-security"/>).  The OSCORE_Security_Context object can either be encoded as JSON or as CBOR. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <xref target="sec-ctx-params-reg"/>) and is defined below.
             All parameters are optional.
             <xref target="table-key-labels"/> provides a summary of the OSCORE_Security_Context parameters defined in this section.
           </t>
@@ -511,9 +436,7 @@ A5                                      # map(5)
             <c>hkdf</c>        <c>4</c>        <c>bstr / int</c>        <c>COSE Algorithm Values (HMAC-based)</c>        <c>OSCORE HKDF value</c>
             <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
-            <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
-            <c>rpl</c>    <c>8</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
-            <!--<c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c> -->
+            <c>rpl</c>    <c>7</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
           </texttable>
 
 
@@ -527,14 +450,14 @@ A5                                      # map(5)
 
               <t hangText="clientId:">
                 This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "clientId" value is a Base64 encoded byte string.
-                In CBOR, the "clientId" type is bstr, and has label 2.
+                In JSON, the "clientID" value is a Base64 encoded byte string.
+                In CBOR, the "clientID" type is bstr, and has label 2.
               </t>
 
               <t hangText="serverId:">
-                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the server and OSCORE Recipient ID in the client. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "serverId" value is a Base64 encoded byte string.
-                In CBOR, the "serverId" type is bstr, and has label 3.
+                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                In JSON, the "serverID" value is a Base64 encoded byte string.
+                In CBOR, the "serverID" type is bstr, and has label 3.
               </t>
               
               <t hangText="hkdf:">
@@ -557,27 +480,12 @@ A5                                      # map(5)
                 In CBOR, the "salt" type is bstr, and has label 6.
               </t>
 
-              <t hangText="contextId:">
-                This parameter identifies the security context as a byte string. This identifier is used as OSCORE ID Context. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "contextID" value is a Base64 encoded byte string.
-                In CBOR, the "contextID" type is bstr, and has label 7.
-              </t>
-
-              <t hangText="rpl:">
+              <t hangText="repl:">
                 This parameter is used to carry the OSCORE value, encoded as a bstr.
                 This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
-                In JSON, the "rpl" value is a Base64 encoded byte string.
-                In CBOR, the "rpl" type is bstr, and has label 8.
+                In JSON, the "repl" value is a Base64 encoded byte string.
+                In CBOR, the "repl" type is bstr, and has label 7.
               </t>
-
-              <!--<t hangText="exp:">
-                This parameter is used to carry the expiration time, encoded as an integer or floating-point number.
-                This parameter, when used, identifies the expiration time on or after which the Security Context MUST NOT be used.
-                The processing of the exp value requires that the current date/time MUST be before the expiration date/time listed in the "exp" parameter.
-                Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew. 
-                In JSON, the "exp" value is a NumericDate value, as defined in {{RFC8392}}.
-                In CBOR, the "exp" type is int or float, and has label 9.
-              </t>-->
               
             </list>
           </t>
@@ -610,9 +518,7 @@ OSCORE_Security_Context = {
     ? 4 => tstr / int,        ; hkdf
     ? 5 => tstr / int,        ; alg
     ? 6 => bstr,              ; salt
-    ? 7 => bstr,              ; contextId
-    ? 8 => bstr / tstr,       ; rpl
-    * int / tstr => any
+    ? 7 => bstr / tstr        ; rpl
 }
 ]]></artwork></figure>
 
@@ -625,7 +531,7 @@ OSCORE_Security_Context = {
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials provisioned by the AS to the RS. The RS then derives a nonce N2 and use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
+        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client posts the token that includes the materials provisioned by the AS to the RS, which can then use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and a set of other parameters, established between client and server.
       </t>
 
       <t>
@@ -640,10 +546,7 @@ OSCORE_Security_Context = {
       <section anchor="c-rs" title="C-to-RS: POST to authz-info endpoint">
 
         <t>
-          The client MUST generate a nonce N1 very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce. The client MUST store this nonce as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token and N1 to the RS.
-        </t>
-        <t>
-           Note that the use of the payload and the Content-Format is different from what described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token to the RS.
         </t>
 
         <t>
@@ -660,7 +563,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          <xref target="ex3"/> shows an example of the request sent from the client to the RS, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex3"/> shows an example of the request sent from the client to the RS.
         </t>
 
         <figure anchor="ex3" title="Example C-to-RS POST /authz-info request using CWT">
@@ -668,13 +571,10 @@ OSCORE_Security_Context = {
       Header: POST (Code=0.02)
       Uri-Host: "rs.example.com"
       Uri-Path: "authz-info"
-      Content-Format: "application/ace+cbor"
+      Content-Format: "application/cwt"
       Payload:
-        {
-          "access_token": h'a5037674656d7053656e73 ...'
-       (remainder of access token omitted for brevity)',
-          "cnonce": h'018a278f7faab55a'
-        }
+       b64'SlAV32hkKG ...
+         (remainder of access token omitted for brevity)',
   ]]>
           </artwork>
         </figure>
@@ -684,32 +584,27 @@ OSCORE_Security_Context = {
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS MAY provide additional information in the error response, in order to clarify what went wrong.
-          The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope) the RS MUST respond with a response code equivalent to the CoAP code 4.00 (Bad Request). In the latter case the RS MAY provide additional information in the error response, in order to clarify what went wrong. The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
         <t>
-          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          Additionally, the RS MUST generate a nonce (N1) with a good amount of randomness, and include it in the payload of the 2.01 (Created) response as a CBOR byte string. This profile RECOMMENDS to use a nonce of 64 bits. The RS MUST store this nonce as long as the access token related to it is still valid. 
         </t>
 
-<!--     
         <t>
         	Note that, when using this profile, an identifier of the token (e.g., the cti for a CWT) is not transported in the payload of this request, as section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> allows. 
-        </t> 
--->
+        </t>
 
         <t>
-          <xref target="ex4"/> shows an example of the response sent from the RS to the client, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex4"/> shows an example of the response sent from the RS to the client.
         </t>
 
         <figure anchor="ex4" title="Example RS-to-C 2.01 (Created) response">
           <artwork><![CDATA[
       Header: Created (Code=2.01)
-      Content-Format: "application/ace+cbor"
+      Content-Format: "application/cbor"
       Payload:
-        {
-          "cnonce": h'25a8991cd700ac01'
-        }
+       h'018a278f7faab55a',
   ]]>
           </artwork>
         </figure>
@@ -727,27 +622,19 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'cnonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="as-c"/>. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N1 from the CBOR byte string in the payload of the response. The client MUST generate itself a nonce (N2) with a good amount of randomness. This profile RECOMMENDS to use a nonce of 64 bits. Then, the client MUST set the ID Context of the Security Context created to communicate with the RS to the concatenation of N1 and N2, in this order: ID Context = N1 | N2, where | denotes byte string concatenation. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
-          If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
+          The client then uses this Security Context to send requests to RS using OSCORE. In the first request sent to the RS, the client MUST include the kid context, with value ID Context, i.e. N1 concatenated with N2. The client needs to make sure the RS receives the kid context, possibly adding the kid context to later requests, until it receives a valid OSCORE response from the RS using the same Security Context.
         </t>
 
         <t>
-          The client then uses this Security Context to send requests to RS using OSCORE.
+          When the RS receives this first OSCORE-protected request, it MUST extract the kid context from the message first. Then, it needs to verify that the first part of the kid context corresponds to the nonce N1 it previously sent, and that it is followed by a non-zero-length byte string. If that is verified, the RS MUST set the ID Context to the kid context value. Then, the RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the client in the access token in <xref target="c-rs"/>. The RS MUST set the AEAD Algorithm, Master Salt, HKDF and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. Then, the RS MUST delete the nonce N1 from memory.
         </t>
 
         <t>
-          After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="rs-c"/>. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. 
-        </t>
-
-        <t>
-          The RS then uses this Security Context to verify the request and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
-        </t>
-
-        <t>
-          If the exchange was an update of access rights, i.e. a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
+          The RS then uses this Security Context to verify the request and send responses to RS using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message.
         </t>
 
       </section> <!-- ends from line 481-->
@@ -755,7 +642,7 @@ OSCORE_Security_Context = {
       <section anchor="tok-ver" title="Access rights verification">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then the RS processes it according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
+          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then it processes according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
           requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
         </t>
 
@@ -797,7 +684,7 @@ OSCORE_Security_Context = {
         <t> the Sequence Number space ends. </t>
         <t> the access token associated with the context expires. </t>
         <t> the client receives a number of 4.01 Unauthorized responses to OSCORE requests using the same security context. The exact number needs to be specified by the application. </t>
-        <t> the client receives a new nonce in the 2.01 (Created) response (see <xref target="rs-c"/>) to a POST request to the authz-info endpoint, when re-posting a non-expired token associated to the existing context. </t>
+        <t> the client receives a new nonce in the 2.01 Created response (see <xref target="rs-c"/>) to a POST request to the authz-info endpoint, when re-posting a non-expired token associated to the existing context. </t>
       </list>
       </t>
 
@@ -838,7 +725,7 @@ OSCORE_Security_Context = {
       </t>
       
       <t>
-        Since the use of nonces in the exchange guarantees uniqueness of AEAD keys and nonces, it is REQUIRED that nonces are not reused with the same input keying material even in case of re-boots. This document RECOMMENDS the use of 64 bit random nonces to guarantee non-reuse; if applications use something else, such as a counter, they need to guarantee that reboot and lost of state on either node does not provoke re-use. If that is not guaranteed, nodes are still susceptible to re-using AEAD nonces and keys, in case the Security Context is lost, and on-path attacker replay messages.
+        Since the use of nonces in the exchange guarantees uniqueness of AEAD keys and nonces even in case of re-boots, a good amount of randomness is required. If that is not guaranteed, nodes are still susceptible to re-using nonces and keys, in case the Security Context is lost, and on-path attacker replaying messages.
       </t>
 
       <t>
@@ -901,7 +788,7 @@ OSCORE_Security_Context = {
           It is requested that IANA create a new registry entitled "OSCORE Security Context Parameters" registry.
           The registry is to be created as Expert Review Required.
           Guidelines for the experts is provided <xref target="review"/>.
-          It should be noted that in addition to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.
+          It should be noted that in additional to the expert review, some portions of the registry require a specification, potentially on standards track, be supplied as well.
         </t>
 
         <t>
@@ -911,11 +798,7 @@ OSCORE_Security_Context = {
         <t>
           <list style="hanging">
             <t hangText='name'>
-              The JSON name requested (e.g., "ms").
-              Because a core goal of this specification is for the resulting representations to be compact, it is RECOMMENDED that the name be short.
-              This name is case sensitive.
-              Names may not match other registered names in a case-insensitive manner unless the Designated Experts state that there is a compelling reason to allow an exception.
-              The name is not used in the CBOR encoding.
+              This is a descriptive name that enables easier reference to the item.  It is not used in the CBOR encoding.
             </t>
             <t hangText='CBOR label'>
               The value to be used to identify this algorithm.
@@ -1035,8 +918,6 @@ OSCORE_Security_Context = {
       &RFC2119;
       &RFC7252;
       &RFC8152;
-      &RFC8174;
-      &RFC8610;
 
     </references>
 
@@ -1069,7 +950,7 @@ OSCORE_Security_Context = {
           </t>
           <t>how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context
           </t>
-          <t>Content-format of the protocol messages: "application/ace+cbor"
+          <t>Content-format of the protocol messages: "application/cose+cbor"
           </t>
           <t>proof-of-possession protocol(s) and how to select one; which key types (e.g. symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
           </t>
@@ -1087,7 +968,6 @@ OSCORE_Security_Context = {
       </t>
 
     </section>
-
 
 <!--
     <section anchor= "oscore-edhoc" title="Using the pop-key with EDHOC (EDHOC+OSCORE)" >
@@ -1134,6 +1014,7 @@ Uri-Path: "token"
 Content-Type: "application/cose+cbor"
 Payload:
 {
+ "grant_type" : "client_credentials",
  "req_cnf" : {
    "COSE_Key" : {
      "kid" : "client_key"
