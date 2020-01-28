@@ -990,7 +990,7 @@ token.
 
       <section title="Expert Review Instructions" anchor="review">
         <t>
-          The IANA registry established in this document is defined as expert review.
+          The IANA registry established in this document is defined to use the Expert Review registration policy.
           This section gives some general guidelines for what the experts should be looking for, but they are being designated as experts for a reason so they should be given substantial latitude.
         </t>
 
