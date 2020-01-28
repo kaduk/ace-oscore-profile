@@ -425,7 +425,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    and size MAY be included as the 'rpl' of the OSCORE_Security_Context,
    as defined in Section 3.2.1.
 
-   The same parameters MUST be included as metadata of the access token.
+   The same parameters MUST be included as part of the access token.
    This profile RECOMMENDS the use of CBOR web token (CWT) as specified
    in [RFC8392].  If the token is a CWT, the same
    OSCORE_Security_Context structure defined above MUST be placed in the
@@ -436,9 +436,9 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    identifier to the context (contextId).  These identifiers are then
    used as Sender ID, Recipient ID and ID Context in the OSCORE context
    as described in section 3.1 of [I-D.ietf-core-object-security].  The
-   couple (client identifier, context identifier) MUST be unique in the
-   set of all clients on a single RS.  Moreover, when assigned,
-   serverId, clientId and contextId MUST be included in the
+   pair (client identifier, context identifier) MUST be unique in the
+   set of all clients for a single RS.  Moreover, clientId, serverId and
+   (when assigned) contextId MUST be included in the
    OSCORE_Security_Context, as defined in Section 3.2.1.
 
 
