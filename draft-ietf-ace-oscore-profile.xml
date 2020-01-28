@@ -921,7 +921,7 @@ token.
             </t>
             <t hangText='CBOR label'>
               The value to be used to identify this algorithm.
-              Key map labels MUST be unique.
+              Map key labels MUST be unique.
               The label can be a positive integer, a negative integer or a string.
               Integer values between 0 and 255 and strings of length 1 are designated as Standards Track Document required.
               Integer values from 256 to 65535 and strings of length 2 are designated as Specification Required.
