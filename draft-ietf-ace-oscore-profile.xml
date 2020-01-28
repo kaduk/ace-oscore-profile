@@ -749,7 +749,7 @@ token.
         </t>
 
         <t>
-          If the exchange was an update of access rights, i.e. a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
+          If the exchange was an update of access rights, i.e., a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
         </t>
 
       </section> <!-- ends from line 481-->
