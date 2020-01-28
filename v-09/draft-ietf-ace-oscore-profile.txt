@@ -282,8 +282,8 @@ Palombini, et al.         Expires July 31, 2020                 [Page 5]
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
 
-   (pop-key) provisioned from the AS MUST be used as master secret in
-   OSCORE.
+   (pop-key) included in the response from the AS MUST be used as master
+   secret in OSCORE.
 
 3.1.  C-to-AS: POST to token endpoint
 
@@ -384,7 +384,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    devices will be pre-configured with the necessary profile, so that
    this kind of profile negotiation can be omitted.
 
-   Moreover, the AS MUST provision the following data:
+   Moreover, the AS MUST send the following data:
 
 
 
@@ -398,7 +398,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
 
    o  a server identifier
 
-   Additionally, the AS MAY provision the following data, in the same
+   Additionally, the AS MAY send the following data, in the same
    response.
 
    o  a client identifier
@@ -602,9 +602,9 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    MUST omit the 'cnf' parameter in the response, and MUST carry the
    client identifier and optionally the context identifier in the 'kid'
    field in the 'cnf' parameter of the token, with the same structure
-   defined in Figure 3.  These identifiers need to be provisioned, in
-   order for the RS to identify the previously generated Security
-   Context.
+   defined in Figure 3.  These identifiers need to be included in the
+   response, in order for the RS to identify the previously generated
+   Security Context.
 
    Figure 8 shows an example of such an AS response, with payload in
    CBOR diagnostic notation without the tag and value abbreviations.
@@ -655,8 +655,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    An OSCORE_Security_Context is an object that represents part or all
    of an OSCORE Security Context (Section 3.1 of
    [I-D.ietf-core-object-security]).  The OSCORE_Security_Context object
-   can either be encoded as JSON object or as CBOR map.  In both cases,
-   the set of common parameters that can appear in an
+   can either be encoded as a JSON object or as a CBOR map.  In both
+   cases, the set of common parameters that can appear in an
    OSCORE_Security_Context object can be found in the IANA "OSCORE
    Security Context Parameters" registry (Section Section 9.2) and is
    defined below.  All parameters are optional.  Table 1 provides a
@@ -828,8 +828,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    The following subsections describe the details of the POST request
    and response to the authz-info endpoint between client and RS.  The
    client generates a nonce N1 and posts it together with the token that
-   includes the materials provisioned by the AS to the RS.  The RS then
-   derives a nonce N2 and use Section 3.2 of
+   includes the materials received from the AS to the RS.  The RS then
+   generates a nonce N2 and use Section 3.2 of
    [I-D.ietf-core-object-security] to derive a security context based on
    a shared master secret and the two nonces, established between client
    and server.

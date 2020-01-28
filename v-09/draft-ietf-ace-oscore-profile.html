@@ -599,7 +599,7 @@
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#client-as" id="client-as">Client-AS Communication</a>
 </h1>
-<p id="rfc.section.3.p.1">The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used as master secret in OSCORE.  </p>
+<p id="rfc.section.3.p.1">The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) included in the response from the AS MUST be used as master secret in OSCORE.  </p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#c-as" id="c-as">C-to-AS: POST to token endpoint</a>
 </h1>
@@ -655,7 +655,7 @@
 </h1>
 <p id="rfc.section.3.2.p.1">After verifying the POST request to the token endpoint and that the client is authorized to obtain an access token corresponding to its access token request, the AS responds as defined in section 5.6.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. If the client request was invalid, or not authorized, the AS returns an error response as described in section 5.6.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p id="rfc.section.3.2.p.2">The AS can signal that the use of OSCORE is REQUIRED for a specific access token by including the "profile" parameter with the value "coap_oscore" in the access token response.  This means that the client MUST use OSCORE towards all resource servers for which this access token is valid, and follow <a href="#oscore-setup" class="xref">Section 4.3</a> to derive the security context to run OSCORE.  Usually it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile negotiation can be omitted.  </p>
-<p id="rfc.section.3.2.p.3">Moreover, the AS MUST provision the following data: </p>
+<p id="rfc.section.3.2.p.3">Moreover, the AS MUST send the following data: </p>
 <p></p>
 
 <ul>
@@ -664,7 +664,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.3.2.p.5">Additionally, the AS MAY provision the following data, in the same response.  </p>
+<p id="rfc.section.3.2.p.5">Additionally, the AS MAY send the following data, in the same response.  </p>
 <p></p>
 
 <ul>
@@ -765,7 +765,7 @@ A5                                      # map(5)
 
           </pre>
 <p class="figure">Figure 7: Example CWT with OSCORE parameters.</p>
-<p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be provisioned, in order for the RS to identify the previously generated Security Context.  </p>
+<p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
 <p><a href="#ex5" class="xref">Figure 8</a> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.8"></div>
 <div id="ex5"></div>
@@ -801,7 +801,7 @@ A5                                      # map(5)
 <h1 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#oscore-sec-ctx" id="oscore-sec-ctx">OSCORE_Security_Context Object</a>
 </h1>
-<p id="rfc.section.3.2.1.p.1">An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>).  The OSCORE_Security_Context object can either be encoded as JSON object or as CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <a href="#sec-ctx-params-reg" class="xref">Section 9.2</a>) and is defined below.  All parameters are optional.  <a href="#table-key-labels" class="xref">Table 1</a> provides a summary of the OSCORE_Security_Context parameters defined in this section.  </p>
+<p id="rfc.section.3.2.1.p.1">An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>).  The OSCORE_Security_Context object can either be encoded as a JSON object or as a CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (Section <a href="#sec-ctx-params-reg" class="xref">Section 9.2</a>) and is defined below.  All parameters are optional.  <a href="#table-key-labels" class="xref">Table 1</a> provides a summary of the OSCORE_Security_Context parameters defined in this section.  </p>
 <div id="rfc.table.1"></div>
 <div id="table-key-labels"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -924,7 +924,7 @@ OSCORE_Security_Context = {
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#c-rs1" id="c-rs1">Client-RS Communication</a>
 </h1>
-<p id="rfc.section.4.p.1">The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials provisioned by the AS to the RS. The RS then derives a nonce N2 and use Section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> to derive a security context based on a shared master secret and the two nonces, established between client and server.  </p>
+<p id="rfc.section.4.p.1">The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> to derive a security context based on a shared master secret and the two nonces, established between client and server.  </p>
 <p id="rfc.section.4.p.2">Note that the proof-of-possession required to bind the access token to the client is implicitly performed by generating the shared OSCORE Security Context using the pop-key as master secret, for both client and RS.  An attacker using a stolen token will not be able to generate a valid OSCORE context and thus not be able to prove possession of the pop-key.  </p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#c-rs" id="c-rs">C-to-RS: POST to authz-info endpoint</a>
