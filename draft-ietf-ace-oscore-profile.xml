@@ -213,7 +213,7 @@
     <section anchor="client-as" title="Client-AS Communication"> 
 
       <t>
-        The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) provisioned from the AS MUST be used as master secret in OSCORE.
+        The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) included in the response from the AS MUST be used as master secret in OSCORE.
       </t>
 
       <section anchor="c-as" title="C-to-AS: POST to token endpoint"> 
@@ -295,7 +295,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          Moreover, the AS MUST provision the following data:
+          Moreover, the AS MUST send the following data:
         </t>
 
         <t>
@@ -306,7 +306,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          Additionally, the AS MAY provision the following data, in the same response. 
+          Additionally, the AS MAY send the following data, in the same response. 
         </t>
 
         <t>
@@ -443,7 +443,7 @@ A5                                      # map(5)
 
 
         <t>
-          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <xref target="kid"/>. These identifiers need to be provisioned, in order for the RS to identify the previously generated Security Context.
+          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <xref target="kid"/>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.
         </t>
 
         <t>
@@ -625,7 +625,7 @@ OSCORE_Security_Context = {
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials provisioned by the AS to the RS. The RS then derives a nonce N2 and use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
+        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials received from the AS to the RS. The RS then derives a nonce N2 and use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
       </t>
 
       <t>
