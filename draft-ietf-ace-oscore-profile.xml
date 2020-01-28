@@ -227,7 +227,7 @@
         </t>
 
         <t>
-          An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex0"/>
+          An example of such a request, with payload in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex0"/>
         </t>
 
         <figure anchor="ex0" title="Example C-to-AS POST /token request for an access token bound to a symmetric key.">
@@ -260,7 +260,7 @@
         </figure>
 
         <t>
-          An example of such a request, in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex7"/>
+          An example of such a request, with payload in CBOR diagnostic notation without the tag and value abbreviations is reported in <xref target="ex7"/>
         </t>
 
         <figure anchor="ex7" title="Example C-to-AS POST /token request for updating rights to an access token bound to a symmetric key.">
@@ -346,7 +346,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          <xref target="ex1"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex1"/> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
         <figure anchor="ex1" title="Example AS-to-C Access Token response with OSCORE profile.">
@@ -447,7 +447,7 @@ A5                                      # map(5)
         </t>
 
         <t>
-          <xref target="ex5"/> shows an example of such an AS response, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex5"/> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
         <figure anchor="ex5" title="Example AS-to-C Access Token response with OSCORE profile, for update of access rights.">
@@ -660,7 +660,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          <xref target="ex3"/> shows an example of the request sent from the client to the RS, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex3"/> shows an example of the request sent from the client to the RS, with payload in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
         <figure anchor="ex3" title="Example C-to-RS POST /authz-info request using CWT">
@@ -699,7 +699,7 @@ OSCORE_Security_Context = {
 -->
 
         <t>
-          <xref target="ex4"/> shows an example of the response sent from the RS to the client, in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex4"/> shows an example of the response sent from the RS to the client, with payload in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
         <figure anchor="ex4" title="Example RS-to-C 2.01 (Created) response">
