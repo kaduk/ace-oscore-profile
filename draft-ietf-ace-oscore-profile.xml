@@ -167,7 +167,7 @@
       </t>
 
       <t>
-        The use of random nonces during the exchange prevents the reuse of AEAD nonces and keys with different messages, in case of re-derivation of the Security Context both for Clients and Resource Servers from an old non-expired access token, e.g. in case of re-boot of either the client or RS. In fact, by using random nonces as part of the Master Salt, the request to the authz-info endpoint posting the same token results in a different Security Context, since, even though the Master Secret, Sender ID and Recipient ID are the same, the Master Salt is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
+        The use of random nonces during the exchange prevents the reuse of AEAD nonces and keys with different messages, in case of re-derivation of the Security Context both for Clients and Resource Servers from an old non-expired access token, e.g., in case of re-boot of either the client or RS. In fact, by using random nonces as part of the Master Salt, the request to the authz-info endpoint posting the same token results in a different Security Context, since, even though the Master Secret, Sender ID and Recipient ID are the same, the Master Salt is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
       </t>
 
       <t>
@@ -684,7 +684,7 @@ OSCORE_Security_Context = {
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g. any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS MAY provide additional information in the error response, in order to clarify what went wrong.
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS MUST verify the validity of the token. If the token is valid, the RS MUST respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS MAY provide additional information in the error response, in order to clarify what went wrong.
           The RS MAY make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
@@ -731,7 +731,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          If any of the expected parameters is missing (e.g. any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
+          If any of the expected parameters is missing (e.g., any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
         </t>
 
         <t>
@@ -831,7 +831,7 @@ OSCORE_Security_Context = {
         OSCORE is designed to secure point-to-point communication,
         providing a secure binding between the request and the response(s).
         Thus the basic OSCORE protocol is not intended for use in
-        point-to-multipoint communication (e.g. multicast, publish-subscribe).
+        point-to-multipoint communication (e.g., multicast, publish-subscribe).
         Implementers of this profile should make sure that their usecase
         corresponds to the expected use of OSCORE, to prevent weakening the
         security assurances provided by OSCORE.
@@ -1071,7 +1071,7 @@ OSCORE_Security_Context = {
           </t>
           <t>Content-format of the protocol messages: "application/ace+cbor"
           </t>
-          <t>proof-of-possession protocol(s) and how to select one; which key types (e.g. symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
+          <t>proof-of-possession protocol(s) and how to select one; which key types (e.g., symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
           </t>
           <t>profile identifier: coap_oscore
           </t>
