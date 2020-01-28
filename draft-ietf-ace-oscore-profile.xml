@@ -329,7 +329,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 	      
         <t>
-        	The same parameters MUST be included as metadata of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token. 
+        	The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token. 
 	      </t>
 
         <t>
