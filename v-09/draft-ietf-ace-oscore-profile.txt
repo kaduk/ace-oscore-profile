@@ -1029,34 +1029,34 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    = salt | N1 | N2, where | denotes byte string concatenation, and
    where salt was received from the AS in Section 4.2.  The RS MUST set
    the Master Secret, Sender ID and Recipient ID from the parameters,
-   received from the client in the access token in Section 4.1 after
-   validation of the token as specified in Section 4.2.  The RS MUST set
-   the AEAD Algorithm, ID Context, HKDF, and Replay Window from the
-   parameters received from the client in the access token in
-   Section 4.1 after validation of the token as specified in
-   Section 4.2, if present.  In case these parameters are omitted, the
-   default values are used as described in section 3.2 of
-   [I-D.ietf-core-object-security].  After that, the RS MUST derive the
-   complete Security Context following section 3.2.1 of
-   [I-D.ietf-core-object-security], and MUST associate this Security
-   Context with the authorization information from the access token.
+   received from the AS and forwarded by the client in the access token
+   in Section 4.1 after validation of the token as specified in
+   Section 4.2.  The RS MUST set the AEAD Algorithm, ID Context, HKDF,
+   and Replay Window from the parameters received from the AS and
+   forwarded by the client in the access token in Section 4.1 after
+   validation of the token as specified in Section 4.2, if present.  In
+   case these parameters are omitted, the default values are used as
+   described in section 3.2 of [I-D.ietf-core-object-security].  After
+   that, the RS MUST derive the complete Security Context following
+   section 3.2.1 of [I-D.ietf-core-object-security], and MUST associate
+   this Security Context with the authorization information from the
+   access token.
 
-   The RS then uses this Security Context to verify the request and send
+   The RS then uses this Security Context to verify requests and send
    responses to C using OSCORE.  If OSCORE verification fails, error
    responses are used, as specified in section 8 of
    [I-D.ietf-core-object-security].  Additionally, if OSCORE
    verification succeeds, the verification of access rights is performed
    as described in section Section 4.4.  The RS MUST NOT use the
    Security Context after the related token has expired, and MUST
-   respond with a unprotected 4.01 (Unauthorized) error message.
+   respond with a unprotected 4.01 (Unauthorized) error message to
+   requests received that correspond to a Security Context with an
+   expired token.
 
    If the exchange was an update of access rights, i.e. a new Security
    Context was derived from a client that already had a Security Context
    in place, the is RECOMMENDED to delete the old Security Context after
    OSCORE verification and verification of access rights succeed.  The
-   RS MUST delete the Security Context if it deletes the access token
-   associated to it.
-
 
 
 
@@ -1065,6 +1065,9 @@ Palombini, et al.         Expires July 31, 2020                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
+
+   RS MUST delete the Security Context if it deletes the access token
+   associated to it.
 
 4.4.  Access rights verification
 
@@ -1112,15 +1115,14 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    The client MUST discard the current security context associated with
    an RS when:
 
-   o  the Sequence Number space ends.
-
-
 
 
 Palombini, et al.         Expires July 31, 2020                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
+
+   o  the Sequence Number space ends.
 
    o  the access token associated with the context expires.
 
@@ -1168,8 +1170,6 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    provoke re-use.  If that is not guaranteed, nodes are still
    susceptible to re-using AEAD nonces and keys, in case the Security
    Context is lost, and on-path attacker replay messages.
-
-
 
 
 
