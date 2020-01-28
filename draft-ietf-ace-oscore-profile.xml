@@ -1001,7 +1001,7 @@ token.
             <t>
               Point squatting should be discouraged.
               Reviewers are encouraged to get sufficient information for registration requests to ensure that the usage is not going to duplicate one that is already registered and that the point is likely to be used in deployments.
-              The zones tagged as private use are intended for testing purposes and closed environments, code points in other ranges should not be assigned for testing.
+              The zones tagged as private use are intended for testing purposes and closed environments. Code points in other ranges should not be assigned for testing.
             </t>
 
             <t>
