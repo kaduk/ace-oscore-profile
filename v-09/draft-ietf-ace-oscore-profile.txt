@@ -213,11 +213,11 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    The use of random nonces during the exchange prevents the reuse of
    AEAD nonces and keys with different messages, in case of re-
    derivation of the Security Context both for Clients and Resource
-   Servers from an old non-expired access token, e.g. in case of re-boot
-   of either the client or RS.  In fact, by using random nonces as part
-   of the Master Salt, the request to the authz-info endpoint posting
-   the same token results in a different Security Context, since, even
-   though the Master Secret, Sender ID and Recipient ID are the same,
+   Servers from an old non-expired access token, e.g., in case of re-
+   boot of either the client or RS.  In fact, by using random nonces as
+   part of the Master Salt, the request to the authz-info endpoint
+   posting the same token results in a different Security Context,
+   since, even though the Master Secret, Sender ID and Recipient ID are
 
 
 
@@ -226,11 +226,11 @@ Palombini, et al.         Expires July 31, 2020                 [Page 4]
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
 
-   the Master Salt is different.  Therefore, the main requirement for
-   the nonces is that they have a good amount of randomness.  If random
-   nonces were not used, a node re-using a non-expired old token would
-   be susceptible to on-path attackers provoking the creation of OSCORE
-   messages using old AEAD keys and nonces.
+   the same, the Master Salt is different.  Therefore, the main
+   requirement for the nonces is that they have a good amount of
+   randomness.  If random nonces were not used, a node re-using a non-
+   expired old token would be susceptible to on-path attackers provoking
+   the creation of OSCORE messages using old AEAD keys and nonces.
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
@@ -920,14 +920,14 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    request with 2.01 (Created).  If the token is valid but is associated
    to claims that the RS cannot process (e.g., an unknown scope), or if
    any of the expected parameters in the OSCORE_Security_Context is
-   missing (e.g. any of the mandatory parameters from the AS), or if any
-   parameters received in the OSCORE_Security_Context is unrecognized,
-   the RS MUST respond with an error response code equivalent to the
-   CoAP code 4.00 (Bad Request).  In the latter two cases, the RS MAY
-   provide additional information in the error response, in order to
-   clarify what went wrong.  The RS MAY make an introspection request to
-   validate the token before responding to the POST request to the
-   authz-info endpoint.
+   missing (e.g., any of the mandatory parameters from the AS), or if
+   any parameters received in the OSCORE_Security_Context is
+   unrecognized, the RS MUST respond with an error response code
+   equivalent to the CoAP code 4.00 (Bad Request).  In the latter two
+   cases, the RS MAY provide additional information in the error
+   response, in order to clarify what went wrong.  The RS MAY make an
+   introspection request to validate the token before responding to the
+   POST request to the authz-info endpoint.
 
    Additionally, the RS MUST generate a nonce N2 very unlikely to have
    been previously used with the same input keying material, and send it
@@ -1013,7 +1013,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    communicate with the RS when accessing the resources as specified by
    the authorization information.
 
-   If any of the expected parameters is missing (e.g. any of the
+   If any of the expected parameters is missing (e.g., any of the
    mandatory parameters from the AS, or the 'clientId', either received
    from the AS or in the 2.01 (Created) response from the RS), the
    client MUST stop the exchange, and MUST NOT derive the Security
@@ -1154,7 +1154,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    OSCORE is designed to secure point-to-point communication, providing
    a secure binding between the request and the response(s).  Thus the
    basic OSCORE protocol is not intended for use in point-to-multipoint
-   communication (e.g. multicast, publish-subscribe).  Implementers of
+   communication (e.g., multicast, publish-subscribe).  Implementers of
    this profile should make sure that their usecase corresponds to the
    expected use of OSCORE, to prevent weakening the security assurances
    provided by OSCORE.
@@ -1448,7 +1448,7 @@ Appendix A.  Profile Requirements
       possession of a common OSCORE security context
    o  Content-format of the protocol messages: "application/ace+cbor"
    o  proof-of-possession protocol(s) and how to select one; which key
-      types (e.g. symmetric/asymmetric) supported: OSCORE algorithms;
+      types (e.g., symmetric/asymmetric) supported: OSCORE algorithms;
       pre-established symmetric keys
 
 
