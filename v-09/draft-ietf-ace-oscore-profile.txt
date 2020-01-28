@@ -1053,7 +1053,7 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    requests received that correspond to a Security Context with an
    expired token.
 
-   If the exchange was an update of access rights, i.e. a new Security
+   If the exchange was an update of access rights, i.e., a new Security
    Context was derived from a client that already had a Security Context
    in place, the is RECOMMENDED to delete the old Security Context after
    OSCORE verification and verification of access rights succeed.  The
@@ -1138,9 +1138,9 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    The RS MUST discard the current security context associated with a
    client when:
 
-   o  Sequence Number space ends.
+   o  the Sequence Number space ends.
 
-   o  Access token associated with the context expires.
+   o  the access token associated with the context expires.
 
 7.  Security Considerations
 
@@ -1178,7 +1178,7 @@ Palombini, et al.         Expires July 31, 2020                [Page 21]
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
 
-   This profiles recommends that the RS maintains a single access token
+   This profile recommends that the RS maintains a single access token
    for a client.  The use of multiple access tokens for a single client
    increases the strain on the resource server as it must consider every
    access token and calculate the actual permissions of the client.
@@ -1252,10 +1252,10 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
       this specification is for the resulting representations to be
       compact, it is RECOMMENDED that the name be short.  This name is
       case sensitive.  Names may not match other registered names in a
-      case-insensitive manner unless the Designated Experts state that
-      there is a compelling reason to allow an exception.  The name is
-      not used in the CBOR encoding.
-   CBOR label  The value to be used to identify this algorithm.  Key map
+      case-insensitive manner unless the Designated Experts determine
+      that there is a compelling reason to allow an exception.  The name
+      is not used in the CBOR encoding.
+   CBOR label  The value to be used to identify this algorithm.  Map key
       labels MUST be unique.  The label can be a positive integer, a
       negative integer or a string.  Integer values between 0 and 255
       and strings of length 1 are designated as Standards Track Document
@@ -1311,10 +1311,11 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
 
 9.5.  Expert Review Instructions
 
-   The IANA registry established in this document is defined as expert
-   review.  This section gives some general guidelines for what the
-   experts should be looking for, but they are being designated as
-   experts for a reason so they should be given substantial latitude.
+   The IANA registry established in this document is defined to use the
+   Expert Review registration policy.  This section gives some general
+   guidelines for what the experts should be looking for, but they are
+   being designated as experts for a reason so they should be given
+   substantial latitude.
 
    Expert reviewers should take into consideration the following points:
 
@@ -1323,8 +1324,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
       that the usage is not going to duplicate one that is already
       registered and that the point is likely to be used in deployments.
       The zones tagged as private use are intended for testing purposes
-      and closed environments, code points in other ranges should not be
-      assigned for testing.
+      and closed environments.  Code points in other ranges should not
+      be assigned for testing.
    o  Specifications are required for the standards track range of point
       assignment.  Specifications should exist for specification
       required ranges, but early assignment before a specification is
@@ -1337,7 +1338,6 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
    o  Experts should take into account the expected usage of fields when
       approving point assignment.  The fact that there is a range for
       standards track documents does not mean that a standards track
-      document cannot have points assigned outside of that range.  The
 
 
 
@@ -1346,6 +1346,7 @@ Palombini, et al.         Expires July 31, 2020                [Page 24]
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
 
+      document cannot have points assigned outside of that range.  The
       length of the encoded value should be weighed against how many
       code points of that length are left, the size of device it will be
       used on, and the number of code points left that encode to that
@@ -1391,9 +1392,8 @@ Internet-Draft            OSCORE Profile of ACE             January 2020
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
-              "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
-              May 2018, <https://www.rfc-editor.org/info/rfc8392>.
+
+
 
 
 
@@ -1401,6 +1401,10 @@ Palombini, et al.         Expires July 31, 2020                [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
+
+   [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
+              "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
+              May 2018, <https://www.rfc-editor.org/info/rfc8392>.
 
    [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
               Definition Language (CDDL): A Notational Convention to
@@ -1446,10 +1450,6 @@ Appendix A.  Profile Requirements
    o  security protocol the client and RS must use: OSCORE
    o  how the client and the RS mutually authenticate: Implicitly by
       possession of a common OSCORE security context
-   o  Content-format of the protocol messages: "application/ace+cbor"
-   o  proof-of-possession protocol(s) and how to select one; which key
-      types (e.g., symmetric/asymmetric) supported: OSCORE algorithms;
-      pre-established symmetric keys
 
 
 
@@ -1458,6 +1458,10 @@ Palombini, et al.         Expires July 31, 2020                [Page 26]
 Internet-Draft            OSCORE Profile of ACE             January 2020
 
 
+   o  Content-format of the protocol messages: "application/ace+cbor"
+   o  proof-of-possession protocol(s) and how to select one; which key
+      types (e.g., symmetric/asymmetric) supported: OSCORE algorithms;
+      pre-established symmetric keys
    o  profile identifier: coap_oscore
    o  (Optional) how the RS talks to the AS for introspection: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
@@ -1496,6 +1500,20 @@ Authors' Addresses
    Email: goran.selander@ericsson.com
 
 
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires July 31, 2020                [Page 27]
+
+Internet-Draft            OSCORE Profile of ACE             January 2020
+
+
    Martin Gunnarsson
    RISE
    Scheelevagen 17
@@ -1509,4 +1527,42 @@ Authors' Addresses
 
 
 
-Palombini, et al.         Expires July 31, 2020                [Page 27]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.         Expires July 31, 2020                [Page 28]
