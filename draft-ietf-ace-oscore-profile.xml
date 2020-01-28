@@ -807,8 +807,8 @@ token.
         The RS MUST discard the current security context associated with a client when:
 
       <list style="symbols">
-        <t> Sequence Number space ends. </t>
-        <t> Access token associated with the context expires. </t>
+        <t> the Sequence Number space ends. </t>
+        <t> the access token associated with the context expires. </t>
       </list>
       </t>
 
