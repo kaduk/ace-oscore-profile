@@ -916,7 +916,7 @@ token.
               The JSON name requested (e.g., "ms").
               Because a core goal of this specification is for the resulting representations to be compact, it is RECOMMENDED that the name be short.
               This name is case sensitive.
-              Names may not match other registered names in a case-insensitive manner unless the Designated Experts state that there is a compelling reason to allow an exception.
+              Names may not match other registered names in a case-insensitive manner unless the Designated Experts determine that there is a compelling reason to allow an exception.
               The name is not used in the CBOR encoding.
             </t>
             <t hangText='CBOR label'>
