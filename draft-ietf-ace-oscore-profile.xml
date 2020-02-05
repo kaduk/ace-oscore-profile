@@ -364,8 +364,8 @@ Usually it is assumed that constrained devices will be pre-configured with the n
       "cnf" : {
         "OSCORE_Security_Context" : {
           "alg" : "AES-CCM-16-64-128",
-          "clientId" : b64'qA',
-          "serverId" : b64'Qg',
+          "clientId" : h'00',
+          "serverId" : h'01',
           "ms" : h'f9af838368e353e78888e1426bd94e6f' 
         }
       }
@@ -388,8 +388,8 @@ Usually it is assumed that constrained devices will be pre-configured with the n
     "cnf" : {
       "OSCORE_Security_Context" : {
         "alg" : "AES-CCM-16-64-128",
-        "clientId" : h'636C69656E74',
-        "serverId" : h'736572766572',
+        "clientId" : h'00',
+        "serverId" : h'01',
         "ms" : h'f9af838368e353e78888e1426bd94e6f' 
     }
   }
@@ -479,7 +479,7 @@ A5                                      # map(5)
     "exp" : "1360289224",
     "scope" :  "temperature_h",
     "cnf" : {
-      "kid" : b64'qA'
+      "kid" : h'43814100'
     }
   }
 ]]>
@@ -592,8 +592,8 @@ A5                                      # map(5)
             <artwork><![CDATA[
         "OSCORE_Security_Context" : {
           "alg" : "AES-CCM-16-64-128",
-          "clientId" : b64'qA',
-          "serverId" : b64'Qg',
+          "clientId" : b64'AA',
+          "serverId" : b64'AQ',
           "ms" : b64'+a+Dg2jjU+eIiOFCa9lObw'
         }
   ]]>
