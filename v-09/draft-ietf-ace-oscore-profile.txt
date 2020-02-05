@@ -697,7 +697,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    |           |       |                |              | value of the  |
    |           |       |                |              | client        |
    |           |       |                |              |               |
-   | hkdf      | 4     | bstr / int     | COSE         | OSCORE HKDF   |
+   | hkdf      | 4     | tstr / int     | COSE         | OSCORE HKDF   |
    |           |       |                | Algorithm    | value         |
    |           |       |                | Values       |               |
    |           |       |                | (HMAC-based) |               |
