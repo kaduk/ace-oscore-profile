@@ -767,7 +767,7 @@ A5                                      # map(5)
 
           </pre>
 <p class="figure">Figure 7: Example CWT with OSCORE parameters.</p>
-<p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
+<p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and the context identifier (if it was set and included in the initial access token response by the AS) in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
 <p><a href="#ex5" class="xref">Figure 8</a> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.8"></div>
 <div id="ex5"></div>

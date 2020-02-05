@@ -600,7 +600,8 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    If the client has requested an update to its access rights using the
    same OSCORE Security Context, which is valid and authorized, the AS
    MUST omit the 'cnf' parameter in the response, and MUST carry the
-   client identifier and optionally the context identifier in the 'kid'
+   client identifier and the context identifier (if it was set and
+   included in the initial access token response by the AS) in the 'kid'
    field in the 'cnf' parameter of the token, with the same structure
    defined in Figure 3.  These identifiers need to be included in the
    response, in order for the RS to identify the previously generated
@@ -609,7 +610,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Figure 8 shows an example of such an AS response, with payload in
    CBOR diagnostic notation without the tag and value abbreviations.
    The access token has been truncated for readability.
-
 
 
 
