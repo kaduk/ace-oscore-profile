@@ -251,10 +251,12 @@
 
         <figure anchor="kid" title="CDDL Notation of kid for Update of Access Rights">
           <artwork><![CDATA[
-    kid = [ 
+    kid_arr = [ 
       clientId, 
       ?IdContext
       ]
+
+    kid = bstr .cbor kid_arr
 ]]>
           </artwork>
         </figure>
@@ -274,7 +276,7 @@
       "req_aud" : "tempSensor4711",
       "scope" : "write",
       "req_cnf" : {
-        "kid" : ["myclient","contextid1"]
+        "kid" : << ["myclient","contextid1"] >>
      }
 ]]>
           </artwork>
