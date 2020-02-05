@@ -325,9 +325,9 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         <t>
           The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
           The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
-          The AEAD algorithm MAY be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm MAY be included
-      	  as the 'hkdf' parameter of the OSCORE_Security_Context, a salt MAY be included as the 'salt' parameter of the
-      	  OSCORE_Security_Context, and the replay window type and size MAY be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included
+      	  as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the
+      	  OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 	      
         <t>
