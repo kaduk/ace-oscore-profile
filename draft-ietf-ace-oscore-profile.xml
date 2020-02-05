@@ -514,7 +514,7 @@ A5                                      # map(5)
             <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
             <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
-            <c>rpl</c>    <c>8</c>        <c>bstr / int</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
+            <c>rpl</c>    <c>8</c>        <c>bstr</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
             <!--<c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c> -->
           </texttable>
 
@@ -1083,7 +1083,7 @@ token.
           </t>
           <t>how the client talks to the AS for requesting a token: HTTP/CoAP (+ TLS/DTLS/OSCORE)
           </t>
-          <t>how/if the authz-info endpoint is protected: Security protocol above
+          <t>how/if the authz-info endpoint is protected: not protected.
           </t>
           <t>(Optional)other methods of token transport than the authz-info endpoint: no
           </t>
