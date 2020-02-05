@@ -510,7 +510,7 @@ A5                                      # map(5)
             <c>ms</c>        <c>1</c>        <c>bstr</c>  <c></c>        <c>OSCORE Master Secret value</c>
             <c>clientId</c>        <c>2</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the client, OSCORE Recipient ID value of the server</c>
             <c>serverId</c>        <c>3</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the server, OSCORE Recipient ID value of the client</c>
-            <c>hkdf</c>        <c>4</c>        <c>bstr / int</c>        <c>COSE Algorithm Values (HMAC-based)</c>        <c>OSCORE HKDF value</c>
+            <c>hkdf</c>        <c>4</c>        <c>tstr / int</c>        <c>COSE Algorithm Values (HMAC-based)</c>        <c>OSCORE HKDF value</c>
             <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
             <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
