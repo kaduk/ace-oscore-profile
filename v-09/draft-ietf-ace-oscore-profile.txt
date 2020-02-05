@@ -825,10 +825,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    The following subsections describe the details of the POST request
    and response to the authz-info endpoint between client and RS.  The
    client generates a nonce N1 and posts it together with the token that
-   includes the materials received from the AS to the RS.  The RS then
-   generates a nonce N2 and use Section 3.2 of [RFC8613] to derive a
-   security context based on a shared master secret and the two nonces,
-   established between client and server.
+   includes the materials (e.g., OSCORE parameters) received from the AS
+   to the RS.  The RS then generates a nonce N2 and use Section 3.2 of
+   [RFC8613] to derive a security context based on a shared master
+   secret and the two nonces, established between client and server.
 
    Note that the proof-of-possession required to bind the access token
    to the client is implicitly performed by generating the shared OSCORE
