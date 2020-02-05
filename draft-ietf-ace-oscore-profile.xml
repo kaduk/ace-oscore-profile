@@ -445,7 +445,7 @@ A5                                      # map(5)
 
 
         <t>
-          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <xref target="kid"/>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.
+          If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and the context identifier (if it was set and included in the initial access token response by the AS) in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <xref target="kid"/>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.
         </t>
 
         <t>
