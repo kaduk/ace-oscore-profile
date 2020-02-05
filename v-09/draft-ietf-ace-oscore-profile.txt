@@ -713,7 +713,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    | contextId | 7     | bstr           |              | OSCORE ID     |
    |           |       |                |              | Context value |
    |           |       |                |              |               |
-   | rpl       | 8     | bstr / int     |              | OSCORE Replay |
+   | rpl       | 8     | bstr           |              | OSCORE Replay |
    |           |       |                |              | Window Type   |
    |           |       |                |              | and Size      |
    +-----------+-------+----------------+--------------+---------------+
@@ -1462,8 +1462,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
       (+ TLS/DTLS/OSCORE)
    o  how the client talks to the AS for requesting a token: HTTP/CoAP
       (+ TLS/DTLS/OSCORE)
-   o  how/if the authz-info endpoint is protected: Security protocol
-      above
+   o  how/if the authz-info endpoint is protected: not protected.
    o  (Optional)other methods of token transport than the authz-info
       endpoint: no
 
@@ -1502,6 +1501,7 @@ Authors' Addresses
    Sweden
 
    Email: martin.gunnarsson@ri.se
+
 
 
 
