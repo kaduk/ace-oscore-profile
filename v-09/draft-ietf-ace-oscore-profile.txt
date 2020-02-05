@@ -461,18 +461,18 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    the OSCORE_Security_Context, as defined in Section 3.2.1.
 
    We assume in this document that a resource is associated to one
-   single AS, which makes it possible to assume unique identifiers for
-   each client requesting a particular resource to a RS.  If this is not
-   the case, collisions of identifiers may appear in the RS, in which
-   case the RS needs to have a mechanism in place to disambiguate
-   identifiers or mitigate their effect.
+   single AS, which makes it possible for the AS to enforce uniqueness
+   of identifiers for each client requesting a particular resource to a
+   RS.  If this is not the case, collisions of identifiers may occur at
+   the RS, in which case the RS needs to have a mechanism in place to
+   disambiguate identifiers or mitigate the effect of the collisions.
 
    Note that in Section 4.3 C sets the Sender ID of its Security Context
    to the clientId value received and the Recipient ID to the serverId
    value, and RS does the opposite.
 
-   Figure 5 shows an example of such an AS response, with payload in
-   CBOR diagnostic notation without the tag and value abbreviations.
+   Figure 5 shows an example of an AS response, with payload in CBOR
+   diagnostic notation without the tag and value abbreviations.
 
        Header: Created (Code=2.01)
        Content-Type: "application/ace+cbor"
