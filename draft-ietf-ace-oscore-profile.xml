@@ -339,7 +339,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may appear in the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate their effect.
+          We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may occur at the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate the effect of the collisions.
           <!-- TODO: Add error response definition in the document for the RS to indicate "Id collision"-->
         </t>
 
