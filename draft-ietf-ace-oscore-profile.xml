@@ -335,7 +335,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 	      </t>
 
         <t>
-          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="RFC8613"/>.  The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="RFC8613"/>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <xref target="RFC8613"/>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
