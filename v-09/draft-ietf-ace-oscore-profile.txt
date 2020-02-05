@@ -202,9 +202,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    received token from it plus the parameters received in the access
    token from the AS, following section 3.2 of [RFC8613].
 
-   After receiving the nonce N2, the client concatenates it with N1 and
-   appends the result to the Master Salt in its Security Context (see
-   section 3 of [RFC8613]).  The client then derives the complete
+   After receiving the nonce N2, the client concatenates the input salt,
+   N1 and N2 to obtain the Master Salt of the OSCORE Security Context
+   (see section 3 of [RFC8613]).  The client then derives the complete
    Security Context from the nonces plus the parameters received from
    the AS.
 
@@ -215,9 +215,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    discarded if the same token is re-used to successfully derive a new
    Security Context.
 
-   The use of random nonces during the exchange prevents the reuse of
-   AEAD nonces and keys with different messages, in case of re-
-   derivation of the Security Context both for Clients and Resource
+   The use of random nonces during the exchange prevents the reuse of an
+   AEAD nonces/key pair for two different messages.  This situation
+   might occur when client and RS derive a new Security Context from an
 
 
 
@@ -226,16 +226,16 @@ Palombini, et al.        Expires August 8, 2020                 [Page 4]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   Servers from an old non-expired access token, e.g., in case of re-
-   boot of either the client or RS.  In fact, by using random nonces as
-   part of the Master Salt, the request to the authz-info endpoint
-   posting the same token results in a different Security Context,
-   since, even though the Master Secret, Sender ID and Recipient ID are
-   the same, the Master Salt is different.  Therefore, the main
-   requirement for the nonces is that they have a good amount of
-   randomness.  If random nonces were not used, a node re-using a non-
-   expired old token would be susceptible to on-path attackers provoking
-   the creation of OSCORE messages using old AEAD keys and nonces.
+   existing (non-expired) access token, as might occur when either party
+   has just rebooted.  Instead, by using random nonces as part of the
+   Master Salt, the request to the authz-info endpoint posting the same
+   token results in a different Security Context, since, even though the
+   Master Secret, Sender ID and Recipient ID are the same, the Master
+   Salt is different.  Therefore, the main requirement for the nonces is
+   that they have a good amount of randomness.  If random nonces were
+   not used, a node re-using a non-expired old token would be
+   susceptible to on-path attackers provoking the creation of OSCORE
+   messages using old AEAD keys and nonces.
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
