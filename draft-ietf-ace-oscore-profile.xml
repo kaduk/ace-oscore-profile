@@ -98,7 +98,7 @@
     <section anchor="introduction" title=" Introduction"> 
       
       <t>
-        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  In order to provide communication security, proof of possession, and server authentication they use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.
+        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  Note that this profile uses a symmetric-crypto-based scheme, where the symmetric secret is used as input material for keying material derivation.  In order to provide communication security, proof of possession, and server authentication the client and resource server use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.  Note that the proof of possession is not done by a dedicated protocol element, but rather occurs implicitly, based on knowledge of the security keying material.
       </t>
 
       <t>
