@@ -151,7 +151,7 @@
       </t>
 
       <t>
-        Once the client has retrieved the access token, it generates a nonce N1 and posts both the token and N1 to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/> and Content-Format = application/ace+cbor.
+        Once the client has retrieved the access token, it generates a nonce N1 and posts both the token and N1 to the RS using the authz-info endpoint and mechanisms specified in section 5.8 of <xref target="I-D.ietf-ace-oauth-authz"/> and Content-Format = application/ace+cbor. Note that, as specified in the ACE framework, the authz-info endpoint is not a protected resource, so there is no cryptographic protection to this request.
       </t>
 
       <t>
