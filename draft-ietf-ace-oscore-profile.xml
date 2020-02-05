@@ -348,7 +348,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          <xref target="ex1"/> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.
+          <xref target="ex1"/> shows an example of an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.
         </t>
 
         <figure anchor="ex1" title="Example AS-to-C Access Token response with OSCORE profile.">
