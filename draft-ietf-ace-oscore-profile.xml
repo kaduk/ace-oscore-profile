@@ -2,7 +2,6 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY SELF "[[this specification]]">
-<!ENTITY I-D.ietf-core-object-security SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-object-security.xml">
 <!ENTITY I-D.selander-ace-cose-ecdhe SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.selander-ace-cose-ecdhe.xml">
 <!ENTITY I-D.ietf-ace-oauth-authz SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-authz.xml">
 <!ENTITY I-D.ietf-ace-oauth-params SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ace-oauth-params.xml">
@@ -19,6 +18,7 @@
 <!ENTITY RFC8610 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8610.xml">
 <!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC8392 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8392.xml">
+<!ENTITY RFC8613 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8613.xml">
 ]>
 
 <?rfc toc="yes"?>
@@ -98,7 +98,7 @@
     <section anchor="introduction" title=" Introduction"> 
       
       <t>
-        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  Note that this profile uses a symmetric-crypto-based scheme, where the symmetric secret is used as input material for keying material derivation.  In order to provide communication security, proof of possession, and server authentication the client and resource server use Object Security for Constrained RESTful Environments (OSCORE) <xref target="I-D.ietf-core-object-security"/>.  Note that the proof of possession is not done by a dedicated protocol element, but rather occurs implicitly, based on knowledge of the security keying material.
+        This memo specifies a profile of the ACE framework <xref target="I-D.ietf-ace-oauth-authz"/>.  In this profile, a client and a resource server use CoAP <xref target="RFC7252"/> to communicate.  The client uses an access token, bound to a key (the proof-of-possession key) to authorize its access to the resource server.  Note that this profile uses a symmetric-crypto-based scheme, where the symmetric secret is used as input material for keying material derivation.  In order to provide communication security, proof of possession, and server authentication the client and resource server use Object Security for Constrained RESTful Environments (OSCORE) <xref target="RFC8613"/>.  Note that the proof of possession is not done by a dedicated protocol element, but rather occurs implicitly, based on knowledge of the security keying material.
       </t>
 
       <t>
@@ -143,7 +143,7 @@
     <section title="Protocol Overview"> 
     
       <t>
-        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server using OSCORE <xref target="I-D.ietf-core-object-security"/>. The parameters needed by the client to negotiate the use of this profile with the authorization server, as well as OSCORE setup process, are described in detail in the following sections.
+        This section gives an overview on how to use the ACE Framework <xref target="I-D.ietf-ace-oauth-authz"/> to secure the communication between a client and a resource server using OSCORE <xref target="RFC8613"/>. The parameters needed by the client to negotiate the use of this profile with the authorization server, as well as OSCORE setup process, are described in detail in the following sections.
       </t>
 
       <t>
@@ -155,11 +155,11 @@
       </t>
 
       <t>
-        If the access token is valid, the RS replies to this request with a 2.01 (Created) response with Content-Format = application/ace+cbor, which contains a nonce N2 in a CBOR map. Moreover, the server concatenates the input salt, N1, and N2 to obtain the Master Salt of the OSCORE Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>).  The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the access token from the AS, following section 3.2 of <xref target="I-D.ietf-core-object-security"/>.
+        If the access token is valid, the RS replies to this request with a 2.01 (Created) response with Content-Format = application/ace+cbor, which contains a nonce N2 in a CBOR map. Moreover, the server concatenates the input salt, N1, and N2 to obtain the Master Salt of the OSCORE Security Context (see section 3 of <xref target="RFC8613"/>).  The RS then derives the complete Security Context associated with the received token from it plus the parameters received in the access token from the AS, following section 3.2 of <xref target="RFC8613"/>.
       </t>
 
       <t>
-        After receiving the nonce N2, the client concatenates it with N1 and appends the result to the Master Salt in its Security Context (see section 3 of <xref target="I-D.ietf-core-object-security"/>). The client then derives the complete Security Context from the nonces plus the parameters received from the AS.
+        After receiving the nonce N2, the client concatenates it with N1 and appends the result to the Master Salt in its Security Context (see section 3 of <xref target="RFC8613"/>). The client then derives the complete Security Context from the nonces plus the parameters received from the AS.
       </t>
 
       <t>
@@ -213,7 +213,7 @@
     <section anchor="client-as" title="Client-AS Communication"> 
 
       <t>
-        The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <xref target="I-D.ietf-core-object-security"/> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) included in the response from the AS MUST be used as master secret in OSCORE.
+        The following subsections describe the details of the POST request and response to the token endpoint between client and AS. Section 3.2 of <xref target="RFC8613"/> defines how to derive a Security Context based on a shared master secret and a set of other parameters, established between client and server, which the client receives from the AS in this exchange.  The proof-of-possession key (pop-key) included in the response from the AS MUST be used as master secret in OSCORE.
       </t>
 
       <section anchor="c-as" title="C-to-AS: POST to token endpoint"> 
@@ -333,7 +333,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 	      </t>
 
         <t>
-          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="I-D.ietf-core-object-security"/>.  The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="RFC8613"/>.  The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
@@ -493,7 +493,7 @@ A5                                      # map(5)
         <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
 
           <t>
-            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="I-D.ietf-core-object-security"/>).  The OSCORE_Security_Context object can either be encoded as a JSON object or as a CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (<xref target="sec-ctx-params-reg"/>) and is defined below.
+            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="RFC8613"/>).  The OSCORE_Security_Context object can either be encoded as a JSON object or as a CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (<xref target="sec-ctx-params-reg"/>) and is defined below.
             All parameters are optional.
             <xref target="table-key-labels"/> provides a summary of the OSCORE_Security_Context parameters defined in this section.
           </t>
@@ -520,52 +520,52 @@ A5                                      # map(5)
           <t>
             <list style="hanging">
               <t hangText="ms:">
-                This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "ms" value is a Base64 encoded byte string.
                 In CBOR, the "ms" type is bstr, and has label 1.
               </t>
 
               <t hangText="clientId:">
-                This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies a client identifier as a byte string. This identifier is used as OSCORE Sender ID in the client and OSCORE Recipient ID in the server. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "clientId" value is a Base64 encoded byte string.
                 In CBOR, the "clientId" type is bstr, and has label 2.
               </t>
 
               <t hangText="serverId:">
-                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the server and OSCORE Recipient ID in the client. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies a server identifier as a byte string. This identifier is used as OSCORE Sender ID in the server and OSCORE Recipient ID in the client. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "serverId" value is a Base64 encoded byte string.
                 In CBOR, the "serverId" type is bstr, and has label 3.
               </t>
               
               <t hangText="hkdf:">
-                This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>. 
+                This parameter identifies the OSCORE HKDF Algorithm. For more information about this field, see section 3.1 of <xref target="RFC8613"/>. 
                 The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be HMAC-based HKDF algorithms. The value can either be the integer or the text string value of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.
                 In JSON, the "hkdf" value is a case-sensitive ASCII string or an integer.
                 In CBOR, the "hkdf" type is tstr or int, and has label 4.
               </t>
 
               <t hangText="alg:">
-                This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>
+                This parameter identifies the OSCORE AEAD Algorithm. For more information about this field, see section 3.1 of <xref target="RFC8613"/>
                 The values used MUST be registered in the IANA "COSE Algorithms" registry and MUST be AEAD algorithms. The value can either be the integer or the text string value of the HMAC-based HKDF algorithm in the "COSE Algorithms" registry.
                 In JSON, the "alg" value is a case-sensitive ASCII string or an integer.
                 In CBOR, the "alg" type is tstr or int, and has label 5.
               </t>
 
               <t hangText="salt:">
-                This parameter identifies the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the OSCORE Master Salt value, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "salt" value is a Base64 encoded byte string.
                 In CBOR, the "salt" type is bstr, and has label 6.
               </t>
 
               <t hangText="contextId:">
-                This parameter identifies the security context as a byte string. This identifier is used as OSCORE ID Context. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the security context as a byte string. This identifier is used as OSCORE ID Context. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "contextID" value is a Base64 encoded byte string.
                 In CBOR, the "contextID" type is bstr, and has label 7.
               </t>
 
               <t hangText="rpl:">
                 This parameter is used to carry the OSCORE value, encoded as a bstr.
-                This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="I-D.ietf-core-object-security"/>.
+                This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "rpl" value is a Base64 encoded byte string.
                 In CBOR, the "rpl" type is bstr, and has label 8.
               </t>
@@ -625,7 +625,7 @@ OSCORE_Security_Context = {
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <xref target="I-D.ietf-core-object-security"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
+        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <xref target="RFC8613"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
       </t>
 
       <t>
@@ -727,7 +727,7 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'cnonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="as-c"/>. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the nonce N2 from the 'cnonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="as-c"/>. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="RFC8613"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
@@ -739,11 +739,11 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="rs-c"/>. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="I-D.ietf-core-object-security"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="I-D.ietf-core-object-security"/>, and MUST associate this Security Context with the authorization information from the access token. 
+          After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, and where salt was received from the AS in <xref target="rs-c"/>. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="RFC8613"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>, and MUST associate this Security Context with the authorization information from the access token. 
         </t>
 
         <t>
-          The RS then uses this Security Context to verify requests and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="I-D.ietf-core-object-security"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message to
+          The RS then uses this Security Context to verify requests and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <xref target="RFC8613"/>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <xref target="tok-ver"/>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message to
 requests received that correspond to a Security Context with an expired
 token.
         </t>
@@ -757,7 +757,7 @@ token.
       <section anchor="tok-ver" title="Access rights verification">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then the RS processes it according to <xref target="I-D.ietf-core-object-security"/>. If OSCORE verification succeeds, and the target resource
+          The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then the RS processes it according to <xref target="RFC8613"/>. If OSCORE verification succeeds, and the target resource
           requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then MUST verify that the authorization information covers the resource and the action requested.
         </t>
 
@@ -781,7 +781,7 @@ token.
       </t>
 
       <t>
-        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="I-D.ietf-core-object-security"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="RFC8613"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section>
@@ -825,7 +825,7 @@ token.
 
       <t>
         Furthermore the general security considerations of OSCORE <xref
-        target="I-D.ietf-core-object-security"/> also apply to this specific
+        target="RFC8613"/> also apply to this specific
         use of the OSCORE protocol.
       </t>
       
@@ -858,7 +858,7 @@ token.
       </t>
       <t>
         As this document uses OSCORE, thus the privacy considerations from
-	<xref target="I-D.ietf-core-object-security"/> apply here as well.
+	<xref target="RFC8613"/> apply here as well.
       </t>
 
       <t>
@@ -1030,7 +1030,7 @@ token.
 
     <references title="Normative References">
 
-      &I-D.ietf-core-object-security;
+      &RFC8613;
       &I-D.ietf-ace-oauth-authz;
       &I-D.ietf-ace-oauth-params;
       &RFC8392;
