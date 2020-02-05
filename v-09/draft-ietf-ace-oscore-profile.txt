@@ -472,13 +472,14 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    value, and RS does the opposite.
 
    Figure 5 shows an example of an AS response, with payload in CBOR
-   diagnostic notation without the tag and value abbreviations.
+   diagnostic notation without the tag and value abbreviations.  The
+   access token has been truncated for readability.
 
        Header: Created (Code=2.01)
        Content-Type: "application/ace+cbor"
        Payload:
        {
-         "access_token" : h'a5037674656d7053656e73 ...'
+         "access_token" : h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
          "profile" : "coap_oscore",
          "expires_in" : "3600",
@@ -495,9 +496,8 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    Figure 5: Example AS-to-C Access Token response with OSCORE profile.
 
-   Figure 6 shows an example CWT, containing the necessary OSCORE
-   parameters in the 'cnf' claim, in CBOR diagnostic notation without
-   tag and value abbreviations.
+
+
 
 
 
@@ -505,6 +505,10 @@ Palombini, et al.        Expires August 8, 2020                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+   Figure 6 shows an example CWT, containing the necessary OSCORE
+   parameters in the 'cnf' claim, in CBOR diagnostic notation without
+   tag and value abbreviations.
 
      {
        "aud" : "tempSensorInLivingRoom",
@@ -531,10 +535,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    NOTE TO THE RFC EDITOR: before publishing, it should be checked (and
    in case fixed) that the values used below (which are not yet
    registered) are the final values registered in IANA.
-
-
-
-
 
 
 
@@ -608,7 +608,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    Figure 8 shows an example of such an AS response, with payload in
    CBOR diagnostic notation without the tag and value abbreviations.
-
+   The access token has been truncated for readability.
 
 
 
@@ -622,7 +622,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
        Content-Type: "application/ace+cbor"
        Payload:
        {
-         "access_token" : h'a5037674656d7053656e73 ...'
+         "access_token" : h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
          "profile" : "coap_oscore",
          "expires_in" : "3600"
@@ -877,8 +877,8 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    Figure 11 shows an example of the request sent from the client to the
    RS, with payload in CBOR diagnostic notation without the tag and
-   value abbreviations.
-
+   value abbreviations.  The access token has been truncated for
+   readability.
 
 
 
@@ -904,7 +904,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
          Content-Format: "application/ace+cbor"
          Payload:
            {
-             "access_token": h'a5037674656d7053656e73 ...'
+             "access_token": h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
              "cnonce": h'018a278f7faab55a'
            }

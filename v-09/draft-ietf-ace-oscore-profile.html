@@ -684,7 +684,7 @@
 <p id="rfc.section.3.2.p.9">The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <a href="#RFC8613" class="xref">[RFC8613]</a>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may occur at the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate the effect of the collisions.  </p>
 <p id="rfc.section.3.2.p.11">Note that in <a href="#oscore-setup" class="xref">Section 4.3</a> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.  </p>
-<p><a href="#ex1" class="xref">Figure 5</a> shows an example of an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
+<p><a href="#ex1" class="xref">Figure 5</a> shows an example of an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.5"></div>
 <div id="ex1"></div>
 <pre>
@@ -692,7 +692,7 @@
     Content-Type: "application/ace+cbor"
     Payload:
     {
-      "access_token" : h'a5037674656d7053656e73 ...'
+      "access_token" : h'a5037674656d7053656e73 ...
        (remainder of access token omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600",
@@ -768,7 +768,7 @@ A5                                      # map(5)
           </pre>
 <p class="figure">Figure 7: Example CWT with OSCORE parameters.</p>
 <p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and optionally the context identifier in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
-<p><a href="#ex5" class="xref">Figure 8</a> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
+<p><a href="#ex5" class="xref">Figure 8</a> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.8"></div>
 <div id="ex5"></div>
 <pre>
@@ -776,7 +776,7 @@ A5                                      # map(5)
     Content-Type: "application/ace+cbor"
     Payload:
     {
-      "access_token" : h'a5037674656d7053656e73 ...'
+      "access_token" : h'a5037674656d7053656e73 ...
        (remainder of access token omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600"
@@ -936,7 +936,7 @@ OSCORE_Security_Context = {
 <p id="rfc.section.4.1.p.3">The authz-info endpoint is not protected, nor are the responses from this resource.  </p>
 <p id="rfc.section.4.1.p.4">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
 <p id="rfc.section.4.1.p.5">Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.  </p>
-<p><a href="#ex3" class="xref">Figure 11</a> shows an example of the request sent from the client to the RS, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
+<p><a href="#ex3" class="xref">Figure 11</a> shows an example of the request sent from the client to the RS, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.11"></div>
 <div id="ex3"></div>
 <pre>
@@ -946,7 +946,7 @@ OSCORE_Security_Context = {
       Content-Format: "application/ace+cbor"
       Payload:
         {
-          "access_token": h'a5037674656d7053656e73 ...'
+          "access_token": h'a5037674656d7053656e73 ...
        (remainder of access token omitted for brevity)',
           "cnonce": h'018a278f7faab55a'
         }
