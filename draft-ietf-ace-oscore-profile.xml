@@ -159,7 +159,7 @@
       </t>
 
       <t>
-        After receiving the nonce N2, the client concatenates it with N1 and appends the result to the Master Salt in its Security Context (see section 3 of <xref target="RFC8613"/>). The client then derives the complete Security Context from the nonces plus the parameters received from the AS.
+        After receiving the nonce N2, the client concatenates the input salt, N1 and N2 to obtain the Master Salt of the OSCORE Security Context (see section 3 of <xref target="RFC8613"/>). The client then derives the complete Security Context from the nonces plus the parameters received from the AS.
       </t>
 
       <t>
@@ -167,7 +167,7 @@
       </t>
 
       <t>
-        The use of random nonces during the exchange prevents the reuse of AEAD nonces and keys with different messages, in case of re-derivation of the Security Context both for Clients and Resource Servers from an old non-expired access token, e.g., in case of re-boot of either the client or RS. In fact, by using random nonces as part of the Master Salt, the request to the authz-info endpoint posting the same token results in a different Security Context, since, even though the Master Secret, Sender ID and Recipient ID are the same, the Master Salt is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
+        The use of random nonces during the exchange prevents the reuse of an AEAD nonces/key pair for two different messages.  This situation might occur when client and RS derive a new Security Context from an existing (non-expired) access token, as might occur when either party has just rebooted. Instead, by using random nonces as part of the Master Salt, the request to the authz-info endpoint posting the same token results in a different Security Context, since, even though the Master Secret, Sender ID and Recipient ID are the same, the Master Salt is different. Therefore, the main requirement for the nonces is that they have a good amount of randomness. If random nonces were not used, a node re-using a non-expired old token would be susceptible to on-path attackers provoking the creation of OSCORE messages using old AEAD keys and nonces.
       </t>
 
       <t>
