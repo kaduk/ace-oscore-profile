@@ -625,7 +625,7 @@ OSCORE_Security_Context = {
     <section anchor="c-rs1" title="Client-RS Communication">
 
       <t>
-        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <xref target="RFC8613"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
+        The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials (e.g., OSCORE parameters) received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <xref target="RFC8613"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. 
       </t>
 
       <t>
