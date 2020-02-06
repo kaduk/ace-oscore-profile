@@ -298,7 +298,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    The client-to-AS request is specified in Section 5.6.1 of
    [I-D.ietf-ace-oauth-authz].
 
-   The client MUST send this POST request to the token endpoint over a
+   The client must send this POST request to the token endpoint over a
    secure channel that guarantees authentication, message integrity and
    confidentiality (see Section 5).
 
@@ -831,9 +831,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    between client and RS using OSCORE, as long as the access token is
    valid.
 
-   Note that the proof-of-possession required to bind the access token
-   to the client is implicitly performed by generating the shared OSCORE
-   Security Context using the pop-key as master secret, for both client
+   Note that the RS and client authenticates themselves by generating
+   the shared OSCORE Security Context using the pop-key as master
+   secret.  An attacker posting a valid token to the RS will not be able
 
 
 
@@ -842,8 +842,7 @@ Palombini, et al.        Expires August 9, 2020                [Page 15]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   and RS.  An attacker using a stolen token will not be able to
-   generate a valid OSCORE context and thus not be able to prove
+   to generate a valid OSCORE context and thus not be able to prove
    possession of the pop-key.
 
 4.1.  C-to-RS: POST to authz-info endpoint
@@ -893,6 +892,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
+
 Palombini, et al.        Expires August 9, 2020                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
@@ -915,17 +915,17 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 4.2.  RS-to-C: 2.01 (Created)
 
    The RS MUST follow the procedures defined in section 5.8.1 of
-   [I-D.ietf-ace-oauth-authz]: the RS MUST verify the validity of the
-   token.  If the token is valid, the RS MUST respond to the POST
+   [I-D.ietf-ace-oauth-authz]: the RS must verify the validity of the
+   token.  If the token is valid, the RS must respond to the POST
    request with 2.01 (Created).  If the token is valid but is associated
    to claims that the RS cannot process (e.g., an unknown scope), or if
    any of the expected parameters in the OSCORE_Security_Context is
    missing (e.g., any of the mandatory parameters from the AS), or if
    any parameters received in the OSCORE_Security_Context is
-   unrecognized, the RS MUST respond with an error response code
+   unrecognized, the RS must respond with an error response code
    equivalent to the CoAP code 4.00 (Bad Request).  In the latter two
-   cases, the RS MAY provide additional information in the error
-   response, in order to clarify what went wrong.  The RS MAY make an
+   cases, the RS may provide additional information in the error
+   response, in order to clarify what went wrong.  The RS may make an
    introspection request to validate the token before responding to the
    POST request to the authz-info endpoint.
 
@@ -968,15 +968,16 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
             Figure 12: Example RS-to-C 2.01 (Created) response
 
-   When receiving an updated access token with updated authorization
-   information from the client (see Section 3.1), it is RECOMMENDED that
+   As specified in section 5.8.1 of [I-D.ietf-ace-oauth-authz], when
+   receiving an updated access token with updated authorization
+   information from the client (see Section 3.1), it is recommended that
    the RS overwrites the previous token, that is only the latest
    authorization information in the token received by the RS is valid.
    This simplifies for the RS to keep track of authorization information
    for a given client.
 
    As specified in section 5.8.3 of [I-D.ietf-ace-oauth-authz], the RS
-   MUST notify the client with an error response with code 4.01
+   must notify the client with an error response with code 4.01
    (Unauthorized) for any long running request before terminating the
    session, when the access token expires.
 
@@ -1001,7 +1002,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    parameters received from the AS in Section 3.2.  After that, the
    client MUST derive the complete Security Context following section
    3.2.1 of [RFC8613].  From this point on, the client MUST use this
-
 
 
 
@@ -1074,17 +1074,16 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    [RFC8613].  If OSCORE verification succeeds, and the target resource
    requires authorization, the RS retrieves the authorization
    information from the access token associated to the Security Context.
-   The RS then MUST verify that the authorization information covers the
+   The RS then must verify that the authorization information covers the
    resource and the action requested.
 
-   The response code MUST be 4.01 (Unauthorized) in case the client has
+   The response code must be 4.01 (Unauthorized) in case the client has
    not used the Security Context associated with the access token, or if
    RS has no valid access token for the client.  If RS has an access
    token for the client but not for the resource that was requested, RS
-   MUST reject the request with a 4.03 (Forbidden).  If RS has an access
+   must reject the request with a 4.03 (Forbidden).  If RS has an access
    token for the client but it does not cover the action that was
-   requested on the resource, RS MUST reject the request with a 4.05
-   (Method Not Allowed).
+   requested on the resource,
 
 5.  Secure Communication with AS
 
@@ -1114,6 +1113,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    o  the Sequence Number space ends.
 
    o  the access token associated with the context expires.
+
 
 
 
