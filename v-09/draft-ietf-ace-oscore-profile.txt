@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: August 8, 2020                                        Combitech
+Expires: August 9, 2020                                        Combitech
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                                     RISE
-                                                        February 5, 2020
+                                                        February 6, 2020
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 8, 2020.
+   This Internet-Draft will expire on August 9, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 1]
+Palombini, et al.        Expires August 9, 2020                 [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 2]
+Palombini, et al.        Expires August 9, 2020                 [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 3]
+Palombini, et al.        Expires August 9, 2020                 [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 4]
+Palombini, et al.        Expires August 9, 2020                 [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -229,12 +229,13 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    existing (non-expired) access token, as might occur when either party
    has just rebooted.  Instead, by using random nonces as part of the
    Master Salt, the request to the authz-info endpoint posting the same
-   token results in a different Security Context, since, even though the
-   Master Secret, Sender ID and Recipient ID are the same, the Master
-   Salt is different.  Therefore, the main requirement for the nonces is
-   that they have a good amount of randomness.  If random nonces were
-   not used, a node re-using a non-expired old token would be
-   susceptible to on-path attackers provoking the creation of OSCORE
+   token results in a different Security Context, by OSCORE
+   construction, since even though the Master Secret, Sender ID and
+   Recipient ID are the same, the Master Salt is different (see
+   Section 3.2.1 of [RFC8613]).  Therefore, the main requirement for the
+   nonces is that they have a good amount of randomness.  If random
+   nonces were not used, a node re-using a non-expired old token would
+   be susceptible to on-path attackers provoking the creation of OSCORE
    messages using old AEAD keys and nonces.
 
    An overview of the profile flow for the OSCORE profile is given in
@@ -276,8 +277,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-
-Palombini, et al.        Expires August 8, 2020                 [Page 5]
+Palombini, et al.        Expires August 9, 2020                 [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 6]
+Palombini, et al.        Expires August 9, 2020                 [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 7]
+Palombini, et al.        Expires August 9, 2020                 [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 8]
+Palombini, et al.        Expires August 9, 2020                 [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                 [Page 9]
+Palombini, et al.        Expires August 9, 2020                 [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 10]
+Palombini, et al.        Expires August 9, 2020                [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 11]
+Palombini, et al.        Expires August 9, 2020                [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -653,23 +653,23 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 3.2.1.  OSCORE_Security_Context Object
 
    An OSCORE_Security_Context is an object that represents part or all
-   of an OSCORE Security Context (Section 3.1 of [RFC8613]).  The
-   OSCORE_Security_Context object can either be encoded as a JSON object
-   or as a CBOR map.  In both cases, the set of common parameters that
-   can appear in an OSCORE_Security_Context object can be found in the
-   IANA "OSCORE Security Context Parameters" registry (Section 9.2) and
-   is defined below.  All parameters are optional.  Table 1 provides a
-   summary of the OSCORE_Security_Context parameters defined in this
-   section.
+   of an OSCORE Security Context, i.e., the local set of information
+   elements necessary to carry out the cryptographic operations in
+   OSCORE (Section 3.1 of [RFC8613]).  Conversely, the
+   OSCORE_Security_Context object is defined to be serialized and
+   transported between nodes.  The OSCORE_Security_Context object can
+   either be encoded as a JSON object or as a CBOR map.  The set of
+   common parameters that can appear in an OSCORE_Security_Context
+   object can be found in the IANA "OSCORE Security Context Parameters"
+   registry (Section 9.2), defined for extensibility, and is specified
+   below.  All parameters are optional.  Table 1 provides a summary of
+   the OSCORE_Security_Context parameters defined in this section.
 
 
 
 
 
-
-
-
-Palombini, et al.        Expires August 8, 2020                [Page 12]
+Palombini, et al.        Expires August 9, 2020                [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 13]
+Palombini, et al.        Expires August 9, 2020                [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 14]
+Palombini, et al.        Expires August 9, 2020                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 15]
+Palombini, et al.        Expires August 9, 2020                [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 16]
+Palombini, et al.        Expires August 9, 2020                [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 17]
+Palombini, et al.        Expires August 9, 2020                [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 18]
+Palombini, et al.        Expires August 9, 2020                [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 19]
+Palombini, et al.        Expires August 9, 2020                [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 20]
+Palombini, et al.        Expires August 9, 2020                [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1173,7 +1173,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 21]
+Palombini, et al.        Expires August 9, 2020                [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 22]
+Palombini, et al.        Expires August 9, 2020                [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1285,7 +1285,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 23]
+Palombini, et al.        Expires August 9, 2020                [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 24]
+Palombini, et al.        Expires August 9, 2020                [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1397,7 +1397,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 25]
+Palombini, et al.        Expires August 9, 2020                [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1453,7 +1453,7 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 26]
+Palombini, et al.        Expires August 9, 2020                [Page 26]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1509,4 +1509,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.        Expires August 8, 2020                [Page 27]
+Palombini, et al.        Expires August 9, 2020                [Page 27]
