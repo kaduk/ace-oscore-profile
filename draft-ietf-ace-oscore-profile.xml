@@ -658,7 +658,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-        	Note that a client may be required to re-POST the access token, since an RS may delete a stored access token, due to lack of memory.
+          Note that a client may be required to re-POST the access token in order to complete a request, since an RS may delete a stored access token at any time, for example due to all storage space being consumed. This situation is detected by the client when it receives an AS Request Creation Hints response.
         </t>
 
         <t>
