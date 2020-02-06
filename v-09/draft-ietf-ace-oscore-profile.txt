@@ -438,10 +438,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    This profile RECOMMENDS the use of CBOR web token (CWT) as specified
    in [RFC8392].  If the token is a CWT, the same
    OSCORE_Security_Context structure defined above MUST be placed in the
-   'cnf' claim of this token.
+   'cnf' claim of this token.  The access token MUST be encrypted, since
+   it will be transferred from the client to the RS over an unprotected
+   channel.
 
-   The AS MUST also assign an identifier to the RS (serverId), MAY
-   assign an identifier to the client (clientId), and MAY assign an
 
 
 
@@ -450,6 +450,8 @@ Palombini, et al.        Expires August 9, 2020                 [Page 8]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   The AS MUST also assign an identifier to the RS (serverId), MAY
+   assign an identifier to the client (clientId), and MAY assign an
    identifier to the context (contextId).  These identifiers are then
    used as Sender ID, Recipient ID and ID Context in the OSCORE context
    as described in section 3.1 of [RFC8613].  Applications need to
@@ -479,7 +481,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
        Content-Type: "application/ace+cbor"
        Payload:
        {
-         "access_token" : h'a5037674656d7053656e73 ...
+         "cwt" : h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
          "profile" : "coap_oscore",
          "expires_in" : "3600",
@@ -495,8 +497,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
    Figure 5: Example AS-to-C Access Token response with OSCORE profile.
-
-
 
 
 
@@ -622,7 +622,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
        Content-Type: "application/ace+cbor"
        Payload:
        {
-         "access_token" : h'a5037674656d7053656e73 ...
+         "cwt" : h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
          "profile" : "coap_oscore",
          "expires_in" : "3600"
@@ -714,14 +714,14 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    |           |       |                |              | Context value |
    |           |       |                |              |               |
    | rpl       | 8     | bstr           |              | OSCORE Replay |
-   |           |       |                |              | Window Type   |
-   |           |       |                |              | and Size      |
+   |           |       |                |              | Window        |
    +-----------+-------+----------------+--------------+---------------+
 
                 Table 1: OSCORE_Security_Context Parameters
 
    ms:  This parameter identifies the OSCORE Master Secret value, which
       is a byte string.  For more information about this field, see
+      section 3.1 of [RFC8613].  In JSON, the "ms" value is a Base64
 
 
 
@@ -730,7 +730,6 @@ Palombini, et al.        Expires August 9, 2020                [Page 13]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-      section 3.1 of [RFC8613].  In JSON, the "ms" value is a Base64
       encoded byte string.  In CBOR, the "ms" type is bstr, and has
       label 1.
 
@@ -781,17 +780,16 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
+
 Palombini, et al.        Expires August 9, 2020                [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   rpl:  This parameter is used to carry the OSCORE value, encoded as a
-      bstr.  This parameter identifies the OSCORE Replay Window Size and
-      Type value, which is a byte string.  For more information about
-      this field, see section 3.1 of [RFC8613].  In JSON, the "rpl"
-      value is a Base64 encoded byte string.  In CBOR, the "rpl" type is
-      bstr, and has label 8.
+   rpl:  This parameter identifies the OSCORE Replay Window, which is a
+      byte string.  For more information about this field, see section
+      3.1 of [RFC8613].  In JSON, the "rpl" value is a Base64 encoded
+      byte string.  In CBOR, the "rpl" type is bstr, and has label 8.
 
    An example of JSON OSCORE_Security_Context is given in Figure 10.
 
@@ -829,11 +827,13 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    to the RS.  The RS then generates a nonce N2 and use Section 3.2 of
    [RFC8613] to derive a security context based on a shared master
    secret and the two nonces, established between client and server.
+   This security context is used to protect all future communication
+   between client and RS using OSCORE, as long as the access token is
+   valid.
 
    Note that the proof-of-possession required to bind the access token
    to the client is implicitly performed by generating the shared OSCORE
    Security Context using the pop-key as master secret, for both client
-   and RS.  An attacker using a stolen token will not be able to
 
 
 
@@ -842,6 +842,7 @@ Palombini, et al.        Expires August 9, 2020                [Page 15]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   and RS.  An attacker using a stolen token will not be able to
    generate a valid OSCORE context and thus not be able to prove
    possession of the pop-key.
 
@@ -872,17 +873,16 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    The access token MUST be encrypted, since it is transferred from the
    client to the RS over an unprotected channel.
 
-   Note that a client may be required to re-POST the access token, since
-   an RS may delete a stored access token, due to lack of memory.
+   Note that a client may be required to re-POST the access token in
+   order to complete a request, since an RS may delete a stored access
+   token at any time, for example due to all storage space being
+   consumed.  This situation is detected by the client when it receives
+   an AS Request Creation Hints response.
 
    Figure 11 shows an example of the request sent from the client to the
    RS, with payload in CBOR diagnostic notation without the tag and
    value abbreviations.  The access token has been truncated for
    readability.
-
-
-
-
 
 
 
@@ -904,7 +904,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
          Content-Format: "application/ace+cbor"
          Payload:
            {
-             "access_token": h'a5037674656d7053656e73 ...
+             "cwt": h'a5037674656d7053656e73 ...
           (remainder of access token omitted for brevity)',
              "cnonce": h'018a278f7faab55a'
            }
