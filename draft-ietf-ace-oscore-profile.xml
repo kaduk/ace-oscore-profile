@@ -514,7 +514,7 @@ A5                                      # map(5)
             <c>alg</c>        <c>5</c>        <c>tstr / int</c>  <c>COSE Algorithm Values (AEAD)</c>        <c>OSCORE AEAD Algorithm value</c>
             <c>salt</c>        <c>6</c>        <c>bstr</c>        <c></c>        <c>OSCORE Master Salt value</c>
             <c>contextId</c>        <c>7</c>        <c>bstr</c>        <c></c>        <c>OSCORE ID Context value</c>
-            <c>rpl</c>    <c>8</c>        <c>bstr</c> <c></c>     <c>OSCORE Replay Window Type and Size</c>
+            <c>rpl</c>    <c>8</c>        <c>bstr</c> <c></c>     <c>OSCORE Replay Window</c>
             <!--<c>exp</c>    <c>9</c>        <c>int / float</c> <c></c>     <c>OSCORE Security Context Expiration Time</c> -->
           </texttable>
 
@@ -566,8 +566,7 @@ A5                                      # map(5)
               </t>
 
               <t hangText="rpl:">
-                This parameter is used to carry the OSCORE value, encoded as a bstr.
-                This parameter identifies the OSCORE Replay Window Size and Type value, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
+                This parameter identifies the OSCORE Replay Window, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "rpl" value is a Base64 encoded byte string.
                 In CBOR, the "rpl" type is bstr, and has label 8.
               </t>
