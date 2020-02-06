@@ -1128,7 +1128,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    o  the client receives a new nonce in the 2.01 (Created) response
       (see Section 4.2) to a POST request to the authz-info endpoint,
-      when re-posting a non-expired token associated to the existing
+      when re-posting a (non-expired) token associated to the existing
       context.
 
    The RS MUST discard the current security context associated with a
