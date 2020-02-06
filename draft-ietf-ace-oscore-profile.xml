@@ -807,7 +807,7 @@ token.
         <t> the Sequence Number space ends. </t>
         <t> the access token associated with the context expires. </t>
         <t> the client receives a number of 4.01 Unauthorized responses to OSCORE requests using the same security context. The exact number needs to be specified by the application. </t>
-        <t> the client receives a new nonce in the 2.01 (Created) response (see <xref target="rs-c"/>) to a POST request to the authz-info endpoint, when re-posting a non-expired token associated to the existing context. </t>
+        <t> the client receives a new nonce in the 2.01 (Created) response (see <xref target="rs-c"/>) to a POST request to the authz-info endpoint, when re-posting a (non-expired) token associated to the existing context. </t>
       </list>
       </t>
 
