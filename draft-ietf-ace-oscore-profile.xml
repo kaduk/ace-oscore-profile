@@ -629,11 +629,19 @@ OSCORE_Security_Context = {
         The following subsections describe the details of the POST request and response to the authz-info endpoint between client and RS. The client generates a nonce N1 and posts it together with the token that includes the materials (e.g., OSCORE parameters) received from the AS to the RS. The RS then generates a nonce N2 and use Section 3.2 of <xref target="RFC8613"/> to derive a security context based on a shared master secret and the two nonces, established between client and server. This security context is used to protect all future communication between client and RS using OSCORE, as long as the access token is valid.
       </t>
 
-      <t>
+<!--      <t>
         Note that the proof-of-possession required to bind the access token to the
         client is implicitly performed by generating the shared OSCORE Security Context using
         the pop-key as master secret, for both client and RS.  An attacker
         using a stolen token will not be able to generate a valid OSCORE context and
+        thus not be able to prove possession of the pop-key.
+      </t> -->
+
+      <t>
+        Note that the RS and client authenticates themselves
+        by generating the shared OSCORE Security Context using
+        the pop-key as master secret.  An attacker
+        posting a valid token to the RS will not be able to generate a valid OSCORE context and
         thus not be able to prove possession of the pop-key.
       </t>
 
