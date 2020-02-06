@@ -495,7 +495,7 @@ A5                                      # map(5)
         <section anchor="oscore-sec-ctx" title="OSCORE_Security_Context Object">
 
           <t>
-            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context (Section 3.1 of <xref target="RFC8613"/>).  The OSCORE_Security_Context object can either be encoded as a JSON object or as a CBOR map. In both cases, the set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (<xref target="sec-ctx-params-reg"/>) and is defined below.
+            An OSCORE_Security_Context is an object that represents part or all of an OSCORE Security Context, i.e., the local set of information elements necessary to carry out the cryptographic operations in OSCORE (Section 3.1 of <xref target="RFC8613"/>). Conversely, the OSCORE_Security_Context object is defined to be serialized and transported between nodes. The OSCORE_Security_Context object can either be encoded as a JSON object or as a CBOR map. The set of common parameters that can appear in an OSCORE_Security_Context object can be found in the IANA "OSCORE Security Context Parameters" registry (<xref target="sec-ctx-params-reg"/>), defined for extensibility, and is specified below.
             All parameters are optional.
             <xref target="table-key-labels"/> provides a summary of the OSCORE_Security_Context parameters defined in this section.
           </t>
