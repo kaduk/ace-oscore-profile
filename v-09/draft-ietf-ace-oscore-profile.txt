@@ -1073,9 +1073,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    request from a client, then the RS processes it according to
    [RFC8613].  If OSCORE verification succeeds, and the target resource
    requires authorization, the RS retrieves the authorization
-   information from the access token associated to the Security Context.
-   The RS then must verify that the authorization information covers the
-   resource and the action requested.
+   information using the access token associated to the Security
+   Context.  The RS then must verify that the authorization information
+   covers the resource and the action requested.
 
    The response code must be 4.01 (Unauthorized) in case the client has
    not used the Security Context associated with the access token, as
