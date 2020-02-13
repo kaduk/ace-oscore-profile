@@ -1069,27 +1069,52 @@ token.
 
       <t>
         <list style="symbols">
-          <t>(Optional) discovery process of how the client finds the right AS for an RS it wants to send a request to: Not specified
+          <t>
+            Optionally define new methods for the client to discover the
+            necessary permissions and AS for accessing a resource, different
+            from the one proposed in: Not specified
           </t>
-          <t>communication protocol the client and the RS must use: CoAP
+          <t>
+            Optionally specify new grant types: Not specified
           </t>
-          <t>security protocol the client and RS must use: OSCORE
+          <t>
+            Optionally define the use of client certificates as client
+            credential type: Not specified
           </t>
-          <t>how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context
+          <t>
+            Specify the communication protocol the client and RS the must use: CoAP
           </t>
-          <t>Content-format of the protocol messages: "application/ace+cbor"
+          <t>
+            Specify the security protocol the client and RS must use to
+            protect their communication: OSCORE
           </t>
-          <t>proof-of-possession protocol(s) and how to select one; which key types (e.g., symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys
+          <t>
+            Specify how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context
           </t>
-          <t>profile identifier: coap_oscore
+          <t>
+            Specify the proof-of-possession protocol(s) and how to select one,
+            if several are available.  Also specify which key types (e.g.,
+            symmetric/asymmetric) are supported by a specific proof-of-
+            possession protocol: OSCORE algorithms; pre-established symmetric keys
           </t>
-          <t>(Optional) how the RS talks to the AS for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+          <t>
+            Specify a unique ace_profile identifier: coap_oscore
           </t>
-          <t>how the client talks to the AS for requesting a token: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+          <t>
+            If introspection is supported: Specify the communication and
+            security protocol for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE)
           </t>
-          <t>how/if the authz-info endpoint is protected: not protected.
+          <t>
+            Specify the communication and security protocol for interactions
+            between client and AS: HTTP/CoAP (+ TLS/DTLS/OSCORE)
           </t>
-          <t>(Optional)other methods of token transport than the authz-info endpoint: no
+          <t>
+            Specify how/if the authz-info endpoint is protected, including how
+            error responses are protected: Not protected.
+          </t>
+          <t>
+            Optionally define other methods of token transport than the authz-
+            info endpoint: Not defined
           </t>
         </list>
       </t>
