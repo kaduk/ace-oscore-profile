@@ -954,7 +954,7 @@ token.
 
         <t>
           This registry will be initially populated by the values in <xref target="table-key-labels"/>.
-          The specification column for all of these entries will be this document.
+          The specification column for all of these entries will be this document and <xref target="RFC8613"/>.
         </t>
 
       </section>
