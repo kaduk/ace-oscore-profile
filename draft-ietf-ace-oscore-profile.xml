@@ -772,10 +772,7 @@ token.
 
         <t>
          The response code must be 4.01 (Unauthorized) in case the client has
-         not used the Security Context associated with the access token, or if RS has no valid access token for the client.  If RS has an access token for the client but
-         not for the resource that was requested, RS must reject the request
-         with a 4.03 (Forbidden).  If RS has an access token for the client
-         but it does not cover the action that was requested on the resource,
+         not used the Security Context associated with the access token, as the proof-of-possession in this profile is performed by having established the Security Context.
         </t>
 
       </section>
