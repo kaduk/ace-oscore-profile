@@ -767,7 +767,7 @@ token.
 
         <t>
           The RS MUST follow the procedures defined in section 5.8.2 of <xref target="I-D.ietf-ace-oauth-authz"/>: if an RS receives an OSCORE-protected request from a client, then the RS processes it according to <xref target="RFC8613"/>. If OSCORE verification succeeds, and the target resource
-          requires authorization, the RS retrieves the authorization information from the access token associated to the Security Context. The RS then must verify that the authorization information covers the resource and the action requested.
+          requires authorization, the RS retrieves the authorization information using the access token associated to the Security Context. The RS then must verify that the authorization information covers the resource and the action requested.
         </t>
 
         <t>
