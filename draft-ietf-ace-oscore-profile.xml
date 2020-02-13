@@ -323,6 +323,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
             <t>an HKDF algorithm</t>
             <t>a salt</t>
             <t>a replay window type and size</t>
+            <t>the OSCORE version number</t>
           </list>
         </t>
 
@@ -331,7 +332,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
           The master secret MUST be communicated as the 'ms' field in the 'osc' field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
           The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included
       	  as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the
-      	  OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context.
+      	  OSCORE_Security_Context, the replay window type and size may be included as the 'rpl' parameter of the OSCORE_Security_Context, and the OSCORE version number may be included as the 'version' parameter of the OSCORE_Security_Context.
         </t>
 	      
         <t>
@@ -511,6 +512,7 @@ A5                                      # map(5)
             <ttcol align='left'>registry</ttcol>
             <ttcol align='left'>description</ttcol>
             
+            <c>version</c>        <c>0</c>        <c>int</c>  <c></c>        <c>OSCORE Version</c>
             <c>ms</c>        <c>1</c>        <c>bstr</c>  <c></c>        <c>OSCORE Master Secret value</c>
             <c>clientId</c>        <c>2</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the client, OSCORE Recipient ID value of the server</c>
             <c>serverId</c>        <c>3</c>        <c>bstr</c>        <c></c>        <c>OSCORE Sender ID value of the server, OSCORE Recipient ID value of the client</c>
@@ -525,6 +527,12 @@ A5                                      # map(5)
 
           <t>
             <list style="hanging">
+              <t hangText="version:">
+                This parameter identifies the OSCORE Version number, which is an int. For more information about this field, see section 5.4 of <xref target="RFC8613"/>.
+                In JSON, the "version" value is an integer.
+                In CBOR, the "version" type is int, and has label 0.
+              </t>
+
               <t hangText="ms:">
                 This parameter identifies the OSCORE Master Secret value, which is a byte string. For more information about this field, see section 3.1 of <xref target="RFC8613"/>.
                 In JSON, the "ms" value is a Base64 encoded byte string.
@@ -609,6 +617,7 @@ A5                                      # map(5)
 
           <figure><artwork type="CDDL"><![CDATA[
 OSCORE_Security_Context = {
+    ? 0 => int,               ; version
     ? 1 => bstr,              ; ms
     ? 2 => bstr,              ; clientId
     ? 3 => bstr,              ; serverId
@@ -740,7 +749,7 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'cnonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="as-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="RFC8613"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'cnonce' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="as-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, Replay Window and OSCORE Version from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <xref target="RFC8613"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
@@ -752,7 +761,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="rs-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the parameters received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in section 3.2 of <xref target="RFC8613"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>, and MUST associate this Security Context with the authorization information from the access token. 
+          After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="rs-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, Replay Window and OSCORE Version from the parameters received from the AS and forwarded by the client in the access token in <xref target="c-rs"/> after validation of the token as specified in <xref target="rs-c"/>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <xref target="RFC8613"/>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>, and MUST associate this Security Context with the authorization information from the access token. 
         </t>
 
         <t>
