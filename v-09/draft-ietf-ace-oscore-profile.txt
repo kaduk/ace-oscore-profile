@@ -878,18 +878,18 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    The following subsections describe the details of the POST request
    and response to the authz-info endpoint between client and RS.  The
-   client generates a nonce N1 and posts it together with the token that
-   includes the materials (e.g., OSCORE parameters) received from the AS
-   to the RS.  The RS then generates a nonce N2 and use Section 3.2 of
-   [RFC8613] to derive a security context based on a shared master
-   secret and the two nonces, established between client and server.
-   This security context is used to protect all future communication
-   between client and RS using OSCORE, as long as the access token is
-   valid.
+   client generates a nonce N1, and posts it together with the token
+   that includes the materials (e.g., OSCORE parameters) received from
+   the AS to the RS.  The RS then generates a nonce N2, and use
+   Section 3.2 of [RFC8613] to derive a security context based on a
+   shared master secret and the two nonces, established between client
+   and server.  The nonces are encoded as CBOR bstr if CBOR is used, and
+   as Base64 string if JSON is used.  This security context is used to
+   protect all future communication between client and RS using OSCORE,
+   as long as the access token is valid.
 
    Note that the RS and client authenticates themselves by generating
    the shared OSCORE Security Context using the pop-key as master
-   secret.  An attacker posting a valid token to the RS will not be able
 
 
 
@@ -898,16 +898,17 @@ Palombini, et al.        Expires August 16, 2020               [Page 16]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   secret.  An attacker posting a valid token to the RS will not be able
    to generate a valid OSCORE context and thus not be able to prove
    possession of the pop-key.
 
 4.1.  C-to-RS: POST to authz-info endpoint
 
-   The client MUST generate a nonce N1 very unlikely to have been
+   The client MUST generate a nonce value very unlikely to have been
    previously used with the same input keying material.  This profile
-   RECOMMENDS to use a 64-bit long random number as nonce.  The client
-   MUST store this nonce as long as the response from the RS is not
-   received and the access token related to it is still valid.  The
+   RECOMMENDS to use a 64-bit long random number as nonce's value.  The
+   client MUST store the nonce N1 as long as the response from the RS is
+   not received and the access token related to it is still valid.  The
    client MUST use CoAP and the Authorization Information resource as
    described in section 5.8.1 of [I-D.ietf-ace-oauth-authz] to transport
    the token and N1 to the RS.
@@ -938,7 +939,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    RS, with payload in CBOR diagnostic notation without the tag and
    value abbreviations.  The access token has been truncated for
    readability.
-
 
 
 
@@ -990,10 +990,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    (Created) response MUST be a CBOR map containing the 'cnonce'
    parameter defined in section 5.1.2 of [I-D.ietf-ace-oauth-authz], set
    to N2.  This profile RECOMMENDS to use a 64-bit long random number as
-   nonce.  Moreover, if the 'osc' field in the token did not contain a
-   'clientId' parameter, the RS MUST generate an identifier, unique in
-   the set of all its existing client identifiers, and send it in a
-   'clientId' parameter in the CBOR map as a CBOR bstr.  The RS MAY
+   nonce's value.  Moreover, if the 'osc' field in the token did not
+   contain a 'clientId' parameter, the RS MUST generate an identifier,
+   unique in the set of all its existing client identifiers, and send it
+   in a 'clientId' parameter in the CBOR map as a CBOR bstr.  The RS MAY
    generate and send a 'ClientId' identifier even though the 'osc' field
    contained such a parameter, in order to guarantee the uniqueness of
    the client identifier.  The RS MUST use the Content-Format
@@ -1040,24 +1040,24 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 4.3.  OSCORE Setup
 
    Once receiving the 2.01 (Created) response from the RS, following the
-   POST request to authz-info endpoint, the client MUST extract the
-   nonce N2 from the 'cnonce' parameter and the client identifier from
-   the 'clientId' in the CBOR map in the payload of the response.  Then,
-   the client MUST set the Master Salt of the Security Context created
-   to communicate with the RS to the concatenation of salt, N1, and N2,
-   in this order: Master Salt = salt | N1 | N2, where | denotes byte
-   string concatenation, and where salt was received from the AS in
-   Section 3.2.  The client MUST set the Master Secret and Recipient ID
-   from the parameters received from the AS in Section 3.2.  The client
-   MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from
-   the parameters received from the AS in Section 3.2, if present.  In
-   case these parameters are omitted, the default values are used as
+   POST request to authz-info endpoint, the client MUST extract the CBOR
+   bstr nonce N2 from the 'cnonce' parameter and the client identifier
+   from the 'clientId' in the CBOR map in the payload of the response.
+   Then, the client MUST set the Master Salt of the Security Context
+   created to communicate with the RS to the concatenation of salt, N1,
+   and N2, in this order: Master Salt = salt | N1 | N2, where | denotes
+   byte string concatenation, where salt was received from the AS in
+   Section 3.2, and where N1 and N2 are the two nonces encoded as CBOR
+   bstr.  The client MUST set the Master Secret and Recipient ID from
+   the parameters received from the AS in Section 3.2.  The client MUST
+   set the AEAD Algorithm, ID Context, HKDF, and Replay Window from the
+   parameters received from the AS in Section 3.2, if present.  In case
+   these parameters are omitted, the default values are used as
    described in section 3.2 of [RFC8613].  The client MUST set the
    Sender ID from the 'clientId in the 2.01 (Created) response, if
    present; otherwise, the client MUST set the Sender ID from the
    parameters received from the AS in Section 3.2.  After that, the
    client MUST derive the complete Security Context following section
-   3.2.1 of [RFC8613].  From this point on, the client MUST use this
 
 
 
@@ -1066,6 +1066,7 @@ Palombini, et al.        Expires August 16, 2020               [Page 19]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   3.2.1 of [RFC8613].  From this point on, the client MUST use this
    Security Context to communicate with the RS when accessing the
    resources as specified by the authorization information.
 
@@ -1082,20 +1083,21 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    After sending the 2.01 (Created) response, the RS MUST set the Master
    Salt of the Security Context created to communicate with the client
    to the concatenation of salt, N1, and N2, in this order: Master Salt
-   = salt | N1 | N2, where | denotes byte string concatenation, and
-   where salt was received from the AS in Section 4.2.  The RS MUST set
-   the Master Secret, Sender ID and Recipient ID from the parameters,
-   received from the AS and forwarded by the client in the access token
-   in Section 4.1 after validation of the token as specified in
-   Section 4.2.  The RS MUST set the AEAD Algorithm, ID Context, HKDF,
-   and Replay Window from the parameters received from the AS and
-   forwarded by the client in the access token in Section 4.1 after
-   validation of the token as specified in Section 4.2, if present.  In
-   case these parameters are omitted, the default values are used as
-   described in section 3.2 of [RFC8613].  After that, the RS MUST
-   derive the complete Security Context following section 3.2.1 of
-   [RFC8613], and MUST associate this Security Context with the
-   authorization information from the access token.
+   = salt | N1 | N2, where | denotes byte string concatenation, where
+   salt was received from the AS in Section 4.2, and where N1 and N2 are
+   the two nonces encoded as CBOR bstr.  The RS MUST set the Master
+   Secret, Sender ID and Recipient ID from the parameters, received from
+   the AS and forwarded by the client in the access token in Section 4.1
+   after validation of the token as specified in Section 4.2.  The RS
+   MUST set the AEAD Algorithm, ID Context, HKDF, and Replay Window from
+   the parameters received from the AS and forwarded by the client in
+   the access token in Section 4.1 after validation of the token as
+   specified in Section 4.2, if present.  In case these parameters are
+   omitted, the default values are used as described in section 3.2 of
+   [RFC8613].  After that, the RS MUST derive the complete Security
+   Context following section 3.2.1 of [RFC8613], and MUST associate this
+   Security Context with the authorization information from the access
+   token.
 
    The RS then uses this Security Context to verify requests and send
    responses to C using OSCORE.  If OSCORE verification fails, error
@@ -1111,8 +1113,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Context was derived from a client that already had a Security Context
    in place, the is RECOMMENDED to delete the old Security Context after
    OSCORE verification and verification of access rights succeed.  The
-   RS MUST delete the Security Context if it deletes the access token
-   associated to it.
 
 
 
@@ -1121,6 +1121,9 @@ Palombini, et al.        Expires August 16, 2020               [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+   RS MUST delete the Security Context if it deletes the access token
+   associated to it.
 
 4.4.  Access rights verification
 
@@ -1167,9 +1170,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    o  the access token associated with the context expires.
 
-   o  the client receives a number of 4.01 Unauthorized responses to
-      OSCORE requests using the same security context.  The exact number
-      needs to be specified by the application.
 
 
 
@@ -1177,6 +1177,10 @@ Palombini, et al.        Expires August 16, 2020               [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+   o  the client receives a number of 4.01 Unauthorized responses to
+      OSCORE requests using the same security context.  The exact number
+      needs to be specified by the application.
 
    o  the client receives a new nonce in the 2.01 (Created) response
       (see Section 4.2) to a POST request to the authz-info endpoint,
@@ -1222,10 +1226,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    use an arbitrary nonce for Security Context establishment by
    replaying client-to-server messages.
 
-   This profile recommends that the RS maintains a single access token
-   for a client.  The use of multiple access tokens for a single client
-   increases the strain on the resource server as it must consider every
-   access token and calculate the actual permissions of the client.
 
 
 
@@ -1234,6 +1234,10 @@ Palombini, et al.        Expires August 16, 2020               [Page 22]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   This profile recommends that the RS maintains a single access token
+   for a client.  The use of multiple access tokens for a single client
+   increases the strain on the resource server as it must consider every
+   access token and calculate the actual permissions of the client.
    Also, tokens indicating different or disjoint permissions from each
    other may lead the server to enforce wrong permissions.  If one of
    the access tokens expires earlier than others, the resulting
@@ -1278,10 +1282,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
       communication between constrained nodes using the Authentication
       and Authorization for Constrained Environments framework.
    o  Profile ID: TBD (value between 1 and 255)
-   o  Change Controller: IESG
-   o  Specification Document(s): [[this specification]]
-
-
 
 
 
@@ -1289,6 +1289,9 @@ Palombini, et al.        Expires August 16, 2020               [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+   o  Change Controller: IESG
+   o  Specification Document(s): [[this specification]]
 
 9.2.  OSCORE Security Context Parameters Registry
 
@@ -1335,9 +1338,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    [I-D.ietf-ace-cwt-proof-of-possession]:
 
    o  Confirmation Method Name: "osc"
-   o  Confirmation Method Description: OSCORE_Security_Context carrying
-      the parameters for using OSCORE per-message security with implicit
-      key confirmation
 
 
 
@@ -1346,6 +1346,9 @@ Palombini, et al.        Expires August 16, 2020               [Page 24]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   o  Confirmation Method Description: OSCORE_Security_Context carrying
+      the parameters for using OSCORE per-message security with implicit
+      key confirmation
    o  Confirmation Key: TBD (value between 4 and 255)
    o  Confirmation Value Type(s): map
    o  Change Controller: IESG
@@ -1390,10 +1393,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
       When specifications are not provided, the description provided
       needs to have sufficient information to identify what the point is
       being used for.
-   o  Experts should take into account the expected usage of fields when
-      approving point assignment.  The fact that there is a range for
-      standards track documents does not mean that a standards track
-      document cannot have points assigned outside of that range.  The
+
 
 
 
@@ -1402,6 +1402,10 @@ Palombini, et al.        Expires August 16, 2020               [Page 25]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   o  Experts should take into account the expected usage of fields when
+      approving point assignment.  The fact that there is a range for
+      standards track documents does not mean that a standards track
+      document cannot have points assigned outside of that range.  The
       length of the encoded value should be weighed against how many
       code points of that length are left, the size of device it will be
       used on, and the number of code points left that encode to that
@@ -1445,11 +1449,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
 
-   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
-              Definition Language (CDDL): A Notational Convention to
-              Express Concise Binary Object Representation (CBOR) and
-              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
-              June 2019, <https://www.rfc-editor.org/info/rfc8610>.
+
 
 
 
@@ -1457,6 +1457,12 @@ Palombini, et al.        Expires August 16, 2020               [Page 26]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/info/rfc8610>.
 
    [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
               "Object Security for Constrained RESTful Environments
@@ -1499,12 +1505,6 @@ Appendix A.  Profile Requirements
       necessary permissions and AS for accessing a resource, different
       from the one proposed in: Not specified
    o  Optionally specify new grant types: Not specified
-   o  Optionally define the use of client certificates as client
-      credential type: Not specified
-   o  Specify the communication protocol the client and RS the must use:
-      CoAP
-   o  Specify the security protocol the client and RS must use to
-      protect their communication: OSCORE
 
 
 
@@ -1514,6 +1514,12 @@ Palombini, et al.        Expires August 16, 2020               [Page 27]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   o  Optionally define the use of client certificates as client
+      credential type: Not specified
+   o  Specify the communication protocol the client and RS the must use:
+      CoAP
+   o  Specify the security protocol the client and RS must use to
+      protect their communication: OSCORE
    o  Specify how the client and the RS mutually authenticate:
       Implicitly by possession of a common OSCORE security context
    o  Specify the proof-of-possession protocol(s) and how to select one,
@@ -1553,12 +1559,6 @@ Authors' Addresses
    Email: ludwig.seitz@combitech.se
 
 
-   Goeran Selander
-   Ericsson AB
-
-   Email: goran.selander@ericsson.com
-
-
 
 
 
@@ -1570,6 +1570,12 @@ Palombini, et al.        Expires August 16, 2020               [Page 28]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   Goeran Selander
+   Ericsson AB
+
+   Email: goran.selander@ericsson.com
+
+
    Martin Gunnarsson
    RISE
    Scheelevagen 17
@@ -1577,12 +1583,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Sweden
 
    Email: martin.gunnarsson@ri.se
-
-
-
-
-
-
 
 
 
