@@ -209,15 +209,15 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    the AS.
 
    Finally, the client sends a request protected with OSCORE to the RS.
-   If the request verifies, then this Security Context is stored in the
-   server, and used in the response, and in further communications with
-   the client, until token expiration.  This Security Context is
-   discarded if the same token is re-used to successfully derive a new
-   Security Context.
+   If the request verifies, the server stores the complete Security
+   Context state that is ready for use in protecting messages, and uses
+   it in the response, and in further communications with the client,
+   until token expiration.  This Security Context is discarded when a
+   token (whether the same or different) is used to successfully derive
+   a new Security Context.
 
    The use of random nonces during the exchange prevents the reuse of an
    AEAD nonces/key pair for two different messages.  This situation
-   might occur when client and RS derive a new Security Context from an
 
 
 
@@ -226,6 +226,7 @@ Palombini, et al.        Expires August 16, 2020                [Page 4]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   might occur when client and RS derive a new Security Context from an
    existing (non-expired) access token, as might occur when either party
    has just rebooted.  Instead, by using random nonces as part of the
    Master Salt, the request to the authz-info endpoint posting the same
@@ -250,7 +251,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
-
 
 
 
