@@ -1078,29 +1078,26 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    resource and the action requested.
 
    The response code must be 4.01 (Unauthorized) in case the client has
-   not used the Security Context associated with the access token, or if
-   RS has no valid access token for the client.  If RS has an access
-   token for the client but not for the resource that was requested, RS
-   must reject the request with a 4.03 (Forbidden).  If RS has an access
-   token for the client but it does not cover the action that was
-   requested on the resource,
+   not used the Security Context associated with the access token, as
+   the proof-of-possession in this profile is performed by having
+   established the Security Context.
 
 5.  Secure Communication with AS
 
    As specified in the ACE framework (section 5.7 of
    [I-D.ietf-ace-oauth-authz]), the requesting entity (RS and/or client)
    and the AS communicates via the introspection or token endpoint.  The
-   use of CoAP and OSCORE for this communication is RECOMMENDED in this
-   profile, other protocols (such as HTTP and DTLS or TLS) MAY be used
-   instead.
+   use of CoAP and OSCORE ([RFC8613]) for this communication is
+   RECOMMENDED in this profile, other protocols (such as HTTP and DTLS
+   or TLS) MAY be used instead.
 
    If OSCORE is used, the requesting entity and the AS are expected to
    have pre-established security contexts in place.  How these security
    contexts are established is out of scope for this profile.
-   Furthermore the requesting entity and the AS communicate using OSCORE
-   ([RFC8613]) through the introspection endpoint as specified in
-   section 5.7 of [I-D.ietf-ace-oauth-authz] and through the token
-   endpoint as specified in section 5.6 of [I-D.ietf-ace-oauth-authz].
+   Furthermore the requesting entity and the AS communicate through the
+   introspection endpoint as specified in section 5.7 of
+   [I-D.ietf-ace-oauth-authz] and through the token endpoint as
+   specified in section 5.6 of [I-D.ietf-ace-oauth-authz].
 
 6.  Discarding the Security Context
 
@@ -1114,6 +1111,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    o  the access token associated with the context expires.
 
+   o  the client receives a number of 4.01 Unauthorized responses to
+      OSCORE requests using the same security context.  The exact number
+      needs to be specified by the application.
 
 
 
@@ -1121,10 +1121,6 @@ Palombini, et al.        Expires August 16, 2020               [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
-
-   o  the client receives a number of 4.01 Unauthorized responses to
-      OSCORE requests using the same security context.  The exact number
-      needs to be specified by the application.
 
    o  the client receives a new nonce in the 2.01 (Created) response
       (see Section 4.2) to a POST request to the authz-info endpoint,
@@ -1162,14 +1158,18 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    RECOMMENDS the use of 64 bit random nonces to guarantee non-reuse; if
    applications use something else, such as a counter, they need to
    guarantee that reboot and lost of state on either node does not
-   provoke re-use.  If that is not guaranteed, nodes are still
-   susceptible to re-using AEAD nonces and keys, in case the Security
-   Context is lost, and on-path attacker replay messages.
+   provoke re-use.  If that is not guaranteed, nodes are susceptible to
+   re-use of AEAD (nonces, keys) pairs, especially since an on-path
+   attacker can cause the client to use an arbitrary nonce for Security
+   Context establishment by replaying client-to-server messages.
 
    This profile recommends that the RS maintains a single access token
    for a client.  The use of multiple access tokens for a single client
    increases the strain on the resource server as it must consider every
    access token and calculate the actual permissions of the client.
+   Also, tokens indicating different or disjoint permissions from each
+   other may lead the server to enforce wrong permissions.  If one of
+   the access tokens expires earlier than others, the resulting
 
 
 
@@ -1178,9 +1178,6 @@ Palombini, et al.        Expires August 16, 2020               [Page 21]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   Also, tokens indicating different or disjoint permissions from each
-   other may lead the server to enforce wrong permissions.  If one of
-   the access tokens expires earlier than others, the resulting
    permissions may offer insufficient protection.  Developers should
    avoid using multiple access tokens for a client.
 
@@ -1229,6 +1226,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
+
+
+
 Palombini, et al.        Expires August 16, 2020               [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
@@ -1270,7 +1270,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    This registry will be initially populated by the values in Table 1.
    The specification column for all of these entries will be this
-   document.
+   document and [RFC8613].
 
 9.3.  CWT Confirmation Methods Registry
 
