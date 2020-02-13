@@ -171,6 +171,10 @@
       </t>
 
       <t>
+        After the whole message exchange has taken place, the client can contact the AS to request an update of its access rights, sending a similar request to the token endpoint that also includes an identifier so that the AS can find the correct OSCORE security material it has previously shared with the Client. This specific identifier, which <xref target="I-D.ietf-ace-oauth-authz"/> encodes as a bstr, is formatted to include two OSCORE identifiers, namely ID context and client ID, that are necessary to determine the correct OSCORE Security Context.
+      </t>
+
+      <t>
         An overview of the profile flow for the OSCORE profile is given in <xref target="prof-overview"/>.
       </t>
 
