@@ -789,8 +789,7 @@ token.
         </t>
 
         <t>
-         The response code must be 4.01 (Unauthorized) in case the client has
-         not used the Security Context associated with the access token, as the proof-of-possession in this profile is performed by having established the Security Context.
+         The response code must be 4.01 (Unauthorized) in case the client has a valid token associated with that Security Context, but the Security Context has not been used before, as the proof-of-possession in this profile is performed by both parties verifying that they have established the same Security Context.
         </t>
 
       </section>
