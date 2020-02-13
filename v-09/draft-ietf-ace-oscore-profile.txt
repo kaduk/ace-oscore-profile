@@ -713,15 +713,15 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    elements necessary to carry out the cryptographic operations in
    OSCORE (Section 3.1 of [RFC8613]).  Conversely, the
    OSCORE_Security_Context object is defined to be serialized and
-   transported between nodes.  The OSCORE_Security_Context object can
-   either be encoded as a JSON object or as a CBOR map.  The set of
-   common parameters that can appear in an OSCORE_Security_Context
-   object can be found in the IANA "OSCORE Security Context Parameters"
-   registry (Section 9.2), defined for extensibility, and is specified
-   below.  All parameters are optional.  Table 1 provides a summary of
-   the OSCORE_Security_Context parameters defined in this section.
-
-
+   transported between nodes, as specified by this document, but can
+   also be used in this way by other specifications if needed.  The
+   OSCORE_Security_Context object can either be encoded as a JSON object
+   or as a CBOR map.  The set of common parameters that can appear in an
+   OSCORE_Security_Context object can be found in the IANA "OSCORE
+   Security Context Parameters" registry (Section 9.2), defined for
+   extensibility, and is specified below.  All parameters are optional.
+   Table 1 provides a summary of the OSCORE_Security_Context parameters
+   defined in this section.
 
 
 
