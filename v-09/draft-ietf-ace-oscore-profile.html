@@ -679,8 +679,8 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.3.2.p.7">The OSCORE_Security_Context is a CBOR map object, defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
-<p id="rfc.section.3.2.p.8">The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token.  The access token MUST be encrypted, since it will be transferred from the client to the RS over an unprotected channel.  </p>
+<p id="rfc.section.3.2.p.7">The OSCORE_Security_Context is a CBOR map object, defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>. This object is transported in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>, as value of a field named 'osc' registered in <a href="#osc-cwt" class="xref">Section 9.3</a> and <a href="#osc-jwt" class="xref">Section 9.4</a>.  The master secret MUST be communicated as the 'ms' field in the 'osc' field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context.  </p>
+<p id="rfc.section.3.2.p.8">The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'osc' field of the 'cnf' claim of this token.  The access token MUST be encrypted, since it will be transferred from the client to the RS over an unprotected channel.  </p>
 <p id="rfc.section.3.2.p.9">The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <a href="#RFC8613" class="xref">[RFC8613]</a>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may occur at the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate the effect of the collisions.  </p>
 <p id="rfc.section.3.2.p.11">Note that in <a href="#oscore-setup" class="xref">Section 4.3</a> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.  </p>
@@ -697,7 +697,7 @@
       "profile" : "coap_oscore",
       "expires_in" : "3600",
       "cnf" : {
-        "OSCORE_Security_Context" : {
+        "osc" : {
           "alg" : "AES-CCM-16-64-128",
           "clientId" : h'00',
           "serverId" : h'01',
@@ -718,7 +718,7 @@
     "exp" : "1360289224",
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
-      "OSCORE_Security_Context" : {
+      "osc" : {
         "alg" : "AES-CCM-16-64-128",
         "clientId" : h'00',
         "serverId" : h'01',
@@ -900,7 +900,7 @@ A5                                      # map(5)
 <div id="rfc.figure.10"></div>
 <div id="JSON-osc"></div>
 <pre>
-        "OSCORE_Security_Context" : {
+        "osc" : {
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'AA',
           "serverId" : b64'AQ',
@@ -956,8 +956,8 @@ OSCORE_Security_Context = {
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#rs-c" id="rs-c">RS-to-C: 2.01 (Created)</a>
 </h1>
-<p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS must verify the validity of the token. If the token is valid, the RS must respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS must respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS may provide additional information in the error response, in order to clarify what went wrong.  The RS may make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
-<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'cnonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS must verify the validity of the token. If the token is valid, the RS must respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the 'osc' is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the 'osc' is unrecognized, the RS must respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS may provide additional information in the error response, in order to clarify what went wrong.  The RS may make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
+<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'cnonce' parameter defined in section 5.1.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p><a href="#ex4" class="xref">Figure 12</a> shows an example of the response sent from the RS to the client, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.12"></div>
 <div id="ex4"></div>
@@ -1067,26 +1067,28 @@ OSCORE_Security_Context = {
 <p> </p>
 <p id="rfc.section.9.2.p.4">This registry will be initially populated by the values in <a href="#table-key-labels" class="xref">Table 1</a>.  The specification column for all of these entries will be this document and <a href="#RFC8613" class="xref">[RFC8613]</a>.  </p>
 <h1 id="rfc.section.9.3">
-<a href="#rfc.section.9.3">9.3.</a> CWT Confirmation Methods Registry</h1>
+<a href="#rfc.section.9.3">9.3.</a> <a href="#osc-cwt" id="osc-cwt">CWT Confirmation Methods Registry</a>
+</h1>
 <p id="rfc.section.9.3.p.1">The following registration is done for the CWT Confirmation Methods Registry following the procedure specified in section 7.2.1 of <a href="#I-D.ietf-ace-cwt-proof-of-possession" class="xref">[I-D.ietf-ace-cwt-proof-of-possession]</a>:</p>
 <p></p>
 
 <ul>
-<li>Confirmation Method Name: "OSCORE_Security_Context"</li>
-<li>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</li>
+<li>Confirmation Method Name: "osc"</li>
+<li>Confirmation Method Description: OSCORE_Security_Context carrying the parameters for using OSCORE per-message security with implicit key confirmation</li>
 <li>Confirmation Key: TBD (value between 4 and 255)</li>
 <li>Confirmation Value Type(s): map</li>
 <li>Change Controller: IESG</li>
 <li>Specification Document(s): <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a> of [[this specification]]</li>
 </ul>
 <h1 id="rfc.section.9.4">
-<a href="#rfc.section.9.4">9.4.</a> JWT Confirmation Methods Registry</h1>
+<a href="#rfc.section.9.4">9.4.</a> <a href="#osc-jwt" id="osc-jwt">JWT Confirmation Methods Registry</a>
+</h1>
 <p id="rfc.section.9.4.p.1">The following registration is done for the JWT Confirmation Methods Registry following the procedure specified in section 6.2.1 of <a href="#RFC7800" class="xref">[RFC7800]</a>:</p>
 <p></p>
 
 <ul>
 <li>Confirmation Method Value: "osc"</li>
-<li>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</li>
+<li>Confirmation Method Description: OSCORE_Security_Context carrying the parameters for using OSCORE per-message security with implicit key confirmation</li>
 <li>Change Controller: IESG</li>
 <li>Specification Document(s): <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a> of [[this specification]]</li>
 </ul>
@@ -1189,17 +1191,18 @@ OSCORE_Security_Context = {
 <p></p>
 
 <ul>
-<li>(Optional) discovery process of how the client finds the right AS for an RS it wants to send a request to: Not specified </li>
-<li>communication protocol the client and the RS must use: CoAP </li>
-<li>security protocol the client and RS must use: OSCORE </li>
-<li>how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context </li>
-<li>Content-format of the protocol messages: "application/ace+cbor" </li>
-<li>proof-of-possession protocol(s) and how to select one; which key types (e.g., symmetric/asymmetric) supported: OSCORE algorithms; pre-established symmetric keys </li>
-<li>profile identifier: coap_oscore </li>
-<li>(Optional) how the RS talks to the AS for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE) </li>
-<li>how the client talks to the AS for requesting a token: HTTP/CoAP (+ TLS/DTLS/OSCORE) </li>
-<li>how/if the authz-info endpoint is protected: not protected.  </li>
-<li>(Optional)other methods of token transport than the authz-info endpoint: no </li>
+<li>Optionally define new methods for the client to discover the necessary permissions and AS for accessing a resource, different from the one proposed in: Not specified </li>
+<li>Optionally specify new grant types: Not specified </li>
+<li>Optionally define the use of client certificates as client credential type: Not specified </li>
+<li>Specify the communication protocol the client and RS the must use: CoAP </li>
+<li>Specify the security protocol the client and RS must use to protect their communication: OSCORE </li>
+<li>Specify how the client and the RS mutually authenticate: Implicitly by possession of a common OSCORE security context </li>
+<li>Specify the proof-of-possession protocol(s) and how to select one, if several are available.  Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: OSCORE algorithms; pre-established symmetric keys </li>
+<li>Specify a unique ace_profile identifier: coap_oscore </li>
+<li>If introspection is supported: Specify the communication and security protocol for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE) </li>
+<li>Specify the communication and security protocol for interactions between client and AS: HTTP/CoAP (+ TLS/DTLS/OSCORE) </li>
+<li>Specify how/if the authz-info endpoint is protected, including how error responses are protected: Not protected.  </li>
+<li>Optionally define other methods of token transport than the authz- info endpoint: Not defined </li>
 </ul>
 
 <p> </p>
