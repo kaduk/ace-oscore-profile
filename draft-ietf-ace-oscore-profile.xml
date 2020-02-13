@@ -963,7 +963,7 @@ token.
         <t><?rfc subcompact="yes"?><list style='symbols'>
           <t>Confirmation Method Name: "osc"</t>
 
-          <t>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</t>
+          <t>Confirmation Method Description: OSCORE_Security_Context carrying the parameters for using OSCORE per-message security with implicit key confirmation</t>
 
           <t>Confirmation Key: TBD (value between 4 and 255)</t>
 
