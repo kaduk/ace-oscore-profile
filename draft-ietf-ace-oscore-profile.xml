@@ -323,15 +323,15 @@ Usually it is assumed that constrained devices will be pre-configured with the n
         </t>
 
         <t>
-          The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>.
-          The master secret MUST be communicated as the 'ms' field in the OSCORE_Security_Context field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
+          The OSCORE_Security_Context is a CBOR map object, defined in <xref target="oscore-sec-ctx"/>. This object is transported in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>, as value of a field named 'osc' registered in <xref target="osc-cwt"/> and <xref target="osc-jwt"/>.
+          The master secret MUST be communicated as the 'ms' field in the 'osc' field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <xref target="I-D.ietf-ace-oauth-params"/>.
           The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included
       	  as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the
-      	  OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+      	  OSCORE_Security_Context, and the replay window type and size may be included as the 'rpl' of the OSCORE_Security_Context.
         </t>
 	      
         <t>
-        	The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'cnf' claim of this token.  The access token MUST be encrypted, since it will be transferred from the client to the RS over an unprotected channel.
+        	The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <xref target="RFC8392"/>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'osc' field of the 'cnf' claim of this token.  The access token MUST be encrypted, since it will be transferred from the client to the RS over an unprotected channel.
 	      </t>
 
         <t>
@@ -362,7 +362,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
       "profile" : "coap_oscore",
       "expires_in" : "3600",
       "cnf" : {
-        "OSCORE_Security_Context" : {
+        "osc" : {
           "alg" : "AES-CCM-16-64-128",
           "clientId" : h'00',
           "serverId" : h'01',
@@ -386,7 +386,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
     "exp" : "1360289224",
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
-      "OSCORE_Security_Context" : {
+      "osc" : {
         "alg" : "AES-CCM-16-64-128",
         "clientId" : h'00',
         "serverId" : h'01',
@@ -589,7 +589,7 @@ A5                                      # map(5)
 
           <figure anchor="JSON-osc" title="Example JSON OSCORE_Security_Context object">
             <artwork><![CDATA[
-        "OSCORE_Security_Context" : {
+        "osc" : {
           "alg" : "AES-CCM-16-64-128",
           "clientId" : b64'AA',
           "serverId" : b64'AQ',
@@ -693,12 +693,12 @@ OSCORE_Security_Context = {
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
 
         <t>
-          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS must verify the validity of the token. If the token is valid, the RS must respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the OSCORE_Security_Context is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the OSCORE_Security_Context is unrecognized, the RS must respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS may provide additional information in the error response, in order to clarify what went wrong.
+          The RS MUST follow the procedures defined in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>: the RS must verify the validity of the token. If the token is valid, the RS must respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the 'osc' is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the 'osc' is unrecognized, the RS must respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS may provide additional information in the error response, in order to clarify what went wrong.
           The RS may make an introspection request to validate the token before responding to the POST request to the authz-info endpoint. 
         </t>
 
         <t>
-          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the OSCORE_Security_Context in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the OSCORE_Security_Context contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'cnonce' parameter defined in section 5.1.2 of <xref target="I-D.ietf-ace-oauth-authz"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
 <!--     
@@ -956,12 +956,12 @@ token.
 
       </section>
 
-      <section title="CWT Confirmation Methods Registry">
+      <section anchor="osc-cwt" title="CWT Confirmation Methods Registry">
 
         <t>The following registration is done for the CWT Confirmation Methods Registry following the procedure specified in section 7.2.1 of <xref target="I-D.ietf-ace-cwt-proof-of-possession"/>:</t>
 
         <t><?rfc subcompact="yes"?><list style='symbols'>
-          <t>Confirmation Method Name: "OSCORE_Security_Context"</t>
+          <t>Confirmation Method Name: "osc"</t>
 
           <t>Confirmation Method Description: OSCORE_Security_Context carrying the OSCORE Security Context parameters</t>
 
@@ -977,7 +977,7 @@ token.
       </section>
 
 
-      <section title="JWT Confirmation Methods Registry">
+      <section anchor="osc-jwt" title="JWT Confirmation Methods Registry">
 
         <t>The following registration is done for the JWT Confirmation Methods Registry following the procedure specified in section 6.2.1 of <xref target="RFC7800"/>:</t>
 
