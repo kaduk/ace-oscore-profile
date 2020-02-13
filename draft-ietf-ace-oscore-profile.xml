@@ -785,11 +785,11 @@ token.
     <section anchor="introsp" title="Secure Communication with AS">
 
       <t>
-        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or client) and the AS communicates via the introspection or token endpoint. The use of CoAP and OSCORE for this communication is RECOMMENDED in this profile, other protocols (such as HTTP and DTLS or TLS) MAY be used instead.
+        As specified in the ACE framework (section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/>), the requesting entity (RS and/or client) and the AS communicates via the introspection or token endpoint. The use of CoAP and OSCORE (<xref target="RFC8613"/>) for this communication is RECOMMENDED in this profile, other protocols (such as HTTP and DTLS or TLS) MAY be used instead.
       </t>
 
       <t>
-        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate using OSCORE (<xref target="RFC8613"/>) through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+        If OSCORE is used, the requesting entity and the AS are expected to have pre-established security contexts in place.  How these security contexts are established is out of scope for this profile.  Furthermore the requesting entity and the AS communicate through the introspection endpoint as specified in section 5.7 of <xref target="I-D.ietf-ace-oauth-authz"/> and through the token endpoint as specified in section 5.6 of <xref target="I-D.ietf-ace-oauth-authz"/>.
       </t>
 
     </section>
