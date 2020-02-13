@@ -160,8 +160,8 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    This section gives an overview on how to use the ACE Framework
    [I-D.ietf-ace-oauth-authz] to secure the communication between a
-   client and a resource server using OSCORE [RFC8613].  The parameters
-   needed by the client to negotiate the use of this profile with the
+   client and a resource server using OSCORE [RFC8613] and.  The
+   parameters needed by the client to negotiate the use of this profile
 
 
 
@@ -170,8 +170,14 @@ Palombini, et al.        Expires August 16, 2020                [Page 3]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   authorization server, as well as OSCORE setup process, are described
-   in detail in the following sections.
+   with the authorization server, as well as OSCORE setup process, are
+   described in detail in the following sections.
+
+   The RS maintains a collection of OSCORE Security Contexts with
+   associated authorization information for all the clients that it is
+   communicating with.  The authorization information is maintained as
+   policy that's used as input to processing requests from those
+   clients.
 
    This profile requires a client to retrieve an access token from the
    AS for the resource it wants to access on a RS, using the token
@@ -212,12 +218,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    If the request verifies, the server stores the complete Security
    Context state that is ready for use in protecting messages, and uses
    it in the response, and in further communications with the client,
-   until token expiration.  This Security Context is discarded when a
-   token (whether the same or different) is used to successfully derive
-   a new Security Context.
-
-   The use of random nonces during the exchange prevents the reuse of an
-   AEAD nonces/key pair for two different messages.  This situation
 
 
 
@@ -226,6 +226,12 @@ Palombini, et al.        Expires August 16, 2020                [Page 4]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
+   until token expiration.  This Security Context is discarded when a
+   token (whether the same or different) is used to successfully derive
+   a new Security Context.
+
+   The use of random nonces during the exchange prevents the reuse of an
+   AEAD nonces/key pair for two different messages.  This situation
    might occur when client and RS derive a new Security Context from an
    existing (non-expired) access token, as might occur when either party
    has just rebooted.  Instead, by using random nonces as part of the
@@ -251,12 +257,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    An overview of the profile flow for the OSCORE profile is given in
    Figure 1.
-
-
-
-
-
-
 
 
 
