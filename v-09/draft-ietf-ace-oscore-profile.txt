@@ -5,12 +5,12 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                                L. Seitz
-Expires: August 9, 2020                                        Combitech
+Expires: August 16, 2020                                       Combitech
                                                              G. Selander
                                                              Ericsson AB
                                                            M. Gunnarsson
                                                                     RISE
-                                                        February 6, 2020
+                                                       February 13, 2020
 
 
  OSCORE profile of the Authentication and Authorization for Constrained
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 9, 2020.
+   This Internet-Draft will expire on August 16, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 1]
+Palombini, et al.        Expires August 16, 2020                [Page 1]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 2]
+Palombini, et al.        Expires August 16, 2020                [Page 2]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -165,7 +165,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 3]
+Palombini, et al.        Expires August 16, 2020                [Page 3]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -221,7 +221,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 4]
+Palombini, et al.        Expires August 16, 2020                [Page 4]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -277,7 +277,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 5]
+Palombini, et al.        Expires August 16, 2020                [Page 5]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -333,7 +333,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 6]
+Palombini, et al.        Expires August 16, 2020                [Page 6]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -389,7 +389,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 7]
+Palombini, et al.        Expires August 16, 2020                [Page 7]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -445,7 +445,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 8]
+Palombini, et al.        Expires August 16, 2020                [Page 8]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -501,7 +501,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                 [Page 9]
+Palombini, et al.        Expires August 16, 2020                [Page 9]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -557,7 +557,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 10]
+Palombini, et al.        Expires August 16, 2020               [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -613,7 +613,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 11]
+Palombini, et al.        Expires August 16, 2020               [Page 11]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -669,7 +669,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 12]
+Palombini, et al.        Expires August 16, 2020               [Page 12]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -725,7 +725,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 13]
+Palombini, et al.        Expires August 16, 2020               [Page 13]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -781,7 +781,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 14]
+Palombini, et al.        Expires August 16, 2020               [Page 14]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -837,7 +837,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 15]
+Palombini, et al.        Expires August 16, 2020               [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -893,7 +893,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 16]
+Palombini, et al.        Expires August 16, 2020               [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -949,7 +949,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 17]
+Palombini, et al.        Expires August 16, 2020               [Page 17]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1005,7 +1005,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 18]
+Palombini, et al.        Expires August 16, 2020               [Page 18]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 19]
+Palombini, et al.        Expires August 16, 2020               [Page 19]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 20]
+Palombini, et al.        Expires August 16, 2020               [Page 20]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1173,16 +1173,16 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 21]
+Palombini, et al.        Expires August 16, 2020               [Page 21]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   Also, tokens may contradict each other which may lead the server to
-   enforce wrong permissions.  If one of the access tokens expires
-   earlier than others, the resulting permissions may offer insufficient
-   protection.  Developers should avoid using multiple access tokens for
-   a client.
+   Also, tokens indicating different or disjoint permissions from each
+   other may lead the server to enforce wrong permissions.  If one of
+   the access tokens expires earlier than others, the resulting
+   permissions may offer insufficient protection.  Developers should
+   avoid using multiple access tokens for a client.
 
 8.  Privacy Considerations
 
@@ -1229,7 +1229,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 22]
+Palombini, et al.        Expires August 16, 2020               [Page 22]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1254,13 +1254,13 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
       is not used in the CBOR encoding.
    CBOR label  The value to be used to identify this algorithm.  Map key
       labels MUST be unique.  The label can be a positive integer, a
-      negative integer or a string.  Integer values between 0 and 255
+      negative integer or a string.  Integer values between -256 and 255
       and strings of length 1 are designated as Standards Track Document
-      required.  Integer values from 256 to 65535 and strings of length
-      2 are designated as Specification Required.  Integer values of
-      greater than 65535 and strings of length greater than 2 are
-      designated as expert review.  Integer values less than -65536 are
-      marked as private use.
+      required.  Integer values from -65536 to -257 and from 256 to
+      65535 and strings of length 2 are designated as Specification
+      Required.  Integer values greater than 65535 and strings of length
+      greater than 2 are designated as expert review.  Integer values
+      less than -65536 are marked as private use.
    CBOR Type  This field contains the CBOR type for the field.
    registry  This field denotes the registry that values may come from,
       if one exists.
@@ -1285,7 +1285,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 23]
+Palombini, et al.        Expires August 16, 2020               [Page 23]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 24]
+Palombini, et al.        Expires August 16, 2020               [Page 24]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1357,7 +1357,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-32
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-33
               (work in progress), February 2020.
 
    [I-D.ietf-ace-oauth-params]
@@ -1397,7 +1397,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 25]
+Palombini, et al.        Expires August 16, 2020               [Page 25]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1453,7 +1453,7 @@ Appendix A.  Profile Requirements
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 26]
+Palombini, et al.        Expires August 16, 2020               [Page 26]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
@@ -1509,4 +1509,4 @@ Authors' Addresses
 
 
 
-Palombini, et al.        Expires August 9, 2020                [Page 27]
+Palombini, et al.        Expires August 16, 2020               [Page 27]
