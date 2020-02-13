@@ -1137,9 +1137,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    covers the resource and the action requested.
 
    The response code must be 4.01 (Unauthorized) in case the client has
-   not used the Security Context associated with the access token, as
-   the proof-of-possession in this profile is performed by having
-   established the Security Context.
+   a valid token associated with that Security Context, but the Security
+   Context has not been used before, as the proof-of-possession in this
+   profile is performed by both parties verifying that they have
+   established the same Security Context.
 
 5.  Secure Communication with AS
 
@@ -1169,7 +1170,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    o  the Sequence Number space ends.
 
    o  the access token associated with the context expires.
-
 
 
 
