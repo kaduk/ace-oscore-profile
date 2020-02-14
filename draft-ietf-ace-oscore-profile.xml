@@ -886,7 +886,19 @@ token.
 
       <t>
       	An unprotected response to an unauthorized request may disclose information about the resource server and/or its existing relationship with the client. It is advisable to include as little information as possible in an unencrypted response. When an OSCORE Security Context already exists between the client and the resource server, more detailed information may be included.
-      </t>      
+      </t> 
+
+      <t>
+        Although encrypted, the token is sent in the clear to the authz-info endpoint, so if a client uses the same single token from multiple locations with multiple Resource Servers, it can risk being tracked by the token's value.
+      </t>
+
+       <t>
+        The nonces exchanged in the request and response to the authz-info endpoint are also sent in the clear, so using random nonces is best for privacy (as opposed to, e.g., a counter, that might leak some information about the client).
+      </t>
+
+      <t>
+        The AS is the party tasked of assigning the identifiers used in OSCORE, which are privacy sensitive (see Section 12.8 of <xref target="RFC8613"/>), and which could reveal information about the client, or may be used for correlating requests from one client.
+      </t>
 
       <t>
       	Note that some information might still leak after OSCORE is established, due to observable message sizes, the source, and the destination addresses.
