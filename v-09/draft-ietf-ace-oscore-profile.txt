@@ -95,7 +95,7 @@ Table of Contents
      10.2.  Informative References . . . . . . . . . . . . . . . . .  27
    Appendix A.  Profile Requirements . . . . . . . . . . . . . . . .  28
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  28
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
 
 1.  Introduction
 
@@ -1555,9 +1555,9 @@ Appendix A.  Profile Requirements
 Acknowledgments
 
    The authors wish to thank Jim Schaad and Marco Tiloca for the input
-   on this memo.
+   on this memo.  Special thanks to the responsible area director Ben
+   Kaduk for his extensive review and contributed text.
 
-Authors' Addresses
 
 
 
@@ -1569,6 +1569,8 @@ Palombini, et al.        Expires August 20, 2020               [Page 28]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
+
+Authors' Addresses
 
    Francesca Palombini
    Ericsson AB
@@ -1598,8 +1600,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Sweden
 
    Email: martin.gunnarsson@ri.se
-
-
 
 
 
