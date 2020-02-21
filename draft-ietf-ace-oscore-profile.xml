@@ -367,8 +367,8 @@ Usually it is assumed that constrained devices will be pre-configured with the n
     Content-Type: "application/ace+cbor"
     Payload:
     {
-      "cwt" : h'a5037674656d7053656e73 ...
-       (remainder of access token omitted for brevity)',
+      "access_token" : h'a5037674656d7053656e73 ...
+       (remainder of access token (CWT) omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600",
       "cnf" : {
@@ -468,8 +468,8 @@ A5                                      # map(5)
     Content-Type: "application/ace+cbor"
     Payload:
     {
-      "cwt" : h'a5037674656d7053656e73 ...
-       (remainder of access token omitted for brevity)',
+      "access_token" : h'a5037674656d7053656e73 ...
+       (remainder of access token (CWT) omitted for brevity)',
       "profile" : "coap_oscore",
       "expires_in" : "3600"
     }
@@ -698,8 +698,8 @@ OSCORE_Security_Context = {
       Content-Format: "application/ace+cbor"
       Payload:
         {
-          "cwt": h'a5037674656d7053656e73 ...
-       (remainder of access token omitted for brevity)',
+          "access_token": h'a5037674656d7053656e73 ...
+       (remainder of access token (CWT) omitted for brevity)',
           "cnonce": h'018a278f7faab55a'
         }
   ]]>
