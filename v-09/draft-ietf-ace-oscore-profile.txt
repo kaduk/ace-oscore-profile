@@ -469,8 +469,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    o  a salt
 
-   o  a replay window type and size
-
    o  the OSCORE version number
 
    The OSCORE_Security_Context is a CBOR map object, defined in
@@ -484,10 +482,9 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    the 'alg' parameter in the OSCORE_Security_Context; the HKDF
    algorithm may be included as the 'hkdf' parameter of the
    OSCORE_Security_Context, a salt may be included as the 'salt'
-   parameter of the OSCORE_Security_Context, the replay window type and
-   size may be included as the 'rpl' parameter of the
-   OSCORE_Security_Context, and the OSCORE version number may be
-   included as the 'version' parameter of the OSCORE_Security_Context.
+   parameter of the OSCORE_Security_Context, and the OSCORE version
+   number may be included as the 'version' parameter of the
+   OSCORE_Security_Context.
 
    The same parameters MUST be included as part of the access token.
    This profile RECOMMENDS the use of CBOR web token (CWT) as specified
@@ -497,7 +494,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    be encrypted, since it will be transferred from the client to the RS
    over an unprotected channel.
 
-
+   The AS MUST also assign an identifier to the RS (serverId), MAY
+   assign an identifier to the client (clientId), and MAY assign an
+   identifier to the context (contextId).  These identifiers are then
+   used as Sender ID, Recipient ID and ID Context in the OSCORE context
 
 
 
@@ -506,10 +506,6 @@ Palombini, et al.        Expires August 28, 2020                [Page 9]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   The AS MUST also assign an identifier to the RS (serverId), MAY
-   assign an identifier to the client (clientId), and MAY assign an
-   identifier to the context (contextId).  These identifiers are then
-   used as Sender ID, Recipient ID and ID Context in the OSCORE context
    as described in section 3.1 of [RFC8613].  Applications need to
    consider that these identifiers are sent in the clear and may reveal
    information about the endpoints, as mentioned in section 12.8 of
@@ -554,6 +550,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
    Figure 5: Example AS-to-C Access Token response with OSCORE profile.
 
+   Figure 6 shows an example CWT, containing the necessary OSCORE
+   parameters in the 'cnf' claim, in CBOR diagnostic notation without
+   tag and value abbreviations.
+
 
 
 
@@ -561,10 +561,6 @@ Palombini, et al.        Expires August 28, 2020               [Page 10]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
-
-   Figure 6 shows an example CWT, containing the necessary OSCORE
-   parameters in the 'cnf' claim, in CBOR diagnostic notation without
-   tag and value abbreviations.
 
      {
        "aud" : "tempSensorInLivingRoom",
@@ -591,6 +587,10 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    NOTE TO THE RFC EDITOR: before publishing, it should be checked (and
    in case fixed) that the values used below (which are not yet
    registered) are the final values registered in IANA.
+
+
+
+
 
 
 
@@ -771,12 +771,12 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    |           |       |                |              |               |
    | contextId | 7     | bstr           |              | OSCORE ID     |
    |           |       |                |              | Context value |
-   |           |       |                |              |               |
-   | rpl       | 8     | bstr           |              | OSCORE Replay |
-   |           |       |                |              | Window        |
    +-----------+-------+----------------+--------------+---------------+
 
                 Table 1: OSCORE_Security_Context Parameters
+
+   version:  This parameter identifies the OSCORE Version number, which
+      is an int.  For more information about this field, see section 5.4
 
 
 
@@ -786,8 +786,6 @@ Palombini, et al.        Expires August 28, 2020               [Page 14]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   version:  This parameter identifies the OSCORE Version number, which
-      is an int.  For more information about this field, see section 5.4
       of [RFC8613].  In JSON, the "version" value is an integer.  In
       CBOR, the "version" type is int, and has label 0.
 
@@ -837,6 +835,8 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
 
+
+
 Palombini, et al.        Expires August 28, 2020               [Page 15]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
@@ -847,11 +847,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
       information about this field, see section 3.1 of [RFC8613].  In
       JSON, the "contextID" value is a Base64 encoded byte string.  In
       CBOR, the "contextID" type is bstr, and has label 7.
-
-   rpl:  This parameter identifies the OSCORE Replay Window, which is a
-      byte string.  For more information about this field, see section
-      3.1 of [RFC8613].  In JSON, the "rpl" value is a Base64 encoded
-      byte string.  In CBOR, the "rpl" type is bstr, and has label 8.
 
    An example of JSON OSCORE_Security_Context is given in Figure 10.
 
@@ -877,7 +872,6 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
        ? 5 => tstr / int,        ; alg
        ? 6 => bstr,              ; salt
        ? 7 => bstr,              ; contextId
-       ? 8 => bstr / tstr,       ; rpl
        * int / tstr => any
    }
 
@@ -890,6 +884,12 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    the AS to the RS.  The RS then generates a nonce N2, and use
    Section 3.2 of [RFC8613] to derive a security context based on a
    shared master secret and the two nonces, established between client
+   and server.  The nonces are encoded as CBOR bstr if CBOR is used, and
+   as Base64 string if JSON is used.  This security context is used to
+   protect all future communication between client and RS using OSCORE,
+   as long as the access token is valid.
+
+
 
 
 
@@ -897,11 +897,6 @@ Palombini, et al.        Expires August 28, 2020               [Page 16]
 
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
-
-   and server.  The nonces are encoded as CBOR bstr if CBOR is used, and
-   as Base64 string if JSON is used.  This security context is used to
-   protect all future communication between client and RS using OSCORE,
-   as long as the access token is valid.
 
    Note that the RS and client authenticates themselves by generating
    the shared OSCORE Security Context using the pop-key as master
@@ -946,6 +941,11 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    RS, with payload in CBOR diagnostic notation without the tag and
    value abbreviations.  The access token has been truncated for
    readability.
+
+
+
+
+
 
 
 
@@ -1050,14 +1050,14 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Section 3.2, and where N1 and N2 are the two nonces encoded as CBOR
    bstr.  The client MUST set the Master Secret and Recipient ID from
    the parameters received from the AS in Section 3.2.  The client MUST
-   set the AEAD Algorithm, ID Context, HKDF, Replay Window and OSCORE
-   Version from the parameters received from the AS in Section 3.2, if
-   present.  In case these parameters are omitted, the default values
-   are used as described in sections 3.2 and 5.4 of [RFC8613].  The
-   client MUST set the Sender ID from the 'clientId in the 2.01
-   (Created) response, if present; otherwise, the client MUST set the
-   Sender ID from the parameters received from the AS in Section 3.2.
-   After that, the client MUST derive the complete Security Context
+   set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the
+   parameters received from the AS in Section 3.2, if present.  In case
+   these parameters are omitted, the default values are used as
+   described in sections 3.2 and 5.4 of [RFC8613].  The client MUST set
+   the Sender ID from the 'clientId in the 2.01 (Created) response, if
+   present; otherwise, the client MUST set the Sender ID from the
+   parameters received from the AS in Section 3.2.  After that, the
+   client MUST derive the complete Security Context following section
 
 
 
@@ -1066,10 +1066,9 @@ Palombini, et al.        Expires August 28, 2020               [Page 19]
 Internet-Draft            OSCORE Profile of ACE            February 2020
 
 
-   following section 3.2.1 of [RFC8613].  From this point on, the client
-   MUST use this Security Context to communicate with the RS when
-   accessing the resources as specified by the authorization
-   information.
+   3.2.1 of [RFC8613].  From this point on, the client MUST use this
+   Security Context to communicate with the RS when accessing the
+   resources as specified by the authorization information.
 
    If any of the expected parameters is missing (e.g., any of the
    mandatory parameters from the AS, or the 'clientId', either received
@@ -1090,15 +1089,15 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Secret, Sender ID and Recipient ID from the parameters, received from
    the AS and forwarded by the client in the access token in Section 4.1
    after validation of the token as specified in Section 4.2.  The RS
-   MUST set the AEAD Algorithm, ID Context, HKDF, Replay Window and
-   OSCORE Version from the parameters received from the AS and forwarded
-   by the client in the access token in Section 4.1 after validation of
-   the token as specified in Section 4.2, if present.  In case these
-   parameters are omitted, the default values are used as described in
-   sections 3.2 and 5.4 of [RFC8613].  After that, the RS MUST derive
-   the complete Security Context following section 3.2.1 of [RFC8613],
-   and MUST associate this Security Context with the authorization
-   information from the access token.
+   MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version
+   from the parameters received from the AS and forwarded by the client
+   in the access token in Section 4.1 after validation of the token as
+   specified in Section 4.2, if present.  In case these parameters are
+   omitted, the default values are used as described in sections 3.2 and
+   5.4 of [RFC8613].  After that, the RS MUST derive the complete
+   Security Context following section 3.2.1 of [RFC8613], and MUST
+   associate this Security Context with the authorization information
+   from the access token.
 
    The RS then uses this Security Context to verify requests and send
    responses to C using OSCORE.  If OSCORE verification fails, error
@@ -1114,6 +1113,7 @@ Internet-Draft            OSCORE Profile of ACE            February 2020
    Context was derived from a client that already had a Security Context
    in place, the is RECOMMENDED to delete the old Security Context after
    OSCORE verification and verification of access rights succeed.  The
+
 
 
 
