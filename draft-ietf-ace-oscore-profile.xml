@@ -313,6 +313,7 @@ Usually it is assumed that constrained devices will be pre-configured with the n
           <list style="symbols">
             <t>a master secret</t>
             <t>a server identifier</t>
+            <t>a client identifier</t>
           </list>
         </t>
 
@@ -322,7 +323,6 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 
         <t>
           <list style="symbols">
-            <t>a client identifier</t>
             <t>a context identifier</t>
             <t>an AEAD algorithm</t>
             <t>an HKDF algorithm</t>
@@ -344,14 +344,15 @@ Usually it is assumed that constrained devices will be pre-configured with the n
 	      </t>
 
         <t>
-          The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="RFC8613"/>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <xref target="RFC8613"/>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
+          The AS MUST also assign an identifier to the RS (serverId), and to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <xref target="RFC8613"/>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <xref target="RFC8613"/>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <xref target="oscore-sec-ctx"/>.
         </t>
 
         <t>
           We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may occur at the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate the effect of the collisions.
-          <!-- TODO: Add error response definition in the document for the RS to indicate "Id collision"-->
         </t>
-
+        <t>
+          Moreover, implementers of this specification need to be aware that if other authentication mechanisms are used to set up OSCORE between the same client and RS, that do not rely on AS assigning identifiers, collisions may happen and need to be mitigated.
+        </t>
         <t>
           Note that in <xref target="oscore-setup"/> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.
         </t>
@@ -687,11 +688,11 @@ OSCORE_Security_Context = {
           </artwork>
         </figure>
 
-        <section anchor="nonce1" title "The Nonce 1 Parameter" >
+        <section anchor="nonce1" title="The Nonce 1 Parameter" >
           <t>
              This parameter MUST be sent from the client to the RS, together with the access token, if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for
    CBOR-based interactions, and as a string (Base64 encoded binary) for
-   JSON-based interactions. This parameter is registered in <xref target="iana-nonces" />
+   JSON-based interactions. This parameter is registered in <xref target="iana-nonces" />.
           </t>
         </section>
 
@@ -705,7 +706,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <xref target="nonce2"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <xref target="nonce2"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
 <!--     
@@ -738,7 +739,7 @@ OSCORE_Security_Context = {
           As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS must notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
         </t>
 
-        <section anchor="nonce2" title "The Nonce 2 Parameter" >
+        <section anchor="nonce2" title="The Nonce 2 Parameter" >
           <t>
              This parameter MUST be sent from the RS to the Client if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for
    CBOR-based interactions, and as a string (Base64 encoded binary) for
@@ -750,11 +751,11 @@ OSCORE_Security_Context = {
       <section anchor="oscore-setup" title="OSCORE Setup">
 
         <t>
-          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'nonce2' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="as-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <xref target="RFC8613"/>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <xref target="as-c"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
+          Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'nonce2' parameter in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <xref target="as-c"/>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <xref target="as-c"/>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the parameters received from the AS in <xref target="as-c"/>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <xref target="RFC8613"/>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <xref target="RFC8613"/>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.
         </t>
 
         <t>
-          If any of the expected parameters is missing (e.g., any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
+          If any of the expected parameters is missing (e.g., any of the mandatory parameters from the AS, the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.
         </t>
 
         <t>
@@ -772,7 +773,7 @@ token.
         </t>
 
         <t>
-          If the exchange was an update of access rights, i.e., a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
+          If the exchange was an update of access rights, i.e., a new Security Context was derived from a client that already had a Security Context in place, the RS is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.
         </t>
 
       </section> <!-- ends from line 481-->
