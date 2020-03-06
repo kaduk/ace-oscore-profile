@@ -383,7 +383,9 @@
 <link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 OSCORE_Security_Context Object">
 <link href="#rfc.section.4" rel="Chapter" title="4 Client-RS Communication">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 C-to-RS: POST to authz-info endpoint">
+<link href="#rfc.section.4.1.1" rel="Chapter" title="4.1.1 The Nonce 1 Parameter">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 RS-to-C: 2.01 (Created)">
+<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 The Nonce 2 Parameter">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 OSCORE Setup">
 <link href="#rfc.section.4.4" rel="Chapter" title="4.4 Access rights verification">
 <link href="#rfc.section.5" rel="Chapter" title="5 Secure Communication with AS">
@@ -500,9 +502,13 @@
 </li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">C-to-RS: POST to authz-info endpoint</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">RS-to-C: 2.01 (Created)</a>
+<ul><li>4.1.1.   <a href="#rfc.section.4.1.1">The Nonce 1 Parameter</a>
 </li>
-<li>4.3.   <a href="#rfc.section.4.3">OSCORE Setup</a>
+</ul><li>4.2.   <a href="#rfc.section.4.2">RS-to-C: 2.01 (Created)</a>
+</li>
+<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">The Nonce 2 Parameter</a>
+</li>
+</ul><li>4.3.   <a href="#rfc.section.4.3">OSCORE Setup</a>
 </li>
 <li>4.4.   <a href="#rfc.section.4.4">Access rights verification</a>
 </li>
@@ -671,6 +677,7 @@
 <ul>
 <li>a master secret</li>
 <li>a server identifier</li>
+<li>a client identifier</li>
 </ul>
 
 <p> </p>
@@ -678,7 +685,6 @@
 <p></p>
 
 <ul>
-<li>a client identifier</li>
 <li>a context identifier</li>
 <li>an AEAD algorithm</li>
 <li>an HKDF algorithm</li>
@@ -689,9 +695,10 @@
 <p> </p>
 <p id="rfc.section.3.2.p.7">The OSCORE_Security_Context is a CBOR map object, defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>. This object is transported in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>, as value of a field named 'osc' registered in <a href="#osc-cwt" class="xref">Section 9.5</a> and <a href="#osc-jwt" class="xref">Section 9.6</a>.  The master secret MUST be communicated as the 'ms' field in the 'osc' field in the 'cnf' parameter of the access token response as defined in Section 3.2 of <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  The AEAD algorithm may be included as the 'alg' parameter in the OSCORE_Security_Context; the HKDF algorithm may be included as the 'hkdf' parameter of the OSCORE_Security_Context, a salt may be included as the 'salt' parameter of the OSCORE_Security_Context, and the OSCORE version number may be included as the 'version' parameter of the OSCORE_Security_Context.  </p>
 <p id="rfc.section.3.2.p.8">The same parameters MUST be included as part of the access token. This profile RECOMMENDS the use of CBOR web token (CWT) as specified in  <a href="#RFC8392" class="xref">[RFC8392]</a>. If the token is a CWT, the same OSCORE_Security_Context structure defined above MUST be placed in the 'osc' field of the 'cnf' claim of this token.  The access token MUST be encrypted, since it will be transferred from the client to the RS over an unprotected channel.  </p>
-<p id="rfc.section.3.2.p.9">The AS MUST also assign an identifier to the RS (serverId), MAY assign an identifier to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <a href="#RFC8613" class="xref">[RFC8613]</a>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
+<p id="rfc.section.3.2.p.9">The AS MUST also assign an identifier to the RS (serverId), and to the client (clientId), and MAY assign an identifier to the context (contextId). These identifiers are then used as Sender ID, Recipient ID and ID Context in the OSCORE context as described in section 3.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>.  Applications need to consider that these identifiers are sent in the clear and may reveal information about the endpoints, as mentioned in section 12.8 of <a href="#RFC8613" class="xref">[RFC8613]</a>. The pair (client identifier, context identifier) MUST be unique in the set of all clients for a single RS.  Moreover, clientId, serverId and (when assigned) contextId MUST be included in the OSCORE_Security_Context, as defined in <a href="#oscore-sec-ctx" class="xref">Section 3.2.1</a>.  </p>
 <p id="rfc.section.3.2.p.10">We assume in this document that a resource is associated to one single AS, which makes it possible for the AS to enforce uniqueness of identifiers for each client requesting a particular resource to a RS.  If this is not the case, collisions of identifiers may occur at the RS, in which case the RS needs to have a mechanism in place to disambiguate identifiers or mitigate the effect of the collisions.  </p>
-<p id="rfc.section.3.2.p.11">Note that in <a href="#oscore-setup" class="xref">Section 4.3</a> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.  </p>
+<p id="rfc.section.3.2.p.11">Moreover, implementers of this specification need to be aware that if other authentication mechanisms are used to set up OSCORE between the same client and RS, that do not rely on AS assigning identifiers, collisions may happen and need to be mitigated.  </p>
+<p id="rfc.section.3.2.p.12">Note that in <a href="#oscore-setup" class="xref">Section 4.3</a> C sets the Sender ID of its Security Context to the clientId value received and the Recipient ID to the serverId value, and RS does the opposite.  </p>
 <p><a href="#ex1" class="xref">Figure 5</a> shows an example of an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.5"></div>
 <div id="ex1"></div>
@@ -736,8 +743,8 @@
 
           </pre>
 <p class="figure">Figure 6: Example CWT with OSCORE parameters.</p>
-<p id="rfc.section.3.2.p.14">The same CWT token as in <a href="#ex2" class="xref">Figure 6</a>, using the value abbreviations defined in <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> and <a href="#I-D.ietf-ace-cwt-proof-of-possession" class="xref">[I-D.ietf-ace-cwt-proof-of-possession]</a> and encoded in CBOR is shown in <a href="#ex2-cbor" class="xref">Figure 7</a>.  </p>
-<p id="rfc.section.3.2.p.15">NOTE TO THE RFC EDITOR: before publishing, it should be checked (and in case fixed) that the values used below (which are not yet registered) are the final values registered in IANA.  </p>
+<p id="rfc.section.3.2.p.15">The same CWT token as in <a href="#ex2" class="xref">Figure 6</a>, using the value abbreviations defined in <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> and <a href="#I-D.ietf-ace-cwt-proof-of-possession" class="xref">[I-D.ietf-ace-cwt-proof-of-possession]</a> and encoded in CBOR is shown in <a href="#ex2-cbor" class="xref">Figure 7</a>.  </p>
+<p id="rfc.section.3.2.p.16">NOTE TO THE RFC EDITOR: before publishing, it should be checked (and in case fixed) that the values used below (which are not yet registered) are the final values registered in IANA.  </p>
 <div id="rfc.figure.7"></div>
 <div id="ex2-cbor"></div>
 <pre>
@@ -775,7 +782,7 @@ A5                                      # map(5)
 
           </pre>
 <p class="figure">Figure 7: Example CWT with OSCORE parameters.</p>
-<p id="rfc.section.3.2.p.16">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and the context identifier (if it was set and included in the initial access token response by the AS) in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
+<p id="rfc.section.3.2.p.17">If the client has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, the AS MUST omit the 'cnf' parameter in the response, and MUST carry the client identifier and the context identifier (if it was set and included in the initial access token response by the AS) in the 'kid' field in the 'cnf' parameter of the token, with the same structure defined in <a href="#kid" class="xref">Figure 3</a>. These identifiers need to be included in the response, in order for the RS to identify the previously generated Security Context.  </p>
 <p><a href="#ex5" class="xref">Figure 8</a> shows an example of such an AS response, with payload in CBOR diagnostic notation without the tag and value abbreviations. The access token has been truncated for readability.  </p>
 <div id="rfc.figure.8"></div>
 <div id="ex5"></div>
@@ -940,7 +947,7 @@ OSCORE_Security_Context = {
 <a href="#rfc.section.4.1">4.1.</a> <a href="#c-rs" id="c-rs">C-to-RS: POST to authz-info endpoint</a>
 </h1>
 <p id="rfc.section.4.1.p.1">The client MUST generate a nonce value very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. The client MUST store the nonce N1 as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a> to transport the token and N1 to the RS.  </p>
-<p id="rfc.section.4.1.p.2">Note that the use of the payload and the Content-Format is different from what described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce1' parameter defined in <a href="#iana-nonces" class="xref">Section 9.2</a>.  </p>
+<p id="rfc.section.4.1.p.2">Note that the use of the payload and the Content-Format is different from what described in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce1' parameter defined in <a href="#nonce1" class="xref">Section 4.1.1</a>.  </p>
 <p id="rfc.section.4.1.p.3">The authz-info endpoint is not protected, nor are the responses from this resource.  </p>
 <p id="rfc.section.4.1.p.4">The access token MUST be encrypted, since it is transferred from the client to the RS over an unprotected channel.  </p>
 <p id="rfc.section.4.1.p.5">Note that a client may be required to re-POST the access token in order to complete a request, since an RS may delete a stored access token at any time, for example due to all storage space being consumed. This situation is detected by the client when it receives an AS Request Creation Hints response.  </p>
@@ -961,11 +968,15 @@ OSCORE_Security_Context = {
   
           </pre>
 <p class="figure">Figure 11: Example C-to-RS POST /authz-info request using CWT</p>
+<h1 id="rfc.section.4.1.1">
+<a href="#rfc.section.4.1.1">4.1.1.</a> <a href="#nonce1" id="nonce1">The Nonce 1 Parameter</a>
+</h1>
+<p id="rfc.section.4.1.1.p.1">This parameter MUST be sent from the client to the RS, together with the access token, if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for CBOR-based interactions, and as a string (Base64 encoded binary) for JSON-based interactions. This parameter is registered in <a href="#iana-nonces" class="xref">Section 9.2</a>.  </p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#rs-c" id="rs-c">RS-to-C: 2.01 (Created)</a>
 </h1>
 <p id="rfc.section.4.2.p.1">The RS MUST follow the procedures defined in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>: the RS must verify the validity of the token. If the token is valid, the RS must respond to the POST request with 2.01 (Created). If the token is valid but is associated to claims that the RS cannot process (e.g., an unknown scope), or if any of the expected parameters in the 'osc' is missing (e.g., any of the mandatory parameters from the AS), or if any parameters received in the 'osc' is unrecognized, the RS must respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, the RS may provide additional information in the error response, in order to clarify what went wrong.  The RS may make an introspection request to validate the token before responding to the POST request to the authz-info endpoint.  </p>
-<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <a href="#iana-nonces" class="xref">Section 9.2</a>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
+<p id="rfc.section.4.2.p.2">Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <a href="#nonce2" class="xref">Section 4.2.1</a>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p><a href="#ex4" class="xref">Figure 12</a> shows an example of the response sent from the RS to the client, with payload in CBOR diagnostic notation without the tag and value abbreviations.  </p>
 <div id="rfc.figure.12"></div>
 <div id="ex4"></div>
@@ -981,15 +992,19 @@ OSCORE_Security_Context = {
 <p class="figure">Figure 12: Example RS-to-C 2.01 (Created) response</p>
 <p id="rfc.section.4.2.p.4">As specified in section 5.8.1 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, when receiving an updated access token with updated authorization information from the client (see <a href="#c-as" class="xref">Section 3.1</a>), it is recommended that the RS overwrites the previous token, that is only the latest authorization information in the token received by the RS is valid. This simplifies for the RS to keep track of authorization information for a given client.  </p>
 <p id="rfc.section.4.2.p.5">As specified in section 5.8.3 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>, the RS must notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.  </p>
+<h1 id="rfc.section.4.2.1">
+<a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#nonce2" id="nonce2">The Nonce 2 Parameter</a>
+</h1>
+<p id="rfc.section.4.2.1.p.1">This parameter MUST be sent from the RS to the Client if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for CBOR-based interactions, and as a string (Base64 encoded binary) for JSON-based interactions. This parameter is registered in <a href="#iana-nonces" class="xref">Section 9.2</a> </p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#oscore-setup" id="oscore-setup">OSCORE Setup</a>
 </h1>
-<p id="rfc.section.4.3.p.1">Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'nonce2' parameter and the client identifier from the 'clientId' in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <a href="#as-c" class="xref">Section 3.2</a>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret and Recipient ID from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <a href="#RFC8613" class="xref">[RFC8613]</a>. The client MUST set the Sender ID from the 'clientId in the 2.01 (Created) response, if present; otherwise, the client MUST set the Sender ID from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.  </p>
-<p id="rfc.section.4.3.p.2">If any of the expected parameters is missing (e.g., any of the mandatory parameters from the AS, or the 'clientId', either received from the AS or in the 2.01 (Created) response from the RS), the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.  </p>
+<p id="rfc.section.4.3.p.1">Once receiving the 2.01 (Created) response from the RS, following the POST request to authz-info endpoint, the client MUST extract the CBOR bstr nonce N2 from the 'nonce2' parameter in the CBOR map in the payload of the response. Then, the client MUST set the Master Salt of the Security Context created to communicate with the RS to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <a href="#as-c" class="xref">Section 3.2</a>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The client MUST set the Master Secret, Sender ID and Recipient ID from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>. The client MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the parameters received from the AS in <a href="#as-c" class="xref">Section 3.2</a>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <a href="#RFC8613" class="xref">[RFC8613]</a>. After that, the client MUST derive the complete Security Context following section 3.2.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>. From this point on, the client MUST use this Security Context to communicate with the RS when accessing the resources as specified by the authorization information.  </p>
+<p id="rfc.section.4.3.p.2">If any of the expected parameters is missing (e.g., any of the mandatory parameters from the AS, the client MUST stop the exchange, and MUST NOT derive the Security Context. The client MAY restart the exchange, to get the correct security material.  </p>
 <p id="rfc.section.4.3.p.3">The client then uses this Security Context to send requests to RS using OSCORE.  </p>
 <p id="rfc.section.4.3.p.4">After sending the 2.01 (Created) response, the RS MUST set the Master Salt of the Security Context created to communicate with the client to the concatenation of salt, N1, and N2, in this order: Master Salt = salt | N1 | N2, where | denotes byte string concatenation, where salt was received from the AS in <a href="#rs-c" class="xref">Section 4.2</a>, and where N1 and N2 are the two nonces encoded as CBOR bstr. The RS MUST set the Master Secret, Sender ID and Recipient ID from the parameters, received from the AS and forwarded by the client in the access token in <a href="#c-rs" class="xref">Section 4.1</a> after validation of the token as specified in <a href="#rs-c" class="xref">Section 4.2</a>. The RS MUST set the AEAD Algorithm, ID Context, HKDF, and OSCORE Version from the parameters received from the AS and forwarded by the client in the access token in <a href="#c-rs" class="xref">Section 4.1</a> after validation of the token as specified in <a href="#rs-c" class="xref">Section 4.2</a>, if present. In case these parameters are omitted, the default values are used as described in sections 3.2 and 5.4 of <a href="#RFC8613" class="xref">[RFC8613]</a>. After that, the RS MUST derive the complete Security Context following section 3.2.1 of <a href="#RFC8613" class="xref">[RFC8613]</a>, and MUST associate this Security Context with the authorization information from the access token.  </p>
 <p id="rfc.section.4.3.p.5">The RS then uses this Security Context to verify requests and send responses to C using OSCORE. If OSCORE verification fails, error responses are used, as specified in section 8 of <a href="#RFC8613" class="xref">[RFC8613]</a>. Additionally, if OSCORE verification succeeds, the verification of access rights is performed as described in section <a href="#tok-ver" class="xref">Section 4.4</a>. The RS MUST NOT use the Security Context after the related token has expired, and MUST respond with a unprotected 4.01 (Unauthorized) error message to requests received that correspond to a Security Context with an expired token.  </p>
-<p id="rfc.section.4.3.p.6">If the exchange was an update of access rights, i.e., a new Security Context was derived from a client that already had a Security Context in place, the is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.  </p>
+<p id="rfc.section.4.3.p.6">If the exchange was an update of access rights, i.e., a new Security Context was derived from a client that already had a Security Context in place, the RS is RECOMMENDED to delete the old Security Context after OSCORE verification and verification of access rights succeed. The RS MUST delete the Security Context if it deletes the access token associated to it.  </p>
 <h1 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#tok-ver" id="tok-ver">Access rights verification</a>
 </h1>
@@ -1061,7 +1076,7 @@ OSCORE_Security_Context = {
 
 <ul>
 <li>Parameter name: nonce1</li>
-<li>Parameter usage location: TBD</li>
+<li>Parameter usage location: token request</li>
 <li>Change Controller: IESG</li>
 <li>Specification Document(s): [[this specification]]</li>
 </ul>
@@ -1069,7 +1084,7 @@ OSCORE_Security_Context = {
 
 <ul>
 <li>Parameter name: nonce2</li>
-<li>Parameter usage location: TBD</li>
+<li>Parameter usage location: token response</li>
 <li>Change Controller: IESG</li>
 <li>Specification Document(s): [[this specification]]</li>
 </ul>
