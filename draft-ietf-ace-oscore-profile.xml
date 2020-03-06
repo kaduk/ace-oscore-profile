@@ -651,7 +651,7 @@ OSCORE_Security_Context = {
           The client MUST generate a nonce value very unlikely to have been previously used with the same input keying material. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. The client MUST store the nonce N1 as long as the response from the RS is not received and the access token related to it is still valid. The client MUST use CoAP and the Authorization Information resource as described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/> to transport the token and N1 to the RS.
         </t>
         <t>
-           Note that the use of the payload and the Content-Format is different from what described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce1' parameter defined in <xref target="iana-nonces"/>.
+           Note that the use of the payload and the Content-Format is different from what described in section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz"/>, which only transports the token without any CBOR wrapping. In this profile, the client MUST wrap the token and N1 in a CBOR map. The client MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>. The client MUST include the access token using the correct CBOR label (e.g., "cwt" for CWT, "jwt" for JWT) and N1 using the 'nonce1' parameter defined in <xref target="nonce1"/>.
         </t>
 
         <t>
@@ -687,6 +687,14 @@ OSCORE_Security_Context = {
           </artwork>
         </figure>
 
+        <section anchor="nonce1" title "The Nonce 1 Parameter" >
+          <t>
+             This parameter MUST be sent from the client to the RS, together with the access token, if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for
+   CBOR-based interactions, and as a string (Base64 encoded binary) for
+   JSON-based interactions. This parameter is registered in <xref target="iana-nonces" />
+          </t>
+        </section>
+
       </section> <!-- ends for line 418 -->
 
       <section anchor="rs-c" title="RS-to-C: 2.01 (Created)">
@@ -697,7 +705,7 @@ OSCORE_Security_Context = {
         </t>
 
         <t>
-          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <xref target="iana-nonces"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
+          Additionally, the RS MUST generate a nonce N2 very unlikely to have been previously used with the same input keying material, and send it within the 2.01 (Created) response. The payload of the 2.01 (Created) response MUST be a CBOR map containing the 'nonce2' parameter defined in <xref target="nonce2"/>, set to N2. This profile RECOMMENDS to use a 64-bit long random number as nonce's value. Moreover, if the 'osc' field in the token did not contain a 'clientId' parameter, the RS MUST generate an identifier, unique in the set of all its existing client identifiers, and send it in a 'clientId' parameter in the CBOR map as a CBOR bstr. The RS MAY generate and send a 'ClientId' identifier even though the 'osc' field contained such a parameter, in order to guarantee the uniqueness of the client identifier. The RS MUST use the Content-Format "application/ace+cbor" defined in section 8.14 of <xref target="I-D.ietf-ace-oauth-authz"/>.
         </t>
 
 <!--     
@@ -730,6 +738,13 @@ OSCORE_Security_Context = {
           As specified in section 5.8.3 of <xref target="I-D.ietf-ace-oauth-authz"/>, the RS must notify the client with an error response with code 4.01 (Unauthorized) for any long running request before terminating the session, when the access token expires.
         </t>
 
+        <section anchor="nonce2" title "The Nonce 2 Parameter" >
+          <t>
+             This parameter MUST be sent from the RS to the Client if the ace profile used is coap_oscore.  The parameter is encoded as a byte string for
+   CBOR-based interactions, and as a string (Base64 encoded binary) for
+   JSON-based interactions. This parameter is registered in <xref target="iana-nonces" />
+          </t>
+        </section>
       </section> <!-- ends for line 452-->
 
       <section anchor="oscore-setup" title="OSCORE Setup">
@@ -922,7 +937,7 @@ token.
         <t><?rfc subcompact="yes"?><list style='symbols'>
           <t>Parameter name: nonce1</t>
 
-          <t>Parameter usage location: TBD</t>
+          <t>Parameter usage location: token request</t>
         
           <t>Change Controller: IESG</t>
 
@@ -931,7 +946,7 @@ token.
         <t><?rfc subcompact="yes"?><list style='symbols'>
           <t>Parameter name: nonce2</t>
 
-          <t>Parameter usage location: TBD</t>
+          <t>Parameter usage location: token response</t>
         
           <t>Change Controller: IESG</t>
 
